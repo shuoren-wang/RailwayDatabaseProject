@@ -1,3 +1,6 @@
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS spGetLineTrainSeats_by_FromToStationDate$$
 CREATE PROCEDURE spGetLineTrainSeats_by_FromToStationDate
 (IN
 fromStationId INT,
@@ -75,4 +78,6 @@ INNER JOIN
 		(SELECT s.trainnumber, s.class, COUNT(s.seatnumber) AS TotalSeats FROM seats s
 		GROUP BY s.trainnumber, s.class) ts ON ts.trainnumber = a.trainnumber AND ts.class=a.class
 )s
-ON lt.trainnumber = s.trainnumber
+ON lt.trainnumber = s.trainnumber$$
+
+DELIMITER ;

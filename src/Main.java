@@ -24,22 +24,12 @@ public class Main {
         }
     }
 
+    public static ResultSet runStoredProc(Statement stmt, String spName, String... params) throws SQLException {
+        return stmt.executeQuery("CALL " + spName + "(" + String.join(",", params) + ")");
+    }
 
     public static void printLineWithActiveStops(Statement stmt) throws SQLException {
-        ResultSet rs = stmt.executeQuery("SELECT \n" +
-                "  l.linename,\n" +
-                "  ls.ArrivalTime,\n" +
-                "  ADDTIME(ls.arrivaltime, ls.stopsforduration) AS DepartureTime,\n" +
-                "  s.StationName,\n" +
-                "  s.Address AS StationAddress\n" +
-                "FROM \n" +
-                "  line l \n" +
-                "  INNER JOIN linestops ls ON l.id=ls.forline_id\n" +
-                "  INNER JOIN stations s ON ls.locatedstation_id = s.id\n" +
-                "WHERE \n" +
-                "  STATUS=1\n" +
-                "ORDER BY \n" +
-                "  Arrivaltime ASC");
+        ResultSet rs = runStoredProc(stmt, "spShowAllLinesAndStops");
 
         while (rs.next()) {
             String lineName = rs.getString(1);

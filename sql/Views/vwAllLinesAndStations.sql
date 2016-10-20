@@ -1,5 +1,7 @@
-CREATE VIEW vwAllLinesAndStations AS
+DELIMITER $$
 
+DROP VIEW IF EXISTS vwAllLinesAndStations$$
+CREATE VIEW vwAllLinesAndStations AS
 
 SELECT
 	l.id AS lineId,
@@ -13,4 +15,6 @@ SELECT
 FROM
 	line l
 	INNER JOIN linestops ls ON l.id = ls.forline_id
-	INNER JOIN stations s ON s.id = ls.locatedstation_id
+	INNER JOIN stations s ON s.id = ls.locatedstation_id$$
+
+DELIMITER ;
