@@ -1,7 +1,10 @@
 import model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,8 +27,12 @@ public class Main {
         }
     }
 
-    public static ResultSet runStoredProc(Statement stmt, String spName, String... params) throws SQLException {
-        return stmt.executeQuery("CALL " + spName + "(" + String.join(",", params) + ")");
+    public static ResultSet runStoredProc(Statement stmt, String spName, Object... params) throws SQLException {
+        List<String> par = new ArrayList<String>();
+        for (int i  =0;i<params.length;i++) {
+            par.add("'" + params[i] + "'");
+        }
+        return stmt.executeQuery("CALL " + spName + "(" + String.join(",", par) + ")");
     }
 
     public static void printLineWithActiveStops(Statement stmt) throws SQLException {
