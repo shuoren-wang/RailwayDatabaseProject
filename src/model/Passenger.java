@@ -15,11 +15,25 @@ public class Passenger extends User{
         this.phone=phone;
     }
 
+    public Passenger(){
+        super();
+        this.passengerID=0;
+        this.phone="";
+    }
+
     public int getPassengerID() {
         return passengerID;
     }
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setPassengerID(int passengerID) {
+        this.passengerID = passengerID;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

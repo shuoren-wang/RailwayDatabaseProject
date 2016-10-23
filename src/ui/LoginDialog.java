@@ -15,8 +15,8 @@ import java.awt.event.ActionListener;
  */
 public class LoginDialog extends JDialog{
     static Logger LOG = Logger.getLogger(LoginDialog.class);
-    private final JPanel contentPanel;
-    private final JPanel buttonPanel;
+    private JPanel contentPanel;
+    private JPanel buttonPanel;
     private User user;
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -38,9 +38,12 @@ public class LoginDialog extends JDialog{
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 
-        this.addUsernameLabel();
-        this.addPasswordLabel();
-
+        addUsernameLabel();
+        addUsernameField();
+       addPasswordLabel();
+        addPasswordField();
+        addSubmitButton();
+        addCancelButton();
     }
 
     private void addUsernameLabel(){

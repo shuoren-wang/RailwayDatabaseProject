@@ -26,6 +26,12 @@ public class PassengerSignUpDialog extends JDialog{
     private JTextField phoneField;
 
     PassengerSignUpDialog(JFrame frame, Passenger passenger){
+
+        if(passenger==null){
+            passenger=new Passenger();
+            //TODO :add warning
+        }
+
         this.passenger=passenger;
 
         contentPanel=new JPanel();
@@ -40,6 +46,18 @@ public class PassengerSignUpDialog extends JDialog{
         contentPanel.setLayout(new MigLayout("", "[][grow]",
                 "[][][][][]"));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        addUsernameLabel();
+        addUsernameField();
+        addPasswordLabel_1();
+        addPasswordField_1();
+        addPasswordLabel_2();
+        addPasswordField_2();
+        addFullNameField();
+        addFullNameLabel();
+        addPhoneLabel();
+        addPhoneField();
+        addSubmitButton();
+        addCancelButton();
     }
 
     private void addUsernameLabel(){
@@ -54,7 +72,7 @@ public class PassengerSignUpDialog extends JDialog{
     }
 
     private void addPasswordLabel_1(){
-        JLabel jlUserName=new JLabel();
+        JLabel jlUserName=new JLabel("Password");
         contentPanel.add(jlUserName, "cell 0 2, alignx trailing");
     }
 
@@ -65,7 +83,7 @@ public class PassengerSignUpDialog extends JDialog{
     }
 
     private void addPasswordLabel_2(){
-        JLabel jlUserName=new JLabel();
+        JLabel jlUserName=new JLabel("re-enter Password");
         contentPanel.add(jlUserName, "cell 0 3, alignx trailing");
     }
 
