@@ -88,8 +88,9 @@ CREATE TABLE Tickets (
 	Owner_ID INT NOT NULL,
 	ForSeat_Number INT NOT NULL,
 	ForTrain_Number INT NOT NULL,
+	Returned BOOL NOT NULL DEFAULT 0,
 	FOREIGN KEY (FromLineStop_ID) REFERENCES LineStops(ID),
 	FOREIGN KEY (ToLineStop_ID) REFERENCES LineStops(ID),
-	FOREIGN KEY (Owner_ID) REFERENCES Passengers(PassengerID),
+	FOREIGN KEY (Owner_ID) REFERENCES Users(UserID),
 	FOREIGN KEY (ForTrain_Number,ForSeat_Number) REFERENCES Seats(TrainNumber,SeatNumber)
 );
