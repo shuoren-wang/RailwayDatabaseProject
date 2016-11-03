@@ -47,12 +47,25 @@ SELECT
 	vl.LineID,
 	vl.TrainNumber,
 	totalCounts.Class,
-	CASE WHEN totalCounts.TotalSeats - soldCounts.SoldTicketsCount < 0 THEN 0
-	ELSE totalCounts.TotalSeats - soldCounts.SoldTicketsCount END AS AvailableSeats,
+	CASE WHEN soldCounts.SoldTicketsCount IS NULL THEN totalCounts.TotalSeats
+	ELSE
+		CASE WHEN totalCounts.TotalSeats - soldCounts.SoldTicketsCount < 0 THEN 0
+		ELSE totalCounts.TotalSeats - soldCounts.SoldTicketsCount END
+	END AS AvailableSeats,
 	vl.DepartureTime,
 	vl.ArrivalTime
 FROM
-	_ValidLinesOuter vl LEFT JOIN (
+	_ValidLinesOuter vl
+	INNER JOIN (
+		SELECT trainnumber, COUNT(seatnumber) AS TotalSeats, Class
+		FROM seats
+		WHERE active = 1
+		GROUP BY trainnumber, Class
+	) totalCounts ON vl.TrainNumber = totalCounts.TrainNumber
+	INNER JOIN line l ON l.id = vl.lineid
+	INNER JOIN trains tr ON tr.trainnumber = vl.trainnumber
+
+	LEFT JOIN (
 		SELECT
 			soldTickets.TrainNumber,
 			soldTickets.Class,
@@ -77,15 +90,8 @@ FROM
 				)
 		) soldTickets
 	GROUP BY soldTickets.Class, soldTickets.TrainNumber
-	) soldCounts ON soldCounts.trainnumber = vl.trainnumber
-	INNER JOIN (
-		SELECT trainnumber, COUNT(seatnumber) AS TotalSeats, Class
-		FROM seats
-		WHERE active = 1
-		GROUP BY trainnumber, Class
-	) totalCounts ON soldCounts.TrainNumber = totalCounts.TrainNumber AND totalCounts.Class = soldCounts.Class
-	INNER JOIN line l ON l.id = vl.lineid
-	INNER JOIN trains tr ON tr.trainnumber = vl.trainnumber
+	) soldCounts ON soldCounts.trainnumber = vl.trainnumber AND soldCounts.Class = totalCounts.Class
+
 WHERE
 	/* check train runs on given date */
 	(_dayOfWeek=1 AND tr.runs_SU=1) /*given date is sunday and train runs on sunday*/
