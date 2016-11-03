@@ -87,7 +87,7 @@ FROM
 WHERE seatnumber IN (
 	SELECT t.forseat_number
 	FROM tickets t
-	INNER JOIN seats s on s.seatnumber = t.forseat_number and s.trainnumber = t.fortrain_number
+	INNER JOIN seats s ON s.seatnumber = t.forseat_number AND s.trainnumber = t.fortrain_number
 	LEFT JOIN linestops fromls ON fromls.id = t.fromlinestop_id
 	LEFT JOIN linestops tols ON tols.id = t.tolinestop_id
 	WHERE
@@ -138,8 +138,8 @@ IF `_rollback` THEN
 	SELECT _errMsg AS 'Error';
 	ROLLBACK;
 ELSE
-	SELECT 'OK' AS 'OK';
 	COMMIT;
+	SELECT LAST_INSERT_ID();
 END IF;
 
 END$$

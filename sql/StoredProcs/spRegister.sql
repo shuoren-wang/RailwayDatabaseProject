@@ -67,7 +67,7 @@ END IF;
 
 
 IF `_rollback` THEN
-SELECT 123;
+SELECT 'Error' as Err;
 	ROLLBACK;
 ELSE
 	COMMIT;
