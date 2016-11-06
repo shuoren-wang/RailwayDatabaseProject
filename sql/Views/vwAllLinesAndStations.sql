@@ -15,6 +15,9 @@ SELECT
 FROM
 	line l
 	INNER JOIN linestops ls ON l.id = ls.forline_id
-	INNER JOIN stations s ON s.id = ls.locatedstation_id$$
+	INNER JOIN stations s ON s.id = ls.locatedstation_id
+WHERE
+	ls.Status = 1
+	AND s.Active = 1 $$
 
 DELIMITER ;
