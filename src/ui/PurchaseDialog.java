@@ -1,6 +1,7 @@
 package ui;
 
 import model.Ticket;
+import model.Train;
 import net.miginfocom.swing.MigLayout;
 import org.apache.log4j.Logger;
 
@@ -16,15 +17,13 @@ public class PurchaseDialog extends JDialog{
     static Logger LOG = Logger.getLogger(LoginDialog.class);
     private final JPanel contentPanel;
     private final JPanel buttonPanel;
+    private Train currentTrain;
+
     private Ticket currentTicket;
 
-    PurchaseDialog(JFrame frame, Ticket ticket){
-        if(ticket==null){
-            ticket=new Ticket();
-            //TODO: add warning
-        }
+    PurchaseDialog(JFrame frame, Train train){
 
-        this.currentTicket = ticket;
+        this.currentTrain = train;
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 

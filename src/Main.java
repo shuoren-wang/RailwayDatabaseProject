@@ -1,5 +1,8 @@
 import model.User;
+import ui.MainFrame;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,14 +12,25 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        try {
+        MainFrame frame = MainFrame.getInstance();
+        frame.setVisible(true);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                //TODO shutdown database
+
+                System.exit(0);
+            }
+        });
+
+    /*    try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://windflower.arvixe.com/ubc_cpsc304", "cpsc304", "trains");
             Statement stmt = con.createStatement();
 
             printLineWithActiveStops(stmt);
-//            printUserInfo(stmt);
+            printUserInfo(stmt);
 
             con.close();
 
@@ -24,7 +38,7 @@ public class Main {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static ResultSet runStoredProc(Statement stmt, String spName, Object... params) throws SQLException {

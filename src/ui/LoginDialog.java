@@ -21,8 +21,7 @@ public class LoginDialog extends JDialog{
     private JTextField usernameField;
     private JPasswordField passwordField;
 
-    LoginDialog(JFrame frame, User user){
-        this.user =user;
+    LoginDialog(JFrame frame){
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 
@@ -40,7 +39,7 @@ public class LoginDialog extends JDialog{
 
         addUsernameLabel();
         addUsernameField();
-       addPasswordLabel();
+        addPasswordLabel();
         addPasswordField();
         addSubmitButton();
         addCancelButton();

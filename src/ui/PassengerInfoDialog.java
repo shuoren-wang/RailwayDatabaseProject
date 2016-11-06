@@ -1,5 +1,6 @@
 package ui;
 import model.Passenger;
+import model.User;
 import net.miginfocom.swing.MigLayout;
 import org.apache.log4j.Logger;
 
@@ -15,6 +16,7 @@ public class PassengerInfoDialog extends JDialog{
     static Logger LOG= Logger.getLogger(PassengerInfoDialog.class);
 
     private Passenger passenger;
+    private User user;
 
     private JPanel contentPanel;
     private JPanel buttonPanel;
@@ -23,8 +25,8 @@ public class PassengerInfoDialog extends JDialog{
     private JTextField fullNameField;
     private JTextField phoneField;
 
-    PassengerInfoDialog(JFrame frame, Passenger passenger){
-        this.passenger=passenger;
+    PassengerInfoDialog(JFrame frame, User user){
+        this.user=user;
 
         contentPanel=new JPanel();
         buttonPanel=new JPanel();

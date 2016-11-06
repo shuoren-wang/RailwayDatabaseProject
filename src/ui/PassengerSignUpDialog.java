@@ -25,14 +25,7 @@ public class PassengerSignUpDialog extends JDialog{
     private JTextField fullNameField;
     private JTextField phoneField;
 
-    PassengerSignUpDialog(JFrame frame, Passenger passenger){
-
-        if(passenger==null){
-            passenger=new Passenger();
-            //TODO :add warning
-        }
-
-        this.passenger=passenger;
+    PassengerSignUpDialog(JFrame frame){
 
         contentPanel=new JPanel();
         buttonPanel=new JPanel();

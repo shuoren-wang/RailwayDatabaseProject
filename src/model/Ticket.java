@@ -15,8 +15,10 @@ public class Ticket {
     private String seatClass;
     private int seatNo;
     private int trainNo;
+    private int userId;
 
-    public Ticket(int id, Date departDate, int fromLineId, int toLineId, int passengerID, int seatNo, int trainNo, String seatClass) {
+    public Ticket(int userId, int id, Date departDate, int fromLineId, int toLineId, int passengerID, int seatNo, int trainNo, String seatClass) {
+        this.userId=userId;
         this.id = id;
         this.departDate = departDate;
         this.fromLineId = fromLineId;
@@ -28,6 +30,7 @@ public class Ticket {
     }
 
     public Ticket(){
+        this.userId=0;
         this.id = 0;
         this.departDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());;
         this.fromLineId = 0;
@@ -36,6 +39,10 @@ public class Ticket {
         this.seatNo = 0;
         this.trainNo = 0;
         this.seatClass="";
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public int getId() {
@@ -72,6 +79,10 @@ public class Ticket {
 
     public String getSeatClass() {
         return seatClass;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setDepartDate(Date departDate) {
