@@ -3,7 +3,6 @@ package ui;
 import model.Ticket;
 import model.User;
 import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,12 +16,13 @@ import java.util.ArrayList;
  * Created by shuorenwang on 2016-10-21.
  */
 public class PassengerTicketsDialog extends JDialog{
-    static Logger LOG = Logger.getLogger(PassengerTicketsDialog.class);
     private User user;
     private Ticket ticket;
+
     private JPanel contentPanel;
     private JPanel buttonPanel;
     private JComboBox ticketComboBox;
+    private DefaultComboBoxModel ticketComboBoxModel;
     private JLabel ticketIdLabel;
     private JLabel dateLabel;
     private JLabel fromLineIdLabel;
@@ -32,25 +32,23 @@ public class PassengerTicketsDialog extends JDialog{
     private JLabel seatNoLabel;
 
 
-    PassengerTicketsDialog(JFrame frame, User user){
+    PassengerTicketsDialog(MainFrame frame){
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
-
 
         setResizable(false);
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setSize(500,500);
+        setSize(500,330);
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-        contentPanel.setLayout(new MigLayout("","[][grow]","[]"));
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        contentPanel.setLayout(new MigLayout("","[][grow]","[][][][][][][][]"));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         addTicketInfoLabel();
         addTicketInfoDataComboBox();
-
         addTicketIdLabel();
         addTicketIdDataLabel();
         addTrainNoLabel();
@@ -72,25 +70,38 @@ public class PassengerTicketsDialog extends JDialog{
 
    private void addTicketInfoLabel(){
         JLabel label=new JLabel("Ticket Info:");
-        contentPanel.add(label, "cell 0 1, alignx trailing");
+        contentPanel.add(label, "cell 0 0, alignx trailing");
     }
 
     private void addTicketInfoDataComboBox(){
+        ticketComboBoxModel=new DefaultComboBoxModel();
+        ticketComboBox=new JComboBox(ticketComboBoxModel);
+        ticketComboBox.setMaximumSize(new Dimension(300,600));
+        contentPanel.add(ticketComboBox, "cell 1 0,growx");
+
         ArrayList<Ticket> tickets=new ArrayList<Ticket>();
         //TODO: get data from database
 
-        ticketComboBox=new JComboBox(tickets.toArray());
-        ticketComboBox.setMaximumSize(new Dimension(300,600));
-        ticketComboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED){
-                    Ticket ticket= (Ticket) ticketComboBox.getSelectedItem();
-                    update(ticket);
+        if(tickets.size()>0) {
+            Object[] ticketsArr = tickets.toArray();
+
+            synchronized (tickets.toArray()) {
+                for (Object next : ticketsArr) {
+                    ticketComboBoxModel.addElement(next);
                 }
             }
-        });
-        contentPanel.add(ticketComboBox, "cell 1 1, alignx trailing");
+
+            ticketComboBox.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        Ticket ticket = (Ticket) ticketComboBox.getSelectedItem();
+                        update(ticket);
+                    }
+                }
+            });
+        }
+
     }
 
     private void addTicketIdLabel(){
@@ -99,9 +110,12 @@ public class PassengerTicketsDialog extends JDialog{
     }
 
     private void addTicketIdDataLabel(){
-        String ticketIdData=Integer.toString(ticket.getId());
+        String ticketIdData="";
+        if(ticket!=null) {
+            ticketIdData= Integer.toString(ticket.getId());
+        }
         ticketIdLabel=new JLabel(ticketIdData);
-        contentPanel.add(ticketIdLabel, "cell 1 1, alignx trailing");
+        contentPanel.add(ticketIdLabel, "cell 1 1, growx");
     }
 
     private void addTrainNoLabel(){
@@ -110,9 +124,12 @@ public class PassengerTicketsDialog extends JDialog{
     }
 
     private void addTrainNoDataLabel(){
-        String ticketIdData=Integer.toString(ticket.getTrainNo());
+        String ticketIdData="";
+        if(ticket!=null) {
+            ticketIdData = Integer.toString(ticket.getTrainNo());
+        }
         trainNoLabel=new JLabel(ticketIdData);
-        contentPanel.add(trainNoLabel, "cell 1 2, alignx trailing");
+        contentPanel.add(trainNoLabel, "cell 1 2,growx");
     }
 
     private void addDateLabel(){
@@ -121,9 +138,12 @@ public class PassengerTicketsDialog extends JDialog{
     }
 
     private void addDateDataLabel(){
-        String date= ticket.getDepartDate().toString();
+        String date="";
+        if(ticket!=null) {
+            date = ticket.getDepartDate().toString();
+        }
         dateLabel=new JLabel(date);
-        contentPanel.add(dateLabel, "cell 1 3, alignx trailing");
+        contentPanel.add(dateLabel, "cell 1 3, growx");
     }
 
     private void addFromLineIdLabel(){
@@ -132,9 +152,12 @@ public class PassengerTicketsDialog extends JDialog{
     }
 
     private void addFromLineIdDataLabel(){
-        String fromLineData=Integer.toString(ticket.getFromLineId());
+        String fromLineData="";
+        if(ticket!=null) {
+            fromLineData = Integer.toString(ticket.getFromLineId());
+        }
         fromLineIdLabel=new JLabel(fromLineData);
-        contentPanel.add(fromLineIdLabel, "cell 1 4, alignx trailing");
+        contentPanel.add(fromLineIdLabel, "cell 1 4, growx");
     }
 
     private void addToLineIdLabel(){
@@ -143,9 +166,12 @@ public class PassengerTicketsDialog extends JDialog{
     }
 
     private void addToLineIdDataLabel(){
-        String toLineData=Integer.toString(ticket.getToLineId());
+        String toLineData="";
+        if(ticket!=null) {
+            toLineData=Integer.toString(ticket.getToLineId());
+        }
         toLineIdLabel=new JLabel(toLineData);
-        contentPanel.add(toLineIdLabel, "cell 1 5, alignx trailing");
+        contentPanel.add(toLineIdLabel, "cell 1 5, growx");
     }
 
     private void addSeatClassLabel(){
@@ -154,9 +180,12 @@ public class PassengerTicketsDialog extends JDialog{
     }
 
     private void addSeatClassDataLabel(){
-        String seat= ticket.getSeatClass();
+        String seat="";
+        if(ticket!=null) {
+            seat = ticket.getSeatClass();
+        }
         seatClassLabel=new JLabel(seat);
-        contentPanel.add(seatClassLabel, "cell 1 6, alignx trailing");
+        contentPanel.add(seatClassLabel, "cell 1 6, growx");
     }
 
     private void addSeatNoLabel(){
@@ -165,9 +194,12 @@ public class PassengerTicketsDialog extends JDialog{
     }
 
     private void addSeatNoDataLabel(){
-        String seat=Integer.toString(ticket.getSeatNo());
+        String seat="";
+        if(ticket!=null) {
+            seat = Integer.toString(ticket.getSeatNo());
+        }
         seatNoLabel=new JLabel(seat);
-        contentPanel.add(seatNoLabel, "cell 1 7, alignx trailing");
+        contentPanel.add(seatNoLabel, "cell 1 7, growx");
     }
 
     private void addReturnTicketButton(){
@@ -179,7 +211,7 @@ public class PassengerTicketsDialog extends JDialog{
             }
         });
         submitButton.setActionCommand("OK");
-        contentPanel.add(submitButton);
+        buttonPanel.add(submitButton);
     }
 
     private void addCancelButton(){
@@ -189,7 +221,7 @@ public class PassengerTicketsDialog extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 PassengerTicketsDialog.this.setVisible(false);
                 PassengerTicketsDialog.this.dispose();
-                LOG.info("LoginDialog: GoBack button pressed");
+                System.out.println("LoginDialog: GoBack button pressed");
             }
         });
         cancelButton.setActionCommand("Cancel");

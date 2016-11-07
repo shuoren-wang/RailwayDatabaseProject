@@ -1,11 +1,9 @@
 package ui;
 
 import model.Station;
-import model.Ticket;
 import model.Train;
 import model.User;
 import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,7 +17,6 @@ import java.util.ArrayList;
  * Created by shuorenwang on 2016-10-21.
  */
 public class MainFrame extends JFrame {
-    static Logger LOG = Logger.getLogger(MainFrame.class);
     private User user;
 
     private static final MainFrame instance = new MainFrame();
@@ -49,7 +46,9 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                //TODO
+                //TODO shutdown database
+
+                System.exit(0);
             }
         });
 
@@ -68,16 +67,15 @@ public class MainFrame extends JFrame {
         mainWindow.add(fromStationLabel, "cell 0 0");
 
         JLabel toStationLabel = new JLabel("To");
-        mainWindow.add(toStationLabel, "cell 1 0");
+        mainWindow.add(toStationLabel, "cell 0 1");
 
         JLabel dateLabel = new JLabel("Date");
-        mainWindow.add(dateLabel, "cell 2 0");
+        mainWindow.add(dateLabel, "cell 0 2");
 
         addFromStationComboBox();
         addToStationComboBox();
         addDateField();
         addPurchaseButton();
-        addToStationComboBox();
         addGetTrainsButton();
         addTrainsList();
     }
@@ -100,7 +98,7 @@ public class MainFrame extends JFrame {
         fromStationComboBox = new JComboBox(fromStationModel);
         fromStationComboBox.setMinimumSize(new Dimension(400, 27));
         fromStationComboBox.setMaximumRowCount(10);
-        mainWindow.add(fromStationComboBox, "cell 0 1, alignx trailing");
+        mainWindow.add(fromStationComboBox, "cell 1 0, growx");
     }
 
     private void addToStationComboBox() {
@@ -121,7 +119,7 @@ public class MainFrame extends JFrame {
         toStationComboBox = new JComboBox(toStationModel);
         toStationComboBox.setMinimumSize(new Dimension(400, 27));
         toStationComboBox.setMaximumRowCount(10);
-        mainWindow.add(toStationComboBox, "cell 1 1, alignx trailing");
+        mainWindow.add(toStationComboBox, "cell 1 1, growx");
     }
 
     private void addGetTrainsButton() {
@@ -139,32 +137,36 @@ public class MainFrame extends JFrame {
     }
 
     private void addTrainsList() {
-        if(trains!=null && trains.size()>0) {
+
+
+        trainsListModel = new DefaultListModel();
+        trainsList = new JList(trainsListModel);
+        JScrollPane listScroller = new JScrollPane(trainsList);
+
+        trainsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        trainsList.setLayoutOrientation(JList.VERTICAL);
+        listScroller.setPreferredSize(new Dimension(400, 200));
+        mainWindow.add(listScroller, "cell 0 3 3 1,grow,span");
+        trainsListModel.addElement(String.format("%25s %25s %25s %25s %25s",
+                "Line Id.","Train Nos","Seat Class","Available Seats","Departure Time"));
+
+        if (trains != null && trains.size() > 0) {
             ArrayList<String> trainsInfoArr = new ArrayList<String>();
             for (Train next : trains) {
                 trainsInfoArr.add(next.toString());
             }
-
-            trainsListModel = new DefaultListModel();
             synchronized (trainsInfoArr) {
                 for (String next : trainsInfoArr) {
                     trainsListModel.addElement(next);
                 }
             }
 
-            trainsList = new JList(trainsListModel);
-            trainsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            trainsList.setLayoutOrientation(JList.VERTICAL);
-            JScrollPane listScroller = new JScrollPane(trainsList);
-            listScroller.setPreferredSize(new Dimension(400, 200));
-            mainWindow.add(listScroller, "cell 3 0 3 1, alignx trailing");
-
             trainsList.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
                     if (e.getValueIsAdjusting() == false) {
                         if (trainsList.getSelectedIndex() != -1) {
-                            index = trainsList.getSelectedIndex();
+                            index = trainsList.getSelectedIndex()-1;
                             currentTrain = trains.get(index);
                         }
                     }
@@ -175,12 +177,12 @@ public class MainFrame extends JFrame {
 
     private void addDateField() {
         dateField = new JTextField();
-        mainWindow.add(dateField, "cell 2 1");
+        mainWindow.add(dateField, "cell 1 2, growx");
     }
 
     private void addPurchaseButton() {
         JButton purchaseButton = new JButton("Purchase");
-        mainWindow.add(purchaseButton, "cell 4 2");
+        mainWindow.add(purchaseButton, "cell 2 4");
 
         final MainFrame that = this;
         purchaseButton.addActionListener(new ActionListener() {
@@ -191,13 +193,12 @@ public class MainFrame extends JFrame {
                             "No train is selected!",
                             "Warning",
                             JOptionPane.WARNING_MESSAGE);
-                    LOG.info("MainFrame::Purchase Button is Pressed");
+
                 } else {
-                    PurchaseDialog dialog = new PurchaseDialog(that, currentTrain);
-                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    dialog.setVisible(true);
-                    LOG.info("MainFrame::Purchase Button is Pressed");
+
+
                 }
+                System.out.println("MainFrame::Purchase Button is Pressed");
             }
         });
     }
@@ -213,9 +214,10 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LoginDialog dialog = new LoginDialog(that);
+                dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
-                LOG.info("MainFrame:: Start->Login is Pressed");
+                System.out.println("MainFrame:: Start->Login is Pressed");
             }
         });
         startMenu.add(loginMenuItem);
@@ -225,9 +227,10 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PassengerSignUpDialog dialog = new PassengerSignUpDialog(that);
+                dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
-                LOG.info("MainFrame:: Start->SignUp is Pressed");
+                System.out.println("MainFrame:: Start->SignUp is Pressed");
             }
         });
         startMenu.add(signUpMenuItem);
@@ -237,6 +240,8 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO shutdown database
+
+                System.exit(0);
             }
         });
         startMenu.add(exitMenuItem);
@@ -252,17 +257,26 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(user==null){
-                    JOptionPane.showMessageDialog(that,
+                if (user == null) {
+                   /* JOptionPane.showMessageDialog(that,
                             "Sign In Please!",
                             "Warning",
-                            JOptionPane.WARNING_MESSAGE);
-                }else{
-                    PassengerTicketsDialog dialog = new PassengerTicketsDialog(that,user);
+                            JOptionPane.WARNING_MESSAGE);*/
+
+                     /*only for test*/
+                    user = new User();
+                    PassengerTicketsDialog dialog = new PassengerTicketsDialog(that);
+                    dialog.setLocationRelativeTo(that);
+                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    dialog.setVisible(true);
+                     /*only for test*/
+                } else {
+                    PassengerTicketsDialog dialog = new PassengerTicketsDialog(that);
+                    dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
                 }
-                LOG.info("MainFrame:: Manage->Tickets is Pressed");
+                System.out.println("MainFrame:: Manage->Tickets is Pressed");
             }
         });
         manageMenu.add(ticketMenuItem);
@@ -271,23 +285,36 @@ public class MainFrame extends JFrame {
         passengerMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(user==null){
-                    JOptionPane.showMessageDialog(that,
+                if (user == null) {
+                    /*JOptionPane.showMessageDialog(that,
                             "Sign In Please!",
                             "Warning",
-                            JOptionPane.WARNING_MESSAGE);
-                }else{
-                    PassengerInfoDialog dialog = new PassengerInfoDialog(that,user);
+                            JOptionPane.WARNING_MESSAGE);*/
+
+                    /*only for test*/
+                    user = new User();
+                    PassengerInfoDialog dialog = new PassengerInfoDialog(that);
+                    dialog.setLocationRelativeTo(that);
+                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    dialog.setVisible(true);
+                    /*only for test*/
+                } else {
+                    PassengerInfoDialog dialog = new PassengerInfoDialog(that);
+                    dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
                 }
-                LOG.info("MainFrame:: Manage->PassengerInfo is Pressed");
+                System.out.println("MainFrame:: Manage->PassengerInfo is Pressed");
             }
         });
         manageMenu.add(passengerMenuItem);
     }
 
-    public void setUser(User user){
-        this.user=user;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

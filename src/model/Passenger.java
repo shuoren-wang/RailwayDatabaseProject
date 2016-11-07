@@ -8,17 +8,17 @@ public class Passenger extends User{
     private int passengerID;
     private String phone;
 
-
-    public Passenger(int passengerID, String phone, int userID, String name, String userName, String password) {
-        super(userID, name, userName, password);
-        this.passengerID=passengerID;
-        this.phone=phone;
+    public Passenger(int userID, String name, String userName, String password, boolean active, int passengerID, String phone) {
+        super(userID, name, userName, password, active);
+        this.passengerID = passengerID;
+        this.phone = phone;
     }
 
+    //Used for test interface
     public Passenger(){
         super();
-        this.passengerID=0;
-        this.phone="";
+        passengerID=0;
+        phone="7781234567";
     }
 
     public int getPassengerID() {

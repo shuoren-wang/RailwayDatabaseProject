@@ -2,7 +2,6 @@ package ui;
 import model.Passenger;
 import model.User;
 import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +12,6 @@ import java.awt.event.ActionListener;
  * Created by shuorenwang on 2016-10-21.
  */
 public class PassengerInfoDialog extends JDialog{
-    static Logger LOG= Logger.getLogger(PassengerInfoDialog.class);
 
     private Passenger passenger;
     private User user;
@@ -25,21 +23,22 @@ public class PassengerInfoDialog extends JDialog{
     private JTextField fullNameField;
     private JTextField phoneField;
 
-    PassengerInfoDialog(JFrame frame, User user){
-        this.user=user;
+    PassengerInfoDialog(MainFrame frame){
+
+        this.user=frame.getUser();
 
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 
         setResizable(false);
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-        setSize(500,500);
+        setSize(500,300);
 
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         contentPanel.setLayout(new MigLayout("", "[][grow]",
                 "[][][][]"));
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         addUsernameLabel();
         addUsernameField();
@@ -49,6 +48,8 @@ public class PassengerInfoDialog extends JDialog{
         addFullNameField();
         addPhoneLabel();
         addPhoneField();
+
+        addChangePasswordButton();
         addSaveButton();
         addCancelButton();
     }
@@ -96,6 +97,24 @@ public class PassengerInfoDialog extends JDialog{
         contentPanel.add(phoneField,"cell 1 5, growx");
     }
 
+    private void addChangePasswordButton(){
+        final PassengerInfoDialog that=this;
+        JButton passwordButton=new JButton("Change Password");
+        passwordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO
+                ModifyPasswordDialog dialog=new ModifyPasswordDialog(that);
+                dialog.setLocationRelativeTo(that);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+                System.out.println("PassengerInfoDialog:: Change Password button pressed");
+            }
+        });
+        passwordButton.setActionCommand("Change Password");
+        buttonPanel.add(passwordButton);
+    }
+
     private void addSaveButton(){
         JButton saveButton = new JButton("Submit");
         saveButton.addActionListener(new ActionListener() {
@@ -103,10 +122,11 @@ public class PassengerInfoDialog extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 //TODO
 
+                System.out.println("PassengerInfoDialog:: Submit button pressed");
             }
         });
         saveButton.setActionCommand("OK");
-        contentPanel.add(saveButton);
+        buttonPanel.add(saveButton);
     }
 
     private void addCancelButton(){
@@ -116,12 +136,16 @@ public class PassengerInfoDialog extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 PassengerInfoDialog.this.setVisible(false);
                 PassengerInfoDialog.this.dispose();
-                LOG.info("PassengerSignUpDialog: Cancel button pressed");
+                System.out.println("PassengerInfoDialog:: Cancel button pressed");
             }
         });
         cancelButton.setActionCommand("Cancel");
         buttonPanel.add(cancelButton);
     }
 
+
+    public User getUser(){
+        return user;
+    }
 
 }

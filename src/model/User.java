@@ -8,19 +8,23 @@ public class User {
     private String name;
     private String userName;
     private String password;
+    private boolean active;
 
-    public User(int userID, String name, String userName, String password) {
+    public User(int userID, String name, String userName, String password,boolean active) {
         this.userID = userID;
         this.name = name;
         this.userName = userName;
         this.password = password;
+        this.active=active;
     }
 
+    //Used for test interface
     public User(){
-        this.userID = 0;
-        this.name = "";
-        this.userName = "";
-        this.password = "";
+        userID = 0;
+        name = "name";
+        userName = "userName";
+        password = "password";
+        active=true;
     }
 
     public int getUserID() {

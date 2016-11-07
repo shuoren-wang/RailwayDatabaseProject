@@ -2,7 +2,6 @@ package ui;
 
 import model.Passenger;
 import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +12,6 @@ import java.awt.event.ActionListener;
  * Created by shuorenwang on 2016-10-21.
  */
 public class PassengerSignUpDialog extends JDialog{
-    static Logger LOG = Logger.getLogger(LoginDialog.class);
 
     private Passenger passenger;
 
@@ -26,19 +24,18 @@ public class PassengerSignUpDialog extends JDialog{
     private JTextField phoneField;
 
     PassengerSignUpDialog(JFrame frame){
-
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 
         setResizable(false);
         setModalityType(ModalityType.APPLICATION_MODAL);
-        setSize(500,500);
+        setSize(500,300);
 
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         contentPanel.setLayout(new MigLayout("", "[][grow]",
                 "[][][][][]"));
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         addUsernameLabel();
         addUsernameField();
         addPasswordLabel_1();
@@ -59,7 +56,7 @@ public class PassengerSignUpDialog extends JDialog{
     }
 
     private void addUsernameField(){
-        usernameField =new JTextField();
+        usernameField =new JTextField("un");
         contentPanel.add(usernameField,"cell 1 1, growx");
         usernameField.setColumns(10);
     }
@@ -70,18 +67,18 @@ public class PassengerSignUpDialog extends JDialog{
     }
 
     private void addPasswordField_1(){
-        passwordField_1 =new JPasswordField();
+        passwordField_1 =new JPasswordField("p");
         contentPanel.add(passwordField_1, "cell 1 2, growx");
         passwordField_1.setColumns(10);
     }
 
     private void addPasswordLabel_2(){
-        JLabel jlUserName=new JLabel("re-enter Password");
+        JLabel jlUserName=new JLabel("Re-enter Password");
         contentPanel.add(jlUserName, "cell 0 3, alignx trailing");
     }
 
     private void addPasswordField_2(){
-        passwordField_2=new JPasswordField();
+        passwordField_2=new JPasswordField("pp");
         contentPanel.add(passwordField_2, "cell 1 3, growx");
         passwordField_2.setColumns(10);
     }
@@ -92,7 +89,7 @@ public class PassengerSignUpDialog extends JDialog{
     }
 
     private void addFullNameField(){
-        fullNameField =new JTextField();
+        fullNameField =new JTextField("fullname");
         contentPanel.add(fullNameField,"cell 1 4, growx");
         fullNameField.setColumns(10);
     }
@@ -103,7 +100,7 @@ public class PassengerSignUpDialog extends JDialog{
     }
 
     private void addPhoneField(){
-        phoneField =new JTextField();
+        phoneField =new JTextField("phone");
         contentPanel.add(phoneField,"cell 1 5, growx");
     }
 
@@ -117,7 +114,7 @@ public class PassengerSignUpDialog extends JDialog{
             }
         });
         submitButton.setActionCommand("OK");
-        contentPanel.add(submitButton);
+        buttonPanel.add(submitButton);
     }
 
     private void addCancelButton(){
@@ -127,7 +124,7 @@ public class PassengerSignUpDialog extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 PassengerSignUpDialog.this.setVisible(false);
                 PassengerSignUpDialog.this.dispose();
-                LOG.info("PassengerSignUpDialog: Cancel button pressed");
+                System.out.println("PassengerSignUpDialog:: Cancel button pressed");
             }
         });
         cancelButton.setActionCommand("Cancel");

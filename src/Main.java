@@ -77,8 +77,9 @@ public class Main {
             String name = rs.getString(2);
             String userName = rs.getString(3);
             String password = rs.getString(4);
+            boolean active=rs.getBoolean(5);
 
-            users.add(new User(userID, name, userName, password));
+            users.add(new User(userID, name, userName, password,active));
         }
 
         for (User next : users) {

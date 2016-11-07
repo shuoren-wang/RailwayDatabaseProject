@@ -3,7 +3,6 @@ package ui;
 import model.Ticket;
 import model.Train;
 import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,16 +13,14 @@ import java.awt.event.ActionListener;
  * Created by shuorenwang on 2016-10-21.
  */
 public class PurchaseDialog extends JDialog{
-    static Logger LOG = Logger.getLogger(LoginDialog.class);
     private final JPanel contentPanel;
     private final JPanel buttonPanel;
     private Train currentTrain;
 
     private Ticket currentTicket;
 
-    PurchaseDialog(JFrame frame, Train train){
-
-        this.currentTrain = train;
+    PurchaseDialog(MainFrame frame, Train train){
+        currentTrain = train;
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 
@@ -38,8 +35,8 @@ public class PurchaseDialog extends JDialog{
         contentPanel.setLayout(new MigLayout("","[][grow]","[][][][][][][]"));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        addTicketIdLabel();
-        addTicketIdDataLabel();
+        addTrainNoLabel();
+        addTrainNoDataLabel();
         addDateLabel();
         addDateDataLabel();
         addFromLineIdLabel();
@@ -53,11 +50,6 @@ public class PurchaseDialog extends JDialog{
 
         addConfirmButton();
         addCancelButton();
-    }
-
-    private void addTicketIdLabel(){
-        JLabel label=new JLabel("Ticket ID :");
-        contentPanel.add(label, "cell 0 1, alignx trailing");
     }
 
     private void addTicketIdDataLabel(){
@@ -152,7 +144,7 @@ public class PurchaseDialog extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 PurchaseDialog.this.setVisible(false);
                 PurchaseDialog.this.dispose();
-                LOG.info("LoginDialog: GoBack button pressed");
+                System.out.println("LoginDialog:: GoBack button pressed");
             }
         });
         cancelButton.setActionCommand("Cancel");

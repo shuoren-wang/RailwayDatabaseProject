@@ -7,7 +7,7 @@ import java.sql.Date;
  * Created by shuorenwang on 2016-11-05.
  */
 public class Train {
-    private int TrainNumber;
+    private int trainNumber;
     private int dayOfWeek; //(1 = Sunday, 2 = Monday, …, 7 = Saturday)
     private String lineName;
     private int lineId;
@@ -16,10 +16,10 @@ public class Train {
     private Date departTime;
     private Date arrivalTime;
 
-    public Train() {}
+
 
     public Train(int trainNumber, int dayOfWeek, String lineName, int lineId, String seatClass, int availableSeats, Date departTime, Date arrivalTime) {
-        TrainNumber = trainNumber;
+        this.trainNumber = trainNumber;
         this.dayOfWeek = dayOfWeek;
         this.lineName = lineName;
         this.lineId = lineId;
@@ -29,8 +29,10 @@ public class Train {
         this.arrivalTime = arrivalTime;
     }
 
+    public Train() {}
+
     public int getTrainNumber() {
-        return TrainNumber;
+        return trainNumber;
     }
 
     public int getDayOfWeek() {
@@ -62,7 +64,7 @@ public class Train {
     }
 
     public void setTrainNumber(int trainNumber) {
-        TrainNumber = trainNumber;
+        this.trainNumber = trainNumber;
     }
 
     public void setDayOfWeek(int dayOfWeek) {
