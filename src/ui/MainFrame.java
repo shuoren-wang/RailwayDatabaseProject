@@ -17,29 +17,29 @@ import java.util.ArrayList;
  * Created by shuorenwang on 2016-10-21.
  */
 public class MainFrame extends JFrame {
-    private User user;
+    protected User user;
 
-    private static final MainFrame instance = new MainFrame();
-    private JMenuBar menuBar;
-    private JPanel mainWindow;
+    protected static final MainFrame instance = new MainFrame();
+    protected JMenuBar menuBar;
+    protected JPanel mainWindow;
 
-    private JComboBox fromStationComboBox;
-    private DefaultComboBoxModel fromStationModel;
-    private JComboBox toStationComboBox;
-    private DefaultComboBoxModel toStationModel;
-    private JTextField dateField;
-    private JList trainsList;
-    private DefaultListModel trainsListModel;
-    private Train currentTrain;
-    private int index;
-    private ArrayList<Train> trains;
+    protected JComboBox fromStationComboBox;
+    protected DefaultComboBoxModel fromStationModel;
+    protected JComboBox toStationComboBox;
+    protected DefaultComboBoxModel toStationModel;
+    protected JTextField dateField;
+    protected JList trainsList;
+    protected DefaultListModel trainsListModel;
+    protected Train currentTrain;
+    protected int index;
+    protected ArrayList<Train> trains;
 
 
     public static MainFrame getInstance() {
         return instance;
     }
 
-    private MainFrame() {
+    public MainFrame() {
         setTitle("304 Project");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setBounds(100, 100, 800, 600);
@@ -80,7 +80,7 @@ public class MainFrame extends JFrame {
         addTrainsList();
     }
 
-    private void addFromStationComboBox() {
+    protected void addFromStationComboBox() {
         ArrayList<Station> stations = new ArrayList<Station>();
         //TODO: get data from database
 
@@ -101,7 +101,7 @@ public class MainFrame extends JFrame {
         mainWindow.add(fromStationComboBox, "cell 1 0, growx");
     }
 
-    private void addToStationComboBox() {
+    protected void addToStationComboBox() {
         ArrayList<Station> stations = new ArrayList<Station>();
         //TODO: get data from database
 
@@ -122,7 +122,7 @@ public class MainFrame extends JFrame {
         mainWindow.add(toStationComboBox, "cell 1 1, growx");
     }
 
-    private void addGetTrainsButton() {
+    protected void addGetTrainsButton() {
         JButton getTrainsButton = new JButton("Get Trains");
         mainWindow.add(getTrainsButton, "cell 2 2, alignx trailing");
 
@@ -136,9 +136,7 @@ public class MainFrame extends JFrame {
 
     }
 
-    private void addTrainsList() {
-
-
+    protected void addTrainsList() {
         trainsListModel = new DefaultListModel();
         trainsList = new JList(trainsListModel);
         JScrollPane listScroller = new JScrollPane(trainsList);
@@ -175,12 +173,12 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void addDateField() {
+    protected void addDateField() {
         dateField = new JTextField();
         mainWindow.add(dateField, "cell 1 2, growx");
     }
 
-    private void addPurchaseButton() {
+    protected void addPurchaseButton() {
         JButton purchaseButton = new JButton("Purchase");
         mainWindow.add(purchaseButton, "cell 2 4");
 
@@ -203,12 +201,17 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private void addStartMenu() {
+    protected void addStartMenu() {
         final MainFrame that = this;
         JMenu startMenu = new JMenu("Start");
         menuBar.add(startMenu);
 
+        addSignUpMenuItem(startMenu);
+        addLoginMenuItem(startMenu);
+    }
 
+    protected void addLoginMenuItem(JMenu startMenu){
+        final MainFrame that = this;
         JMenuItem loginMenuItem = new JMenuItem("Sign In");
         loginMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -221,12 +224,15 @@ public class MainFrame extends JFrame {
             }
         });
         startMenu.add(loginMenuItem);
+    }
+    protected void addSignUpMenuItem(JMenu startMenu){
+        final MainFrame that = this;
 
         JMenuItem signUpMenuItem = new JMenuItem("Sign Up");
         signUpMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PassengerSignUpDialog dialog = new PassengerSignUpDialog(that);
+                SignUpDialog dialog = new SignUpDialog(that);
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
@@ -234,24 +240,10 @@ public class MainFrame extends JFrame {
             }
         });
         startMenu.add(signUpMenuItem);
-
-        JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO shutdown database
-
-                System.exit(0);
-            }
-        });
-        startMenu.add(exitMenuItem);
     }
 
-    private void addManageMenu() {
+    protected void addPurchasedTicketsMenuItem(JMenu manageMenu) {
         final MainFrame that = this;
-        JMenu manageMenu = new JMenu("Manage");
-        menuBar.add(manageMenu);
-
         JMenuItem ticketMenuItem = new JMenuItem("Tickets");
         ticketMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -265,13 +257,13 @@ public class MainFrame extends JFrame {
 
                      /*only for test*/
                     user = new User();
-                    PassengerTicketsDialog dialog = new PassengerTicketsDialog(that);
+                    PurchasedTicketsDialog dialog = new PurchasedTicketsDialog(that);
                     dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
                      /*only for test*/
                 } else {
-                    PassengerTicketsDialog dialog = new PassengerTicketsDialog(that);
+                    PurchasedTicketsDialog dialog = new PurchasedTicketsDialog(that);
                     dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
@@ -280,9 +272,12 @@ public class MainFrame extends JFrame {
             }
         });
         manageMenu.add(ticketMenuItem);
+    }
 
-        JMenuItem passengerMenuItem = new JMenuItem("PassengerInfo");
-        passengerMenuItem.addActionListener(new ActionListener() {
+    protected void addUserInfoMenuItem(JMenu manageMenu) {
+        final MainFrame that = this;
+        JMenuItem userMenuItem = new JMenuItem("PassengerInfo");
+        userMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (user == null) {
@@ -293,13 +288,13 @@ public class MainFrame extends JFrame {
 
                     /*only for test*/
                     user = new User();
-                    PassengerInfoDialog dialog = new PassengerInfoDialog(that);
+                    UserInfoDialog dialog = new UserInfoDialog(that);
                     dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
                     /*only for test*/
                 } else {
-                    PassengerInfoDialog dialog = new PassengerInfoDialog(that);
+                    UserInfoDialog dialog = new UserInfoDialog(that);
                     dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
@@ -307,7 +302,17 @@ public class MainFrame extends JFrame {
                 System.out.println("MainFrame:: Manage->PassengerInfo is Pressed");
             }
         });
-        manageMenu.add(passengerMenuItem);
+        manageMenu.add(userMenuItem);
+    }
+
+    protected void addManageMenu() {
+
+        JMenu manageMenu = new JMenu("Manage");
+        menuBar.add(manageMenu);
+
+        addPurchasedTicketsMenuItem(manageMenu);
+        addUserInfoMenuItem(manageMenu);
+
     }
 
     public void setUser(User user) {

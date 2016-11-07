@@ -19,7 +19,7 @@ public class PurchaseDialog extends JDialog{
 
     private Ticket currentTicket;
 
-    PurchaseDialog(MainFrame frame, Train train){
+    public PurchaseDialog(JFrame frame, Train train){
         currentTrain = train;
         contentPanel=new JPanel();
         buttonPanel=new JPanel();

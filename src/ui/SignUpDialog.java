@@ -11,11 +11,9 @@ import java.awt.event.ActionListener;
 /**
  * Created by shuorenwang on 2016-10-21.
  */
-public class PassengerSignUpDialog extends JDialog{
+public class SignUpDialog extends JDialog{
 
-    private Passenger passenger;
-
-    private JPanel contentPanel;
+    protected JPanel contentPanel;
     private JPanel buttonPanel;
     private JTextField usernameField;
     private JPasswordField passwordField_1;
@@ -23,7 +21,7 @@ public class PassengerSignUpDialog extends JDialog{
     private JTextField fullNameField;
     private JTextField phoneField;
 
-    PassengerSignUpDialog(JFrame frame){
+    public SignUpDialog(JFrame frame){
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 
@@ -34,7 +32,7 @@ public class PassengerSignUpDialog extends JDialog{
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         contentPanel.setLayout(new MigLayout("", "[][grow]",
-                "[][][][][]"));
+                "[][][][][][]"));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         addUsernameLabel();
         addUsernameField();
@@ -122,9 +120,9 @@ public class PassengerSignUpDialog extends JDialog{
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PassengerSignUpDialog.this.setVisible(false);
-                PassengerSignUpDialog.this.dispose();
-                System.out.println("PassengerSignUpDialog:: Cancel button pressed");
+                SignUpDialog.this.setVisible(false);
+                SignUpDialog.this.dispose();
+                System.out.println("SignUpDialog:: Cancel button pressed");
             }
         });
         cancelButton.setActionCommand("Cancel");

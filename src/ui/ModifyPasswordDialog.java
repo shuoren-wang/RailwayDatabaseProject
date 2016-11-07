@@ -20,8 +20,7 @@ public class ModifyPasswordDialog extends JDialog{
     private JPasswordField newPasswordField_1;
     private JPasswordField newPasswordField_2;
 
-    ModifyPasswordDialog(PassengerInfoDialog passengerDialog){
-//        this.setLocationRelativeTo(passengerDialog);
+    public ModifyPasswordDialog(JDialog dialog){
 
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
@@ -53,7 +52,7 @@ public class ModifyPasswordDialog extends JDialog{
     }
 
     private void addOldPasswordField(){
-        oldPasswordField =new JPasswordField("p");
+        oldPasswordField =new JPasswordField("");
         contentPanel.add(oldPasswordField, "cell 1 1, growx");
         oldPasswordField.setColumns(10);
     }
@@ -64,7 +63,7 @@ public class ModifyPasswordDialog extends JDialog{
     }
 
     private void addNewPasswordField_1(){
-        newPasswordField_1 =new JPasswordField("p");
+        newPasswordField_1 =new JPasswordField("");
         contentPanel.add(newPasswordField_1, "cell 1 2, growx");
         newPasswordField_1.setColumns(10);
     }
@@ -75,7 +74,7 @@ public class ModifyPasswordDialog extends JDialog{
     }
 
     private void addNewPasswordField_2(){
-        newPasswordField_2 =new JPasswordField("pp");
+        newPasswordField_2 =new JPasswordField("");
         contentPanel.add(newPasswordField_2, "cell 1 3, growx");
         newPasswordField_2.setColumns(10);
     }
@@ -100,7 +99,7 @@ public class ModifyPasswordDialog extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 ModifyPasswordDialog.this.setVisible(false);
                 ModifyPasswordDialog.this.dispose();
-                System.out.println("PassengerSignUpDialog:: Cancel button pressed");
+                System.out.println("SignUpDialog:: Cancel button pressed");
             }
         });
         cancelButton.setActionCommand("Cancel");

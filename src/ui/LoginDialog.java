@@ -18,7 +18,7 @@ public class LoginDialog extends JDialog{
     private JTextField usernameField;
     private JPasswordField passwordField;
 
-    LoginDialog(MainFrame frame){
+    public LoginDialog(JFrame frame){
 
         contentPanel=new JPanel();
         buttonPanel=new JPanel();

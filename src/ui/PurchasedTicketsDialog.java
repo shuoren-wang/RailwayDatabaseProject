@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by shuorenwang on 2016-10-21.
  */
-public class PassengerTicketsDialog extends JDialog{
+public class PurchasedTicketsDialog extends JDialog{
     private User user;
     private Ticket ticket;
 
@@ -32,7 +32,7 @@ public class PassengerTicketsDialog extends JDialog{
     private JLabel seatNoLabel;
 
 
-    PassengerTicketsDialog(MainFrame frame){
+    public PurchasedTicketsDialog(JFrame frame){
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 
@@ -207,7 +207,7 @@ public class PassengerTicketsDialog extends JDialog{
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                //TODO database
             }
         });
         submitButton.setActionCommand("OK");
@@ -219,8 +219,8 @@ public class PassengerTicketsDialog extends JDialog{
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PassengerTicketsDialog.this.setVisible(false);
-                PassengerTicketsDialog.this.dispose();
+                PurchasedTicketsDialog.this.setVisible(false);
+                PurchasedTicketsDialog.this.dispose();
                 System.out.println("LoginDialog: GoBack button pressed");
             }
         });

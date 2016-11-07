@@ -11,19 +11,17 @@ import java.awt.event.ActionListener;
 /**
  * Created by shuorenwang on 2016-10-21.
  */
-public class PassengerInfoDialog extends JDialog{
+public class UserInfoDialog extends JDialog{
+    protected User user;
 
-    private Passenger passenger;
-    private User user;
-
-    private JPanel contentPanel;
+    protected JPanel contentPanel;
     private JPanel buttonPanel;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextField fullNameField;
     private JTextField phoneField;
 
-    PassengerInfoDialog(MainFrame frame){
+    public UserInfoDialog(MainFrame frame){
 
         this.user=frame.getUser();
 
@@ -37,7 +35,7 @@ public class PassengerInfoDialog extends JDialog{
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         contentPanel.setLayout(new MigLayout("", "[][grow]",
-                "[][][][]"));
+                "[][][][][]"));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         addUsernameLabel();
@@ -56,49 +54,49 @@ public class PassengerInfoDialog extends JDialog{
 
     private void addUsernameLabel(){
         JLabel username=new JLabel("Username");
-        contentPanel.add(username, "cell 0 1, alignx trailing");
+        contentPanel.add(username, "cell 0 0, alignx trailing");
     }
 
     private void addUsernameField(){
         usernameField =new JTextField();
-        contentPanel.add(usernameField,"cell 1 1, growx");
+        contentPanel.add(usernameField,"cell 1 0, growx");
         usernameField.setColumns(10);
     }
 
     private void addPasswordLabel(){
         JLabel jlUserName=new JLabel("Password");
-        contentPanel.add(jlUserName, "cell 0 2, alignx trailing");
+        contentPanel.add(jlUserName, "cell 0 1, alignx trailing");
     }
 
     private void addPasswordField(){
         passwordField =new JPasswordField();
-        contentPanel.add(passwordField, "cell 1 2, growx");
+        contentPanel.add(passwordField, "cell 1 1, growx");
         passwordField.setColumns(10);
     }
 
     private void addFullNameLabel(){
         JLabel name=new JLabel("Full Name");
-        contentPanel.add(name, "cell 0 4, alignx trailing");
+        contentPanel.add(name, "cell 0 2, alignx trailing");
     }
 
     private void addFullNameField(){
         fullNameField =new JTextField();
-        contentPanel.add(fullNameField,"cell 1 4, growx");
+        contentPanel.add(fullNameField,"cell 1 2, growx");
         fullNameField.setColumns(10);
     }
 
     private void addPhoneLabel(){
         JLabel phone=new JLabel("Phone");
-        contentPanel.add(phone, "cell 0 5, alignx trailing");
+        contentPanel.add(phone, "cell 0 3, alignx trailing");
     }
 
     private void addPhoneField(){
         phoneField =new JTextField();
-        contentPanel.add(phoneField,"cell 1 5, growx");
+        contentPanel.add(phoneField,"cell 1 3, growx");
     }
 
     private void addChangePasswordButton(){
-        final PassengerInfoDialog that=this;
+        final UserInfoDialog that=this;
         JButton passwordButton=new JButton("Change Password");
         passwordButton.addActionListener(new ActionListener() {
             @Override
@@ -108,7 +106,7 @@ public class PassengerInfoDialog extends JDialog{
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
-                System.out.println("PassengerInfoDialog:: Change Password button pressed");
+                System.out.println("UserInfoDialog:: Change Password button pressed");
             }
         });
         passwordButton.setActionCommand("Change Password");
@@ -121,8 +119,7 @@ public class PassengerInfoDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO
-
-                System.out.println("PassengerInfoDialog:: Submit button pressed");
+                System.out.println("UserInfoDialog:: Submit button pressed");
             }
         });
         saveButton.setActionCommand("OK");
@@ -134,15 +131,14 @@ public class PassengerInfoDialog extends JDialog{
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PassengerInfoDialog.this.setVisible(false);
-                PassengerInfoDialog.this.dispose();
-                System.out.println("PassengerInfoDialog:: Cancel button pressed");
+                UserInfoDialog.this.setVisible(false);
+                UserInfoDialog.this.dispose();
+                System.out.println("UserInfoDialog:: Cancel button pressed");
             }
         });
         cancelButton.setActionCommand("Cancel");
         buttonPanel.add(cancelButton);
     }
-
 
     public User getUser(){
         return user;
