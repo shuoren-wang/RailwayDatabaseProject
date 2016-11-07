@@ -7,15 +7,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static jdbc.JDBC.*;
+
 public class PassengerMain {
     public static void main(String[] args) {
 
         PassengerMainFrame frame = PassengerMainFrame.getInstance();
+        openCon();
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                //TODO shutdown database
+                closeCon();
 
                 System.exit(0);
             }
