@@ -21,9 +21,9 @@ public class User {
     //Used for test interface
     public User(){
         userID = 0;
-        name = "name";
-        userName = "userName";
-        password = "password";
+        name = "";
+        userName = "";
+        password = "";
         active=true;
     }
 

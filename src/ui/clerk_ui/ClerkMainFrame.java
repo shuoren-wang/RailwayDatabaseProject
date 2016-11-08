@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by shuorenwang on 2016-11-06.
  */
+
 public class ClerkMainFrame extends MainFrame {
 
     protected static final ClerkMainFrame instance = new ClerkMainFrame();
@@ -25,7 +26,84 @@ public class ClerkMainFrame extends MainFrame {
     }
 
     @Override
-    protected void addUserInfoMenuItem(JMenu manageMenu) {
+    protected void addManageMenu() {
+        super.addManageMenu();
+        addManageLinesMenuItem();
+        addManageStationsMenuItem();
+        addManageTrainsMenuItem();
+        addManageLineStopsMenuItem();
+    }
+
+    private void addManageLineStopsMenuItem() {
+        final MainFrame that = this;
+        JMenuItem userMenuItem = new JMenuItem("Manage Line Stops");
+        userMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ManageLineStopsDialog dialog = new ManageLineStopsDialog(that);
+                dialog.setLocationRelativeTo(that);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+                System.out.println("ClerkMainFrame:: Manage->ManageTrains is Pressed");
+            }
+        });
+        manageMenu.add(userMenuItem);
+
+    }
+
+    private void addManageTrainsMenuItem() {
+        final MainFrame that = this;
+        JMenuItem userMenuItem = new JMenuItem("Manage Trains");
+        userMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ManageTrainsDialog dialog = new ManageTrainsDialog(that);
+                dialog.setLocationRelativeTo(that);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+                System.out.println("ClerkMainFrame:: Manage->ManageTrains is Pressed");
+            }
+        });
+        manageMenu.add(userMenuItem);
+
+    }
+
+    private void addManageLinesMenuItem() {
+        final MainFrame that = this;
+        JMenuItem userMenuItem = new JMenuItem("Manage Lines");
+        userMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ManageLinesDialog dialog = new ManageLinesDialog(that);
+                dialog.setLocationRelativeTo(that);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+                System.out.println("ClerkMainFrame:: Manage->ManageLines is Pressed");
+            }
+        });
+        manageMenu.add(userMenuItem);
+
+    }
+
+    private void addManageStationsMenuItem() {
+        final MainFrame that = this;
+        JMenuItem userMenuItem = new JMenuItem("Manage Stations");
+        userMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO :database
+                ManageStationsDialog dialog = new ManageStationsDialog(that);
+                dialog.setLocationRelativeTo(that);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+                System.out.println("ClerkMainFrame:: Manage->ManageStations is Pressed");
+            }
+        });
+        manageMenu.add(userMenuItem);
+    }
+
+    @Override
+    protected void addUserInfoMenuItem() {
         final MainFrame that = this;
         JMenuItem userMenuItem = new JMenuItem("ClerkInfo");
         userMenuItem.addActionListener(new ActionListener() {
@@ -50,14 +128,14 @@ public class ClerkMainFrame extends MainFrame {
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
                 }
-                System.out.println("MainFrame:: Manage->ClerkInfo is Pressed");
+                System.out.println("ClerkMainFrame:: Manage->ClerkInfo is Pressed");
             }
         });
         manageMenu.add(userMenuItem);
     }
 
     @Override
-    protected void addSignUpMenuItem(JMenu startMenu){
+    protected void addSignUpMenuItem(){
         final MainFrame that = this;
 
         JMenuItem signUpMenuItem = new JMenuItem("Sign Up");
@@ -68,7 +146,7 @@ public class ClerkMainFrame extends MainFrame {
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
-                System.out.println("MainFrame:: Start->ClerkSignUp is Pressed");
+                System.out.println("ClerkMainFrame:: Start->ClerkSignUp is Pressed");
             }
         });
         startMenu.add(signUpMenuItem);

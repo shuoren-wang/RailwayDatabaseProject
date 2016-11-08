@@ -1,7 +1,7 @@
 package ui;
 
 import model.Station;
-import model.Train;
+import model.TrainByStops;
 import model.User;
 import net.miginfocom.swing.MigLayout;
 
@@ -18,10 +18,14 @@ import java.util.ArrayList;
  */
 public class MainFrame extends JFrame {
     protected User user;
+    protected boolean loginStatus; //signed in=>true, otherwise=>false
 
     protected static final MainFrame instance = new MainFrame();
     protected JMenuBar menuBar;
     protected JPanel mainWindow;
+
+    protected JMenu manageMenu;
+    protected JMenu startMenu;
 
     protected JComboBox fromStationComboBox;
     protected DefaultComboBoxModel fromStationModel;
@@ -30,9 +34,9 @@ public class MainFrame extends JFrame {
     protected JTextField dateField;
     protected JList trainsList;
     protected DefaultListModel trainsListModel;
-    protected Train currentTrain;
+    protected TrainByStops currentTrainByStops;
     protected int index;
-    protected ArrayList<Train> trains;
+    protected ArrayList<TrainByStops> trainByStopses;
 
 
     public static MainFrame getInstance() {
@@ -129,7 +133,7 @@ public class MainFrame extends JFrame {
         getTrainsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                trains = new ArrayList<Train>();
+                trainByStopses = new ArrayList<TrainByStops>();
                 //TODO: get data from database
             }
         });
@@ -146,11 +150,11 @@ public class MainFrame extends JFrame {
         listScroller.setPreferredSize(new Dimension(400, 200));
         mainWindow.add(listScroller, "cell 0 3 3 1,grow,span");
         trainsListModel.addElement(String.format("%25s %25s %25s %25s %25s",
-                "Line Id.","Train Nos","Seat Class","Available Seats","Departure Time"));
+                "Line Id.","TrainByStops Nos","Seat Class","Available Seats","Departure Time"));
 
-        if (trains != null && trains.size() > 0) {
+        if (trainByStopses != null && trainByStopses.size() > 0) {
             ArrayList<String> trainsInfoArr = new ArrayList<String>();
-            for (Train next : trains) {
+            for (TrainByStops next : trainByStopses) {
                 trainsInfoArr.add(next.toString());
             }
             synchronized (trainsInfoArr) {
@@ -165,7 +169,7 @@ public class MainFrame extends JFrame {
                     if (e.getValueIsAdjusting() == false) {
                         if (trainsList.getSelectedIndex() != -1) {
                             index = trainsList.getSelectedIndex()-1;
-                            currentTrain = trains.get(index);
+                            currentTrainByStops = trainByStopses.get(index);
                         }
                     }
                 }
@@ -186,7 +190,7 @@ public class MainFrame extends JFrame {
         purchaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentTrain == null) {
+                if (currentTrainByStops == null) {
                     JOptionPane.showMessageDialog(that,
                             "No train is selected!",
                             "Warning",
@@ -194,23 +198,46 @@ public class MainFrame extends JFrame {
 
                 } else {
 
+                    int returnedTicketId=0;
+                    //TODO database:
+                    // (SP NAME: spReturnTicket) return string/int;
 
+                    if(isTicketIdReturned()){
+                        JOptionPane.showMessageDialog(that,
+                                "Purchase successful ! You Ticket ID is"+ Integer.toString(returnedTicketId),
+                                "Info",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(that,
+                                "Purchase failed",
+                                "Info",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
                 }
                 System.out.println("MainFrame::Purchase Button is Pressed");
             }
         });
     }
 
-    protected void addStartMenu() {
-        final MainFrame that = this;
-        JMenu startMenu = new JMenu("Start");
-        menuBar.add(startMenu);
-
-        addSignUpMenuItem(startMenu);
-        addLoginMenuItem(startMenu);
+    /**
+     * fails if requesting UserId is not clerk and not owner of ticket or ticket doesnt exist
+     * (SP NAME:  spReturnTicket)
+     * @return cell(0,0) is 1 if success, 0 if failure.
+     */
+    protected boolean isTicketIdReturned(){
+        //TODO:
+        return false;
     }
 
-    protected void addLoginMenuItem(JMenu startMenu){
+    protected void addStartMenu() {
+        startMenu = new JMenu("Start");
+        menuBar.add(startMenu);
+
+        addSignUpMenuItem();
+        addLoginMenuItem();
+    }
+
+    protected void addLoginMenuItem(){
         final MainFrame that = this;
         JMenuItem loginMenuItem = new JMenuItem("Sign In");
         loginMenuItem.addActionListener(new ActionListener() {
@@ -225,7 +252,9 @@ public class MainFrame extends JFrame {
         });
         startMenu.add(loginMenuItem);
     }
-    protected void addSignUpMenuItem(JMenu startMenu){
+
+
+    protected void addSignUpMenuItem(){
         final MainFrame that = this;
 
         JMenuItem signUpMenuItem = new JMenuItem("Sign Up");
@@ -242,9 +271,9 @@ public class MainFrame extends JFrame {
         startMenu.add(signUpMenuItem);
     }
 
-    protected void addPurchasedTicketsMenuItem(JMenu manageMenu) {
+    protected void addPurchasedTicketsMenuItem() {
         final MainFrame that = this;
-        JMenuItem ticketMenuItem = new JMenuItem("Tickets");
+        JMenuItem ticketMenuItem = new JMenuItem("Purchased Tickets");
         ticketMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -274,7 +303,7 @@ public class MainFrame extends JFrame {
         manageMenu.add(ticketMenuItem);
     }
 
-    protected void addUserInfoMenuItem(JMenu manageMenu) {
+    protected void addUserInfoMenuItem() {
         final MainFrame that = this;
         JMenuItem userMenuItem = new JMenuItem("PassengerInfo");
         userMenuItem.addActionListener(new ActionListener() {
@@ -307,11 +336,11 @@ public class MainFrame extends JFrame {
 
     protected void addManageMenu() {
 
-        JMenu manageMenu = new JMenu("Manage");
+        manageMenu = new JMenu("Manage");
         menuBar.add(manageMenu);
 
-        addPurchasedTicketsMenuItem(manageMenu);
-        addUserInfoMenuItem(manageMenu);
+        addPurchasedTicketsMenuItem();
+        addUserInfoMenuItem();
 
     }
 

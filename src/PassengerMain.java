@@ -11,6 +11,7 @@ public class PassengerMain {
     public static void main(String[] args) {
 
         PassengerMainFrame frame = PassengerMainFrame.getInstance();
+
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -24,7 +25,7 @@ public class PassengerMain {
     /*    try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://windflower.arvixe.com/ubc_cpsc304", "cpsc304", "trains");
+                    "jdbc:mysql://windflower.arvixe.com/ubc_cpsc304", "cpsc304", "trainByStopses");
             Statement stmt = con.createStatement();
 
             printLineWithActiveStops(stmt);

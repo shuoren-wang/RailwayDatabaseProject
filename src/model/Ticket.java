@@ -8,7 +8,7 @@ import java.util.Calendar;
  */
 public class Ticket {
     private int id;
-    private Date departDate;
+    private Date departDate; //2016-10-18
     private int fromLineId;
     private int toLineId;
     private int passengerID;

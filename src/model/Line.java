@@ -5,14 +5,14 @@ package model;
  */
 public class Line {
     private int id;
-    private String address;
-    private String StationName;
+    private boolean isActive ;
+    private String lineName;
     private int createdByEmployeeId;
 
-    public Line(int id, String address, String stationName, int createdByEmployeeId) {
+    public Line(int id, boolean isActive, String lineName, int createdByEmployeeId) {
         this.id = id;
-        this.address = address;
-        StationName = stationName;
+        this.isActive = isActive;
+        this.lineName = lineName;
         this.createdByEmployeeId = createdByEmployeeId;
     }
 
@@ -20,15 +20,31 @@ public class Line {
         return id;
     }
 
-    public String getAddress() {
-        return address;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public String getStationName() {
-        return StationName;
+    public String getLineName() {
+        return lineName;
     }
 
     public int getCreatedByEmployeeId() {
         return createdByEmployeeId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
+    }
+
+    public void setCreatedByEmployeeId(int createdByEmployeeId) {
+        this.createdByEmployeeId = createdByEmployeeId;
     }
 }

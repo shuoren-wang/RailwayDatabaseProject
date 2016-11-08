@@ -1,7 +1,7 @@
 package ui;
 
 import model.Ticket;
-import model.Train;
+import model.TrainByStops;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -15,12 +15,12 @@ import java.awt.event.ActionListener;
 public class PurchaseDialog extends JDialog{
     private final JPanel contentPanel;
     private final JPanel buttonPanel;
-    private Train currentTrain;
+    private TrainByStops currentTrainByStops;
 
     private Ticket currentTicket;
 
-    public PurchaseDialog(JFrame frame, Train train){
-        currentTrain = train;
+    public PurchaseDialog(JFrame frame, TrainByStops trainByStops){
+        currentTrainByStops = trainByStops;
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 
@@ -59,7 +59,7 @@ public class PurchaseDialog extends JDialog{
     }
 
     private void addTrainNoLabel(){
-        JLabel label=new JLabel("Train No. :");
+        JLabel label=new JLabel("TrainByStops No. :");
         contentPanel.add(label, "cell 0 2, alignx trailing");
     }
 

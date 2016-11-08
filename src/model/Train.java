@@ -1,97 +1,110 @@
 package model;
 
-
-import java.sql.Date;
-
 /**
- * Created by shuorenwang on 2016-11-05.
+ * Created by shuorenwang on 2016-11-06.
  */
 public class Train {
-    private int trainNumber;
-    private int dayOfWeek; //(1 = Sunday, 2 = Monday, …, 7 = Saturday)
-    private String lineName;
-    private int lineId;
-    private String seatClass;
-    private int availableSeats;
-    private Date departTime;
-    private Date arrivalTime;
+    private Clerk clerk;
+    private boolean RunsOnSun;
+    private boolean RunsOnMon;
+    private boolean RunsOnTue;
+    private boolean RunsONWed;
+    private boolean RunsOnThu;
+    private boolean RunsOnFri;
+    private boolean RunsONSat;
+    Train train;
+    Line line;
 
-
-
-    public Train(int trainNumber, int dayOfWeek, String lineName, int lineId, String seatClass, int availableSeats, Date departTime, Date arrivalTime) {
-        this.trainNumber = trainNumber;
-        this.dayOfWeek = dayOfWeek;
-        this.lineName = lineName;
-        this.lineId = lineId;
-        this.seatClass = seatClass;
-        this.availableSeats = availableSeats;
-        this.departTime = departTime;
-        this.arrivalTime = arrivalTime;
+    public Train(Clerk clerk, boolean runsOnSun, boolean runsOnMon, boolean runsOnTue, boolean runsONWed, boolean runsOnThu, boolean runsOnFri, boolean runsONSat, Train train, Line line) {
+        this.clerk = clerk;
+        RunsOnSun = runsOnSun;
+        RunsOnMon = runsOnMon;
+        RunsOnTue = runsOnTue;
+        RunsONWed = runsONWed;
+        RunsOnThu = runsOnThu;
+        RunsOnFri = runsOnFri;
+        RunsONSat = runsONSat;
+        this.train = train;
+        this.line = line;
     }
 
-    public Train() {}
-
-    public int getTrainNumber() {
-        return trainNumber;
+    public Clerk getClerk() {
+        return clerk;
     }
 
-    public int getDayOfWeek() {
-        return dayOfWeek;
+    public boolean isRunsOnSun() {
+        return RunsOnSun;
     }
 
-    public String getLineName() {
-        return lineName;
+    public boolean isRunsOnMon() {
+        return RunsOnMon;
     }
 
-    public int getLineId() {
-        return lineId;
+    public boolean isRunsOnTue() {
+        return RunsOnTue;
     }
 
-    public String getSeatClass() {
-        return seatClass;
+    public boolean isRunsONWed() {
+        return RunsONWed;
     }
 
-    public int getAvailableSeats() {
-        return availableSeats;
+    public boolean isRunsOnThu() {
+        return RunsOnThu;
     }
 
-    public Date getDepartTime() {
-        return departTime;
+    public boolean isRunsOnFri() {
+        return RunsOnFri;
     }
 
-    public Date getArrivalTime() {
-        return arrivalTime;
+    public boolean isRunsONSat() {
+        return RunsONSat;
     }
 
-    public void setTrainNumber(int trainNumber) {
-        this.trainNumber = trainNumber;
+    public Train getTrain() {
+        return train;
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public Line getLine() {
+        return line;
     }
 
-    public void setLineName(String lineName) {
-        this.lineName = lineName;
+    public void setClerk(Clerk clerk) {
+        this.clerk = clerk;
     }
 
-    public void setLineId(int lineId) {
-        this.lineId = lineId;
+    public void setRunsOnSun(boolean runsOnSun) {
+        RunsOnSun = runsOnSun;
     }
 
-    public void setSeatClass(String seatClass) {
-        this.seatClass = seatClass;
+    public void setRunsOnMon(boolean runsOnMon) {
+        RunsOnMon = runsOnMon;
     }
 
-    public void setAvailableSeats(int availableSeats) {
-        this.availableSeats = availableSeats;
+    public void setRunsOnTue(boolean runsOnTue) {
+        RunsOnTue = runsOnTue;
     }
 
-    public void setDepartTime(Date departTime) {
-        this.departTime = departTime;
+    public void setRunsONWed(boolean runsONWed) {
+        RunsONWed = runsONWed;
     }
 
-    public void setArrivalTime(Date arrivalTime) {
-        this.arrivalTime = arrivalTime;
+    public void setRunsOnThu(boolean runsOnThu) {
+        RunsOnThu = runsOnThu;
+    }
+
+    public void setRunsOnFri(boolean runsOnFri) {
+        RunsOnFri = runsOnFri;
+    }
+
+    public void setRunsONSat(boolean runsONSat) {
+        RunsONSat = runsONSat;
+    }
+
+    public void setTrain(Train train) {
+        this.train = train;
+    }
+
+    public void setLine(Line line) {
+        this.line = line;
     }
 }

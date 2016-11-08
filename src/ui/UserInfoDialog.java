@@ -17,9 +17,8 @@ public class UserInfoDialog extends JDialog{
     protected JPanel contentPanel;
     private JPanel buttonPanel;
     private JTextField usernameField;
-    private JPasswordField passwordField;
     private JTextField fullNameField;
-    private JTextField phoneField;
+
 
     public UserInfoDialog(MainFrame frame){
 
@@ -30,7 +29,7 @@ public class UserInfoDialog extends JDialog{
 
         setResizable(false);
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-        setSize(500,300);
+        setSize(500,200);
 
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
@@ -40,12 +39,8 @@ public class UserInfoDialog extends JDialog{
 
         addUsernameLabel();
         addUsernameField();
-        addPasswordLabel();
-        addPasswordField();
         addFullNameLabel();
         addFullNameField();
-        addPhoneLabel();
-        addPhoneField();
 
         addChangePasswordButton();
         addSaveButton();
@@ -54,24 +49,13 @@ public class UserInfoDialog extends JDialog{
 
     private void addUsernameLabel(){
         JLabel username=new JLabel("Username");
-        contentPanel.add(username, "cell 0 0, alignx trailing");
+        contentPanel.add(username, "cell 0 1, alignx trailing");
     }
 
     private void addUsernameField(){
-        usernameField =new JTextField();
-        contentPanel.add(usernameField,"cell 1 0, growx");
+        usernameField =new JTextField(user.getUserName());
+        contentPanel.add(usernameField,"cell 1 1, growx");
         usernameField.setColumns(10);
-    }
-
-    private void addPasswordLabel(){
-        JLabel jlUserName=new JLabel("Password");
-        contentPanel.add(jlUserName, "cell 0 1, alignx trailing");
-    }
-
-    private void addPasswordField(){
-        passwordField =new JPasswordField();
-        contentPanel.add(passwordField, "cell 1 1, growx");
-        passwordField.setColumns(10);
     }
 
     private void addFullNameLabel(){
@@ -80,20 +64,12 @@ public class UserInfoDialog extends JDialog{
     }
 
     private void addFullNameField(){
-        fullNameField =new JTextField();
+        fullNameField =new JTextField(user.getName());
         contentPanel.add(fullNameField,"cell 1 2, growx");
         fullNameField.setColumns(10);
     }
 
-    private void addPhoneLabel(){
-        JLabel phone=new JLabel("Phone");
-        contentPanel.add(phone, "cell 0 3, alignx trailing");
-    }
 
-    private void addPhoneField(){
-        phoneField =new JTextField();
-        contentPanel.add(phoneField,"cell 1 3, growx");
-    }
 
     private void addChangePasswordButton(){
         final UserInfoDialog that=this;
@@ -101,7 +77,6 @@ public class UserInfoDialog extends JDialog{
         passwordButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
                 ModifyPasswordDialog dialog=new ModifyPasswordDialog(that);
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

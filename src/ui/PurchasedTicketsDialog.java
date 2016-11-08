@@ -119,7 +119,7 @@ public class PurchasedTicketsDialog extends JDialog{
     }
 
     private void addTrainNoLabel(){
-        JLabel label=new JLabel("Train No. :");
+        JLabel label=new JLabel("TrainByStops No. :");
         contentPanel.add(label, "cell 0 2, alignx trailing");
     }
 
