@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
+import model.Train;
 import java.util.HashSet;
 
 /**
@@ -12,6 +13,7 @@ import java.util.HashSet;
 public class JDBC {
 
     static Connection con;
+    static Statement stmt;
 
     public static void openCon() {
 
@@ -19,6 +21,7 @@ public class JDBC {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
                     "jdbc:mysql://windflower.arvixe.com/ubc_cpsc304", "cpsc304", "trains");
+            stmt = con.createStatement();
             System.out.println("Connection opened");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,7 +39,21 @@ public class JDBC {
         }
     }
 
+    public static void fillTrains(ArrayList<Train> trains) throws SQLException {
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * from Trains");
+            while (rs.next()) {
+                int trainNumber = rs.getInt(1);
+                int dayOfWeek = 1;
+                for (int i = 1; i < 8; i++) {
+                    if (rs.getBoolean(i)) dayOfWeek = i;
+                }
 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

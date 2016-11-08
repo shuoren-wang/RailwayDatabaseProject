@@ -42,6 +42,7 @@ public class PassengerMain {
         }*/
     }
 
+    /*
     public static ResultSet runStoredProc(Statement stmt, String spName, Object... params) throws SQLException {
         List<String> par = new ArrayList<String>();
         for (int i  =0;i<params.length;i++) {
@@ -90,4 +91,5 @@ public class PassengerMain {
                     " password = " + next.getPassword());
         }
     }
+     */
 }
