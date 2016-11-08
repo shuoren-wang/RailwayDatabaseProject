@@ -3,6 +3,7 @@ package jdbc;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+// import java.util.Date;
 import model.User;
 import model.Train;
 import java.util.HashSet;
@@ -39,20 +40,33 @@ public class JDBC {
         }
     }
 
-    public static void fillTrains(ArrayList<Train> trains) throws SQLException {
+    public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {
+            ArrayList<model.Train> trains = new ArrayList<model.Train>();
             ResultSet rs = stmt.executeQuery("SELECT * from Trains");
             while (rs.next()) {
                 int trainNumber = rs.getInt(1);
-                int dayOfWeek = 1;
-                for (int i = 1; i < 8; i++) {
-                    if (rs.getBoolean(i)) dayOfWeek = i;
+                int dayOfWeek = 2;
+                for (int i = 2; i < 9; i++) {
+                    if (rs.getBoolean(i)) dayOfWeek = i - 1;
                 }
+                String lineName = "placeholder";
+                int lineId = rs.getInt(10);
+                String seatClass = "placeholder";
+                int availableSeats = 22; // placeholder;
+                Date departTime = new Date(1000000000);
+                Date arrivalTime = new Date(1000500000);
 
+                Train newTrain = new Train(trainNumber, dayOfWeek, lineName, lineId, seatClass, availableSeats, departTime, arrivalTime);
+
+                trains.add(newTrain);
             }
+            System.out.println("trains filled");
+            return trains;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 
