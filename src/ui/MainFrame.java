@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import static jdbc.JDBC.*;
+
 /**
  * Created by shuorenwang on 2016-10-21.
  */
@@ -50,7 +52,7 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                //TODO shutdown database
+                closeCon();
 
                 System.exit(0);
             }
