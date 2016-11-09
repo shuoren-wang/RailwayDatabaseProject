@@ -25,16 +25,20 @@ CREATE TABLE Stations(
 	Address VARCHAR(200) NOT NULL UNIQUE,
 	StationName VARCHAR(30) NOT NULL UNIQUE,
 	CreatedBy_EmployeeID INT NOT NULL,
+	UpdatedBy_EmployeeID INT,
 	Active BOOL NOT NULL DEFAULT 1,
-	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
+	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID),
+	FOREIGN KEY (UpdatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
 );
 
 CREATE TABLE Line(
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	LineName VARCHAR(50) NOT NULL,
 	CreatedBy_EmployeeID INT NOT NULL,
+	UpdatedBy_EmployeeID INT,
 	Active BOOL NOT NULL DEFAULT 1,
-	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
+	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID),
+	FOREIGN KEY (UpdatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
 );
 
 CREATE TABLE LineStops(
@@ -44,8 +48,12 @@ CREATE TABLE LineStops(
 	STATUS BOOL NOT NULL DEFAULT 1,
 	LocatedStation_ID INT NOT NULL,
 	ForLine_ID INT NOT NULL,
+	CreatedBy_EmployeeID INT NOT NULL,
+	UpdatedBy_EmployeeID INT,
 	FOREIGN KEY (LocatedStation_ID) REFERENCES Stations(ID),
-	FOREIGN KEY (ForLine_ID ) REFERENCES Line(ID)
+	FOREIGN KEY (ForLine_ID ) REFERENCES Line(ID),
+	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID),
+	FOREIGN KEY (UpdatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
 );
 
 
@@ -66,9 +74,12 @@ CREATE TABLE TrainTypes (
 	TrainType_ID INT NOT NULL,
 	RunsLine_ID INT NOT NULL,
 	CreatedBy_EmployeeID INT NOT NULL,
+	UpdatedBy_EmployeeID INT,
+	Active BOOL NOT NULL DEFAULT 1,
 	FOREIGN KEY (TrainType_ID) REFERENCES TrainTypes(ID),
 	FOREIGN KEY (RunsLine_ID) REFERENCES Line(ID),
 	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
+	FOREIGN KEY (UpdatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
 );
 
 CREATE TABLE Seats (
