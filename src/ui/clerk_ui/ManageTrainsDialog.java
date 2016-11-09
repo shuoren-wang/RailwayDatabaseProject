@@ -68,7 +68,6 @@ public class ManageTrainsDialog extends JDialog {
         addRunOnDaysCheckBoxes();
 
         addCreateButton();
-        addModifyButton();
         addCancelButton();
     }
 
@@ -202,19 +201,6 @@ public class ManageTrainsDialog extends JDialog {
 
     private void addCreateButton(){
         JButton submitButton = new JButton("Create");
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO database
-
-                updateAllTrains();
-            }
-        });
-        buttonPanel.add(submitButton);
-    }
-
-    private void addModifyButton(){
-        JButton submitButton = new JButton("Modify");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

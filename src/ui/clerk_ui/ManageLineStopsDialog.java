@@ -66,7 +66,6 @@ public class ManageLineStopsDialog extends JDialog {
         addLineComboBox();
 
         addCreateButton();
-        addModifyButton();
         addCancelButton();
     }
 
@@ -188,18 +187,6 @@ public class ManageLineStopsDialog extends JDialog {
         buttonPanel.add(submitButton);
     }
 
-    private void addModifyButton(){
-        JButton submitButton = new JButton("Modify");
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO database
-
-                updateAllLineStops();
-            }
-        });
-        buttonPanel.add(submitButton);
-    }
 
     private void addCancelButton(){
         JButton cancelButton=new JButton("Go Back");

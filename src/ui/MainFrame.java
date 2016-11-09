@@ -12,8 +12,9 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-
 import static jdbc.JDBC.*;
+
+
 
 /**
  * Created by shuorenwang on 2016-10-21.

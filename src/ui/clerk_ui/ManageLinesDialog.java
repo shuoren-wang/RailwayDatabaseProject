@@ -55,7 +55,6 @@ public class ManageLinesDialog extends JDialog{
 
 
         addCreateButton();
-        addModifyButton();
         addCancelButton();
     }
 
@@ -138,18 +137,7 @@ public class ManageLinesDialog extends JDialog{
         buttonPanel.add(submitButton);
     }
 
-    private void addModifyButton(){
-        JButton submitButton = new JButton("Modify");
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO database
 
-                updateAllLines();
-            }
-        });
-        buttonPanel.add(submitButton);
-    }
 
     private void addCancelButton(){
         JButton cancelButton=new JButton("Go Back");

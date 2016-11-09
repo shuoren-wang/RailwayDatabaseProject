@@ -1,12 +1,6 @@
-import model.User;
 import ui.passenger_ui.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import static jdbc.JDBC.*;
 
 public class PassengerMain {

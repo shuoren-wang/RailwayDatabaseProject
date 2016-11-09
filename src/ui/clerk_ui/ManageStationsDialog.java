@@ -56,7 +56,6 @@ public class ManageStationsDialog extends JDialog{
         addAddressTextField();
 
         addCreateButton();
-        addModifyButton();
         addCancelButton();
     }
 
@@ -141,19 +140,6 @@ public class ManageStationsDialog extends JDialog{
 
     private void addCreateButton(){
         JButton submitButton = new JButton("Create");
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO database
-
-                updateAllStations();
-            }
-        });
-        buttonPanel.add(submitButton);
-    }
-
-    private void addModifyButton(){
-        JButton submitButton = new JButton("Modify");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

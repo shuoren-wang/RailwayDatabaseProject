@@ -40,8 +40,6 @@ public class JDBC {
 
 
 
-
-
     public static void printLineWithActiveStops(Statement stmt) throws SQLException {
         ResultSet rs = runStoredProc(stmt, "spShowAllLinesAndStops");
 
