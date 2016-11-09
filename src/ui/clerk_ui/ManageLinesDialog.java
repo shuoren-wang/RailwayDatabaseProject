@@ -1,8 +1,6 @@
 package ui.clerk_ui;
 
-import jdk.nashorn.internal.scripts.JD;
 import model.Line;
-import model.Ticket;
 import model.User;
 import net.miginfocom.swing.MigLayout;
 
@@ -55,6 +53,7 @@ public class ManageLinesDialog extends JDialog{
 
 
         addCreateButton();
+        addDisableButton();
         addCancelButton();
     }
 
@@ -137,7 +136,18 @@ public class ManageLinesDialog extends JDialog{
         buttonPanel.add(submitButton);
     }
 
+    private void addDisableButton(){
+        JButton submitButton = new JButton("Disable");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO database
 
+                updateAllLines();
+            }
+        });
+        buttonPanel.add(submitButton);
+    }
 
     private void addCancelButton(){
         JButton cancelButton=new JButton("Go Back");

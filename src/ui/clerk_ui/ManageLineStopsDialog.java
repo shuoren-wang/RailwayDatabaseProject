@@ -43,19 +43,19 @@ public class ManageLineStopsDialog extends JDialog {
     private JCheckBox satCheckBox;
     private JCheckBox sunCheckBox;
 
-    public ManageLineStopsDialog(JFrame frame){
-        contentPanel=new JPanel();
-        buttonPanel=new JPanel();
+    public ManageLineStopsDialog(JFrame frame) {
+        contentPanel = new JPanel();
+        buttonPanel = new JPanel();
 
         setResizable(false);
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setSize(520,200);
+        setSize(520, 200);
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-        contentPanel.setLayout(new MigLayout("","[][grow]","[][][]"));
+        contentPanel.setLayout(new MigLayout("", "[][grow]", "[][][]"));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         addAllLineStopsLabel();
@@ -66,24 +66,25 @@ public class ManageLineStopsDialog extends JDialog {
         addLineComboBox();
 
         addCreateButton();
+        addDisableButton();
         addCancelButton();
     }
 
-    private void addAllLineStopsLabel(){
-        JLabel label=new JLabel("All LineStops:");
+    private void addAllLineStopsLabel() {
+        JLabel label = new JLabel("All LineStops:");
         contentPanel.add(label, "cell 0 0, alignx trailing");
     }
 
-    private void addAllLineStopsComboBox(){
-        allLineStopComboBoxModel=new DefaultComboBoxModel();
-        allLineStopsComboBox=new JComboBox(allLineStopComboBoxModel);
-        allLineStopsComboBox.setMaximumSize(new Dimension(300,600));
+    private void addAllLineStopsComboBox() {
+        allLineStopComboBoxModel = new DefaultComboBoxModel();
+        allLineStopsComboBox = new JComboBox(allLineStopComboBoxModel);
+        allLineStopsComboBox.setMaximumSize(new Dimension(300, 600));
         contentPanel.add(allLineStopsComboBox, "cell 1 0,growx,span");
 
-        ArrayList<LineStop> LineStops=new ArrayList<LineStop>();
+        ArrayList<LineStop> LineStops = new ArrayList<LineStop>();
         //TODO: get data from database
 
-        if(LineStops.size()>0) {
+        if (LineStops.size() > 0) {
             Object[] LineStopsArr = LineStops.toArray();
 
             synchronized (LineStops.toArray()) {
@@ -103,21 +104,21 @@ public class ManageLineStopsDialog extends JDialog {
         }
     }
 
-    private void addStationLabel(){
-        JLabel label=new JLabel("LineStop Type :");
+    private void addStationLabel() {
+        JLabel label = new JLabel("LineStop Type :");
         contentPanel.add(label, "cell 0 1, alignx trailing");
     }
 
-    private void addStationComboBox(){
-        stationComboBoxModel=new DefaultComboBoxModel();
-        stationsComboBox=new JComboBox(stationComboBoxModel);
-        stationsComboBox.setMaximumSize(new Dimension(300,600));
+    private void addStationComboBox() {
+        stationComboBoxModel = new DefaultComboBoxModel();
+        stationsComboBox = new JComboBox(stationComboBoxModel);
+        stationsComboBox.setMaximumSize(new Dimension(300, 600));
         contentPanel.add(stationsComboBox, "cell 1 1,growx");
 
-        ArrayList<Station> Stations=new ArrayList<Station>();
+        ArrayList<Station> Stations = new ArrayList<Station>();
         //TODO: get data from database
 
-        if(Stations.size()>0) {
+        if (Stations.size() > 0) {
             Object[] StationsArr = Stations.toArray();
 
             synchronized (Stations.toArray()) {
@@ -137,23 +138,22 @@ public class ManageLineStopsDialog extends JDialog {
         }
     }
 
-    private void addLineLabel(){
-        JLabel label=new JLabel("Line info :");
+    private void addLineLabel() {
+        JLabel label = new JLabel("Line info :");
         contentPanel.add(label, "cell 0 2, alignx trailing");
     }
 
-    private void addLineComboBox(){
-        lineComboBoxModel=new DefaultComboBoxModel();
-        lineComboBox=new JComboBox(lineComboBoxModel);
-        lineComboBox.setMaximumSize(new Dimension(300,600));
+    private void addLineComboBox() {
+        lineComboBoxModel = new DefaultComboBoxModel();
+        lineComboBox = new JComboBox(lineComboBoxModel);
+        lineComboBox.setMaximumSize(new Dimension(300, 600));
         contentPanel.add(lineComboBox, "cell 1 2,growx,span");
 
-        ArrayList<Line> Lines=new ArrayList<Line>();
+        ArrayList<Line> Lines = new ArrayList<Line>();
         //TODO: get data from database
 
 
-
-        if(Lines.size()>0) {
+        if (Lines.size() > 0) {
             Object[] LinesArr = Lines.toArray();
 
             synchronized (Lines.toArray()) {
@@ -173,7 +173,7 @@ public class ManageLineStopsDialog extends JDialog {
         }
     }
 
-    private void addCreateButton(){
+    private void addCreateButton() {
         JButton submitButton = new JButton("Create");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -187,9 +187,21 @@ public class ManageLineStopsDialog extends JDialog {
         buttonPanel.add(submitButton);
     }
 
+    private void addDisableButton() {
+        JButton submitButton = new JButton("Disable");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO database
 
-    private void addCancelButton(){
-        JButton cancelButton=new JButton("Go Back");
+                updateAllLineStops();
+            }
+        });
+        buttonPanel.add(submitButton);
+    }
+
+    private void addCancelButton() {
+        JButton cancelButton = new JButton("Go Back");
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -202,7 +214,7 @@ public class ManageLineStopsDialog extends JDialog {
     }
 
     //update AllLineStops Combo Box
-    private void updateAllLineStops(){
+    private void updateAllLineStops() {
         //TODO database
     }
 }

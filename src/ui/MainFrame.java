@@ -53,7 +53,7 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                closeCon();
+//                closeCon();
 
                 System.exit(0);
             }

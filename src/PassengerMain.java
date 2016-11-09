@@ -8,13 +8,13 @@ public class PassengerMain {
 
         PassengerMainFrame frame = PassengerMainFrame.getInstance();
 
-        openCon();
+//        openCon();
 
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                closeCon();
+//                closeCon();
 
                 System.exit(0);
             }
