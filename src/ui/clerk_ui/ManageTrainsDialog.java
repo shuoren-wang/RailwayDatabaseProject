@@ -220,6 +220,7 @@ public class ManageTrainsDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //TODO database
 
+
                 updateAllTrains();
             }
         });
@@ -241,5 +242,17 @@ public class ManageTrainsDialog extends JDialog {
 
     private void updateAllTrains() {
         //TODO
+    }
+
+    /**
+     * @return false if all runOndays are unchecked
+     */
+    protected boolean validationCheck(){
+        if(!monCheckBox.isSelected() &&!tuesCheckBox.isSelected() &&!wedCheckBox.isSelected() &&!thurCheckBox.isSelected() &&
+                !friCheckBox.isSelected() &&!satCheckBox.isSelected() &&!sunCheckBox.isSelected() ){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

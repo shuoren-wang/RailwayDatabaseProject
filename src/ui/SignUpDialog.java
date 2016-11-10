@@ -1,7 +1,5 @@
 package ui;
 
-import model.Passenger;
-import model.User;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -97,7 +95,10 @@ public class SignUpDialog extends JDialog{
 
 
     protected void addSubmitButton(){
-        submitButton = new JButton("Submit");
+        final SignUpDialog that=this;
+        JButton submitButton = new JButton("Submit");
+
+        submitButton.setActionCommand("OK");
         buttonPanel.add(submitButton);
     }
 
@@ -113,5 +114,24 @@ public class SignUpDialog extends JDialog{
         });
         cancelButton.setActionCommand("Cancel");
         buttonPanel.add(cancelButton);
+    }
+
+    /**
+     * @return true if no empty textFields for username, password, fullname
+     */
+    protected boolean validationCheck(){
+        String username=usernameField.getText();
+        String password1=passwordField_1.getText();
+        String password2=passwordField_2.getText();
+        String fullName=fullNameField.getText();
+
+        SignUpDialog that=this;
+        if(password1!=password2){
+            JOptionPane.showMessageDialog(that,
+                    "Passwords not match!",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+        return password1.length()>0 && password2.length()>0 && username.length()>0 && fullName.length()>0;
     }
 }

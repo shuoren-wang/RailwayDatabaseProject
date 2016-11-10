@@ -28,19 +28,31 @@ public class ClerkSignUpDialog extends SignUpDialog {
     }
 
     private void addPositionField(){
-        positionField =new JTextField();
+        positionField =new JTextField("employee");
         contentPanel.add(positionField,"cell 1 4, growx");
         positionField.setColumns(10);
     }
 
     @Override
     protected void addSubmitButton(){
-        super.addSubmitButton();
+        final SignUpDialog that=this;
+        JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(validationCheck()){
+                    JOptionPane.showMessageDialog(that,
+                            "Username/Password/FullName is empty!",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                }else{
+                    //TODO
+                }
+
             }
         });
+        submitButton.setActionCommand("OK");
+        buttonPanel.add(submitButton);
     }
 
 

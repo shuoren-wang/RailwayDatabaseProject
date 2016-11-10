@@ -65,11 +65,30 @@ public class LoginDialog extends JDialog{
     }
 
     private void addSubmitButton(){
+        final LoginDialog that=this;
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+
+                if(validationCheck()){
+                    JOptionPane.showMessageDialog(that,
+                            "Username or Password is empty!",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                }else{
+                    if(checkData()){
+                        LoginDialog.this.setVisible(false);
+                        LoginDialog.this.dispose();
+                        System.out.println("LoginDialog:: login successful");
+                    }else{
+                        JOptionPane.showMessageDialog(that,
+                                "Username or Password is wrong!",
+                                "Warning",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+
             }
         });
         submitButton.setActionCommand("OK");
@@ -90,4 +109,22 @@ public class LoginDialog extends JDialog{
         buttonPanel.add(cancelButton);
     }
 
+    /**
+     * @return true if no empty textFields
+     */
+    private boolean validationCheck(){
+        String password=passwordField.getText();
+        String username=usernameField.getText();
+        return password.length()>0 && username.length()>0;
+    }
+
+    /**
+     * check if password and username matches recodes in DB
+     * @return true if find user, false otherwise
+     */
+    private boolean checkData(){
+        //TODO: database
+
+        return false;
+    }
 }
