@@ -52,7 +52,7 @@ IF NULL IN (fromLineStopID, fromLineStopTime, toLineStopID, toLineStopTime) THEN
 	SET `_errMsg` = 'Station Invalid';
 END IF;
 
-IF NOT EXISTS(SELECT * FROM passengers WHERE userID = in_forUserId) THEN
+IF NOT EXISTS(SELECT NULL FROM passengers WHERE userID = in_forUserId) THEN
 	SET `_rollback` = 1;
 	SET `_errMsg` = 'User is not Passenger';
 END IF;
@@ -102,7 +102,7 @@ WHERE seatnumber IN (
 		)
 );
 
-IF NOT EXISTS (SELECT * FROM _ValidSeatNumbers) THEN
+IF NOT EXISTS (SELECT NULL FROM _ValidSeatNumbers) THEN
 	SET `_rollback` = 1;
 	SET `_errMsg` = 'No Seats Available';
 END IF;

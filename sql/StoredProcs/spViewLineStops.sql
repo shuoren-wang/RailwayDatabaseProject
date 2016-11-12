@@ -21,8 +21,8 @@ SELECT
 	l.linename,
 	ls.createdby_employeeid,
 	ls.updatedby_employeeid,
-	cru.name AS CreatedByEmployee_UserName,
-	upu.name AS UpdatedByEmployee_UserName
+	cru.name AS CreatedByEmployee_Name,
+	upu.name AS UpdatedByEmployee_Name
 FROM 	linestops ls
 	INNER JOIN stations s ON s.id = ls.locatedstation_id
 	INNER JOIN line l ON l.id = ls.forline_id
