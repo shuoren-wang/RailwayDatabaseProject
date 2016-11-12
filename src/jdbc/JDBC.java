@@ -15,7 +15,9 @@ public class JDBC {
 
     static Connection con;
     static Statement stmt;
+    static User currentUser;
 
+    // Opens the connection with the database
     public static void openCon() {
 
         try {
@@ -31,6 +33,7 @@ public class JDBC {
         }
     }
 
+    // Closes the connection with the database
     public static void closeCon() {
         try {
             con.close();
@@ -39,6 +42,44 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+
+    /* User login. Checks username and password against database.
+     * Arguments: String username, password
+     * Returns:   UserID for successful login, -1 otherwise
+     */
+    public static int userLogin(String userLogin, String loginPassword) {
+        try {
+            // ResultSet rs = stmt.executeQuery("CALL spLogin('" + username + "','" + password + "');");
+            ResultSet rs = stmt.executeQuery("CALL spLogin('" + userLogin + "','" + loginPassword + "')");
+            if (rs.next()) {
+                int userID = rs.getInt(1);
+                String name = rs.getString(2);
+                String userName = rs.getString(3);
+                String password = rs.getString(4);
+                boolean active = rs.getBoolean(5);
+                System.out.println(userID +" " + name + " " + userName + " " + password + " " + active);
+                currentUser.setUserID(userID);
+                currentUser.setName(name);
+                currentUser.setUserName(userName);
+                currentUser.setPassword(password);
+                currentUser.setActive(active);
+                return userID;
+            } else {
+                System.out.println("Error in username or password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /* Arguments: int userID
+     * Returns: The User associated with userID
+     */ /*
+    public static User getUser(int userID) {
+
+    }
+    */
 
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {

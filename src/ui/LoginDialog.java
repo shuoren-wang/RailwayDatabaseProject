@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static jdbc.JDBC.*;
+
 /**
  * Created by shuorenwang on 2016-10-21.
  */
@@ -69,7 +71,9 @@ public class LoginDialog extends JDialog{
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                String password = passwordField.getText();
+                String username = usernameField.getText();
+                userLogin(username, password);
             }
         });
         submitButton.setActionCommand("OK");
