@@ -8,43 +8,51 @@ public class Line {
     private boolean isActive ;
     private String lineName;
     private int createdByEmployeeId;
+    private int updatedByEmployeeId;
 
-    public Line(int id, boolean isActive, String lineName, int createdByEmployeeId) {
-        this.id = id;
-        this.isActive = isActive;
-        this.lineName = lineName;
-        this.createdByEmployeeId = createdByEmployeeId;
+    public Line() {}
+
+    public int getUpdatedByEmployeeId() {
+        return updatedByEmployeeId;
+    }
+
+    public void setUpdatedByEmployeeId(int updatedByEmployeeId) {
+        this.updatedByEmployeeId = updatedByEmployeeId;
     }
 
     public int getId() {
         return id;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public String getLineName() {
-        return lineName;
-    }
-
-    public int getCreatedByEmployeeId() {
-        return createdByEmployeeId;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     public void setActive(boolean active) {
         isActive = active;
     }
 
+    public String getLineName() {
+        return lineName;
+    }
+
     public void setLineName(String lineName) {
         this.lineName = lineName;
     }
 
+    public int getCreatedByEmployeeId() {
+        return createdByEmployeeId;
+    }
+
     public void setCreatedByEmployeeId(int createdByEmployeeId) {
         this.createdByEmployeeId = createdByEmployeeId;
+    }
+
+    public String toString(){
+        return "Name="+getLineName()+", Active= "+isActive();
     }
 }

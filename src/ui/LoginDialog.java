@@ -72,11 +72,6 @@ public class LoginDialog extends JDialog{
             public void actionPerformed(ActionEvent e) {
 
                 if(validationCheck()){
-                    JOptionPane.showMessageDialog(that,
-                            "Username or Password is empty!",
-                            "Warning",
-                            JOptionPane.WARNING_MESSAGE);
-                }else{
                     if(checkData()){
                         LoginDialog.this.setVisible(false);
                         LoginDialog.this.dispose();
@@ -87,6 +82,11 @@ public class LoginDialog extends JDialog{
                                 "Warning",
                                 JOptionPane.WARNING_MESSAGE);
                     }
+                }else{
+                    JOptionPane.showMessageDialog(that,
+                            "Username or Password is empty!",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
                 }
 
             }

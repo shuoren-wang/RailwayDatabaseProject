@@ -1,5 +1,6 @@
 package ui.clerk_ui;
 
+import model.Clerk;
 import model.User;
 import ui.MainFrame;
 import ui.SignUpDialog;
@@ -15,10 +16,12 @@ import java.awt.event.ActionListener;
 
 public class ClerkMainFrame extends MainFrame {
 
+    private Clerk clerk;
     protected static final ClerkMainFrame instance = new ClerkMainFrame();
 
     private ClerkMainFrame() {
         super();
+        clerk=new Clerk();
     }
 
     public static ClerkMainFrame getInstance() {
@@ -57,7 +60,7 @@ public class ClerkMainFrame extends MainFrame {
         userMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ManageTrainsDialog dialog = new ManageTrainsDialog(that);
+                ManageTrainsDialog dialog = new ManageTrainsDialog(clerk);
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);
@@ -74,7 +77,7 @@ public class ClerkMainFrame extends MainFrame {
         userMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ManageLinesDialog dialog = new ManageLinesDialog(that);
+                ManageLinesDialog dialog = new ManageLinesDialog(clerk);
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);

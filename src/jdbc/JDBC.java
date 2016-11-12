@@ -12,9 +12,14 @@ import java.util.HashSet;
 public class JDBC {
 
     static Connection con;
+    private static JDBC instance=new JDBC();
 
-    public static void openCon() {
+    public static JDBC getInstance(){
+        System.out.println("JDBC::Retrieve Database ");
+        return instance;
+    }
 
+    public void openCon() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
@@ -27,7 +32,7 @@ public class JDBC {
         }
     }
 
-    public static void closeCon() {
+    public void closeCon() {
         try {
             con.close();
             System.out.println("Connection closed");
@@ -36,9 +41,9 @@ public class JDBC {
         }
     }
 
-
-
-
+    public static Connection getCon() {
+        return con;
+    }
 
     public static void printLineWithActiveStops(Statement stmt) throws SQLException {
         ResultSet rs = runStoredProc(stmt, "spShowAllLinesAndStops");

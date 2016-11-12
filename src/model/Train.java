@@ -4,107 +4,154 @@ package model;
  * Created by shuorenwang on 2016-11-06.
  */
 public class Train {
-    private Clerk clerk;
-    private boolean RunsOnSun;
-    private boolean RunsOnMon;
-    private boolean RunsOnTue;
-    private boolean RunsONWed;
-    private boolean RunsOnThu;
-    private boolean RunsOnFri;
-    private boolean RunsONSat;
-    Train train;
-    Line line;
+    private int createdByEmployeeID;
+    private int updatedByEmployeeID;
+    private int id;
+    private boolean runsOnSun;
+    private boolean runsOnMon;
+    private boolean runsOnTue;
+    private boolean runsOnWed;
+    private boolean runsOnThu;
+    private boolean runsOnFri;
+    private boolean runsOnSat;
+    private boolean isActive;
+    private int trainTypeId;
+    private String trainTypeColor;
+    private int lineId;
+    private String  lineName;
 
-    public Train(Clerk clerk, boolean runsOnSun, boolean runsOnMon, boolean runsOnTue, boolean runsONWed, boolean runsOnThu, boolean runsOnFri, boolean runsONSat, Train train, Line line) {
-        this.clerk = clerk;
-        RunsOnSun = runsOnSun;
-        RunsOnMon = runsOnMon;
-        RunsOnTue = runsOnTue;
-        RunsONWed = runsONWed;
-        RunsOnThu = runsOnThu;
-        RunsOnFri = runsOnFri;
-        RunsONSat = runsONSat;
-        this.train = train;
-        this.line = line;
+    public Train() {}
+
+    public int getTrainTypeId() {
+        return trainTypeId;
     }
 
-    public Clerk getClerk() {
-        return clerk;
+    public void setTrainTypeId(int trainTypeId) {
+        this.trainTypeId = trainTypeId;
+    }
+
+    public String getTrainTypeColor() {
+        return trainTypeColor;
+    }
+
+    public void setTrainTypeColor(String trainTypeColor) {
+        this.trainTypeColor = trainTypeColor;
+    }
+
+    public int getLineId() {
+        return lineId;
+    }
+
+    public void setLineId(int lineId) {
+        this.lineId = lineId;
+    }
+
+    public String getLineName() {
+        return lineName;
+    }
+
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
+    }
+
+    public int getCreatedByEmployeeID() {
+        return createdByEmployeeID;
+    }
+
+    public void setCreatedByEmployeeID(int createdByEmployeeID) {
+        this.createdByEmployeeID = createdByEmployeeID;
+    }
+
+    public int getUpdatedByEmployeeID() {
+        return updatedByEmployeeID;
+    }
+
+    public void setUpdatedByEmployeeID(int updatedByEmployeeID) {
+        this.updatedByEmployeeID = updatedByEmployeeID;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isRunsOnSun() {
-        return RunsOnSun;
-    }
-
-    public boolean isRunsOnMon() {
-        return RunsOnMon;
-    }
-
-    public boolean isRunsOnTue() {
-        return RunsOnTue;
-    }
-
-    public boolean isRunsONWed() {
-        return RunsONWed;
-    }
-
-    public boolean isRunsOnThu() {
-        return RunsOnThu;
-    }
-
-    public boolean isRunsOnFri() {
-        return RunsOnFri;
-    }
-
-    public boolean isRunsONSat() {
-        return RunsONSat;
-    }
-
-    public Train getTrain() {
-        return train;
-    }
-
-    public Line getLine() {
-        return line;
-    }
-
-    public void setClerk(Clerk clerk) {
-        this.clerk = clerk;
+        return runsOnSun;
     }
 
     public void setRunsOnSun(boolean runsOnSun) {
-        RunsOnSun = runsOnSun;
+        this.runsOnSun = runsOnSun;
+    }
+
+    public boolean isRunsOnMon() {
+        return runsOnMon;
     }
 
     public void setRunsOnMon(boolean runsOnMon) {
-        RunsOnMon = runsOnMon;
+        this.runsOnMon = runsOnMon;
+    }
+
+    public boolean isRunsOnTue() {
+        return runsOnTue;
     }
 
     public void setRunsOnTue(boolean runsOnTue) {
-        RunsOnTue = runsOnTue;
+        this.runsOnTue = runsOnTue;
     }
 
-    public void setRunsONWed(boolean runsONWed) {
-        RunsONWed = runsONWed;
+    public boolean isRunsOnWed() {
+        return runsOnWed;
+    }
+
+    public void setRunsOnWed(boolean runsOnWed) {
+        this.runsOnWed = runsOnWed;
+    }
+
+    public boolean isRunsOnThu() {
+        return runsOnThu;
     }
 
     public void setRunsOnThu(boolean runsOnThu) {
-        RunsOnThu = runsOnThu;
+        this.runsOnThu = runsOnThu;
+    }
+
+    public boolean isRunsOnFri() {
+        return runsOnFri;
     }
 
     public void setRunsOnFri(boolean runsOnFri) {
-        RunsOnFri = runsOnFri;
+        this.runsOnFri = runsOnFri;
     }
 
-    public void setRunsONSat(boolean runsONSat) {
-        RunsONSat = runsONSat;
+    public boolean isRunsOnSat() {
+        return runsOnSat;
     }
 
-    public void setTrain(Train train) {
-        this.train = train;
+    public void setRunsOnSat(boolean runsOnSat) {
+        this.runsOnSat = runsOnSat;
     }
 
-    public void setLine(Line line) {
-        this.line = line;
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public String toString(){
+        String str1= "Type: "+ trainTypeColor+"; Line: "+lineName;
+        String str2=String.format("; RunOndays: %s%s%s%s%s%s%s",
+                (isRunsOnMon()?"M ":""),
+                (isRunsOnTue()?"Tu ":""),
+                (isRunsOnWed()?"W ":""),
+                (isRunsOnThu()?"Th ":""),
+                (isRunsOnFri()?"F ":""),
+                (isRunsOnSat()?"Sa ":""),
+                (isRunsOnSun()?"Su ":""));
+        return str1+str2;
     }
 }

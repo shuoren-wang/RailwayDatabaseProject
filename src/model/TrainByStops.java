@@ -16,8 +16,6 @@ public class TrainByStops {
     private Date departTime; //12:00:00
     private Date arrivalTime; //12:00:00
 
-
-
     public TrainByStops(int trainNumber, int dayOfWeek, String lineName, int lineId, String seatClass, int availableSeats, Date departTime, Date arrivalTime) {
         this.trainNumber = trainNumber;
         this.dayOfWeek = dayOfWeek;

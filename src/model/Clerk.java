@@ -15,8 +15,8 @@ public class Clerk extends User {
 
     public Clerk() {
         super();
-        employeeId = 0;
-        position = "employee";
+        employeeId = 1;
+        position = "Manager";
     }
 
 

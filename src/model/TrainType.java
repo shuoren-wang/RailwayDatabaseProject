@@ -4,12 +4,10 @@ package model;
  * Created by shuorenwang on 2016-11-07.
  */
 public class TrainType {
-    int typeId;
-    String color;
+    private int typeId;
+    private String color;
 
-    public TrainType(int typeId, String color) {
-        this.typeId = typeId;
-        this.color = color;
+    public TrainType() {
     }
 
     public int getTypeId() {
@@ -26,5 +24,9 @@ public class TrainType {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String toString(){
+        return "Color = "+getColor();
     }
 }

@@ -1,5 +1,8 @@
 package ui.clerk_ui;
 
+import jdbc.LineDAO;
+import jdbc.TrainDAO;
+import jdbc.TrainTypeDAO;
 import model.Clerk;
 import model.Line;
 import model.Train;
@@ -12,7 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by shuorenwang on 2016-11-06.
@@ -24,16 +28,24 @@ public class ManageTrainsDialog extends JDialog {
     private Train currentTrain;
     private TrainType currentTrainType;
     private Line currentLine;
+    private TrainDAO trainDAO;
+    private TrainTypeDAO trainTypeDAO;
+    private LineDAO lineDAO;
+    private int lineIndex;
+    private int trainTypeIndex;
+    private int trainIndex;
+
 
     private JPanel contentPanel;
     private JPanel buttonPanel;
-    private JComboBox allTrainsComboBox;
-    private DefaultComboBoxModel allTrainComboBoxModel;
+    private JComboBox trainComboBox;
+    private DefaultComboBoxModel trainComboBoxModel;
     private JComboBox trainTypeComboBox;
     private DefaultComboBoxModel trainTypeComboBoxModel;
     private JComboBox lineComboBox;
     private DefaultComboBoxModel lineComboBoxModel;
 
+    private JButton statusButton;
     private JCheckBox monCheckBox;
     private JCheckBox tuesCheckBox;
     private JCheckBox wedCheckBox;
@@ -43,7 +55,14 @@ public class ManageTrainsDialog extends JDialog {
     private JCheckBox sunCheckBox;
 
 
-    public ManageTrainsDialog(JFrame frame) {
+    public ManageTrainsDialog(Clerk clerk) {
+        this.clerk=clerk;
+        lineDAO = LineDAO.getInstance();
+        trainDAO = trainDAO.getInstance();
+        trainTypeDAO = trainTypeDAO.getInstance();
+        lineDAO.init();
+        trainDAO.init();
+        trainTypeDAO.init();
         contentPanel = new JPanel();
         buttonPanel = new JPanel();
 
@@ -58,8 +77,8 @@ public class ManageTrainsDialog extends JDialog {
         contentPanel.setLayout(new MigLayout("", "[][][][][][][][]", "[][][][]"));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        addAllTrainsLabel();
-        addAllTrainsComboBox();
+        addTrainsLabel();
+        addTrainsComboBox();
         addTrainTypeLabel();
         addTrainTypeComboBox();
         addLineLabel();
@@ -72,38 +91,42 @@ public class ManageTrainsDialog extends JDialog {
         addCancelButton();
     }
 
-    private void addAllTrainsLabel() {
+    private void addTrainsLabel() {
         JLabel label = new JLabel("All Trains:");
         contentPanel.add(label, "cell 0 0, alignx trailing");
     }
 
-    private void addAllTrainsComboBox() {
-        allTrainComboBoxModel = new DefaultComboBoxModel();
-        allTrainsComboBox = new JComboBox(allTrainComboBoxModel);
-        allTrainsComboBox.setMaximumSize(new Dimension(300, 600));
-        contentPanel.add(allTrainsComboBox, "cell 1 0,growx,span");
+    private void addTrainsComboBox() {
+        trainDAO.loadData();
+        List<Train> trains = trainDAO.getTrains();
 
-        ArrayList<Train> Trains = new ArrayList<Train>();
-        //TODO: get data from database
+        trainComboBoxModel = new DefaultComboBoxModel();
+        synchronized (trains) {
+            for (Train next : trains) {
+                trainComboBoxModel.addElement(next.toString());
+            }
+        }
 
-        if (Trains.size() > 0) {
-            Object[] TrainsArr = Trains.toArray();
+        trainComboBox = new JComboBox(trainComboBoxModel);
+        trainComboBox.setMaximumSize(new Dimension(300, 600));
 
-            synchronized (Trains.toArray()) {
-                for (Object next : TrainsArr) {
-                    allTrainComboBoxModel.addElement(next);
+        trainComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    trainIndex = trainComboBox.getSelectedIndex();
+                    currentTrain = TrainDAO.getInstance().getTrains().get(trainIndex);
+                    System.out.println("ManageTrainsDialog:: trainComboBox: selected a train");
                 }
             }
+        });
 
-            allTrainsComboBox.addItemListener(new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        currentTrain = (Train) allTrainsComboBox.getSelectedItem();
-                    }
-                }
-            });
+        //set default line as the first line in database
+        if(currentTrain==null){
+            currentTrain=trainDAO.getTrains().get(0);
         }
+
+        contentPanel.add(trainComboBox, "cell 1 0,growx,span");
     }
 
     private void addTrainTypeLabel() {
@@ -112,32 +135,37 @@ public class ManageTrainsDialog extends JDialog {
     }
 
     private void addTrainTypeComboBox() {
+        trainTypeDAO.loadData();
+        List<TrainType> trainTypes = trainTypeDAO.getTrainTypes();
+
         trainTypeComboBoxModel = new DefaultComboBoxModel();
+        synchronized (trainTypes) {
+            for (TrainType next : trainTypes) {
+                trainTypeComboBoxModel.addElement(next.toString());
+            }
+        }
+
         trainTypeComboBox = new JComboBox(trainTypeComboBoxModel);
         trainTypeComboBox.setMaximumSize(new Dimension(300, 600));
-        contentPanel.add(trainTypeComboBox, "cell 1 1,growx,span");
 
-        ArrayList<TrainType> trainTypes = new ArrayList<TrainType>();
-        //TODO: get data from database
 
-        if (trainTypes.size() > 0) {
-            Object[] TrainsArr = trainTypes.toArray();
-
-            synchronized (trainTypes.toArray()) {
-                for (Object next : TrainsArr) {
-                    trainTypeComboBoxModel.addElement(next);
+        trainTypeComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    trainTypeIndex = trainTypeComboBox.getSelectedIndex();
+                    currentTrainType = TrainTypeDAO.getInstance().getTrainTypes().get(trainTypeIndex);
+                    System.out.println("ManageTrainsDialog:: trainTypeComboBox: selected a trainType");
                 }
             }
+        });
 
-            trainTypeComboBox.addItemListener(new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        currentTrainType = (TrainType) allTrainsComboBox.getSelectedItem();
-                    }
-                }
-            });
+        //set default traintype as the first train type in database
+        if(currentTrainType==null) {
+            currentTrainType =trainTypeDAO.getTrainTypes().get(0);
         }
+
+        contentPanel.add(trainTypeComboBox, "cell 1 1,growx,span");
     }
 
     private void addLineLabel() {
@@ -146,33 +174,38 @@ public class ManageTrainsDialog extends JDialog {
     }
 
     private void addLineComboBox() {
+        lineDAO.loadData();
+        List<Line> lines = lineDAO.getLines();
+
         lineComboBoxModel = new DefaultComboBoxModel();
-        lineComboBox = new JComboBox(lineComboBoxModel);
-        lineComboBox.setMaximumSize(new Dimension(300, 600));
-        contentPanel.add(lineComboBox, "cell 1 2,growx,span");
-
-        ArrayList<Line> Lines = new ArrayList<Line>();
-        //TODO: get data from database
-
-
-        if (Lines.size() > 0) {
-            Object[] LinesArr = Lines.toArray();
-
-            synchronized (Lines.toArray()) {
-                for (Object next : LinesArr) {
-                    lineComboBoxModel.addElement(next);
+        synchronized (lines) {
+            for (Line next : lines) {
+                if(next.isActive()) {
+                    lineComboBoxModel.addElement(next.toString());
                 }
             }
-
-            trainTypeComboBox.addItemListener(new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        currentLine = (Line) lineComboBox.getSelectedItem();
-                    }
-                }
-            });
         }
+
+        lineComboBox = new JComboBox(lineComboBoxModel);
+        lineComboBox.setMaximumSize(new Dimension(300, 600));
+
+        trainTypeComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    lineIndex = lineComboBox.getSelectedIndex();
+                    currentLine = LineDAO.getInstance().getLines().get(lineIndex);
+                    System.out.println("ManageTrainsDialog:: LineComboBox: selected a line");
+                }
+            }
+        });
+
+        //set default line as the first line in database
+        if(currentLine==null){
+            currentLine=lineDAO.getLines().get(0);
+        }
+
+        contentPanel.add(lineComboBox, "cell 1 2,growx,span");
     }
 
     private void addRunOnDaysLabel() {
@@ -196,35 +229,75 @@ public class ManageTrainsDialog extends JDialog {
         contentPanel.add(friCheckBox, "cell 5 3, alignx leading");
         contentPanel.add(satCheckBox, "cell 6 3, alignx leading");
         contentPanel.add(sunCheckBox, "cell 7 3, alignx leading");
-
     }
 
 
     private void addCreateButton() {
+        final ManageTrainsDialog that=this;
         JButton submitButton = new JButton("Create");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+                if(validationCheck()) {
 
-                updateAllTrains();
+                    Train train = new Train();
+                    train.setCreatedByEmployeeID(clerk.getEmployeeId());
+                    train.setTrainTypeId(currentTrainType.getTypeId());
+                    train.setLineId(currentLine.getId());
+                    train.setRunsOnMon(monCheckBox.isSelected());
+                    train.setRunsOnTue(tuesCheckBox.isSelected());
+                    train.setRunsOnWed(wedCheckBox.isSelected());
+                    train.setRunsOnThu(thurCheckBox.isSelected());
+                    train.setRunsOnFri(friCheckBox.isSelected());
+                    train.setRunsOnSat(satCheckBox.isSelected());
+                    train.setRunsOnSun(sunCheckBox.isSelected());
+                    trainDAO.insertData(train);
+
+                    loadTrainsComboBox();
+                }else{
+                    JOptionPane.showMessageDialog(that,
+                            "Please select train type, line and at least 1 runsOnday!",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
         buttonPanel.add(submitButton);
     }
 
     private void addDisableButton() {
-        JButton submitButton = new JButton("Disable");
-        submitButton.addActionListener(new ActionListener() {
+        statusButton = new JButton("Change Status");
+        final ManageTrainsDialog that=this;
+        statusButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+                Train train = new Train();
+                train.setUpdatedByEmployeeID(clerk.getEmployeeId());
+                train.setId(currentTrain.getId());
+                train.setTrainTypeId(currentTrain.getTrainTypeId());
+                train.setLineId(currentTrain.getId());
+                train.setRunsOnMon(currentTrain.isRunsOnMon());
+                train.setRunsOnTue(currentTrain.isRunsOnTue());
+                train.setRunsOnWed(currentTrain.isRunsOnWed());
+                train.setRunsOnThu(currentTrain.isRunsOnThu());
+                train.setRunsOnFri(currentTrain.isRunsOnFri());
+                train.setRunsOnSat(currentTrain.isRunsOnSat());
+                train.setRunsOnSun(currentTrain.isRunsOnSun());
+                //TODO: setActive after spModifyTrain updated; also need to change for trainDAO.modifyData()
+//                train.setActive(!currentTrain.isActive());
 
+                //TODO: spModifyTrain not exist, will check later
+                trainDAO.modifyData(train);
 
-                updateAllTrains();
+                loadTrainsComboBox();
+
+                JOptionPane.showMessageDialog(that,
+                        "Trian : "+train.getLineName()+" changed to "+ (train.isActive()? "active": "inactive" ),
+                        "Info",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        buttonPanel.add(submitButton);
+        buttonPanel.add(statusButton);
     }
 
     private void addCancelButton() {
@@ -240,18 +313,28 @@ public class ManageTrainsDialog extends JDialog {
         buttonPanel.add(cancelButton);
     }
 
-    private void updateAllTrains() {
-        //TODO
+    private void loadTrainsComboBox() {
+        trainDAO.loadData();
+        List<Train> trains = trainDAO.getTrains();
+
+        trainComboBoxModel.removeAllElements();
+
+        for (Train next : trains) {
+            trainComboBoxModel.addElement(next.toString());
+        }
+        System.out.println("ManageTrainsDialog:: allLineComboBoxModel.getSize():" + trainComboBoxModel.getSize());
+
+        trainComboBox.setModel(trainComboBoxModel);
     }
 
     /**
      * @return false if all runOndays are unchecked
      */
-    protected boolean validationCheck(){
-        if(!monCheckBox.isSelected() &&!tuesCheckBox.isSelected() &&!wedCheckBox.isSelected() &&!thurCheckBox.isSelected() &&
-                !friCheckBox.isSelected() &&!satCheckBox.isSelected() &&!sunCheckBox.isSelected() ){
+    protected boolean validationCheck() {
+        if (!monCheckBox.isSelected() && !tuesCheckBox.isSelected() && !wedCheckBox.isSelected() && !thurCheckBox.isSelected() &&
+                !friCheckBox.isSelected() && !satCheckBox.isSelected() && !sunCheckBox.isSelected()) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }

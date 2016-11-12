@@ -1,3 +1,4 @@
+import jdbc.JDBC;
 import model.User;
 import ui.clerk_ui.*;
 
@@ -14,13 +15,14 @@ import java.util.List;
 public class ClerkMain {
     public static void main(String[] args) {
 
+        JDBC.getInstance().openCon();
+
         ClerkMainFrame frame = ClerkMainFrame.getInstance();
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 //TODO shutdown database
-
                 System.exit(0);
             }
         });
