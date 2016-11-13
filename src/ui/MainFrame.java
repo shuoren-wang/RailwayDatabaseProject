@@ -11,6 +11,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import static jdbc.JDBC.*;
 
@@ -138,12 +139,18 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 trainByStopses = new ArrayList<TrainByStops>();
                 //TODO: get data from database
+                try {
+                    trainByStopses = fillTrains();
+                } catch (SQLException f) {
+                    f.printStackTrace();
+                }
             }
         });
 
     }
 
     protected void addTrainsList() {
+
         trainsListModel = new DefaultListModel();
         trainsList = new JList(trainsListModel);
         JScrollPane listScroller = new JScrollPane(trainsList);

@@ -3,7 +3,10 @@ package jdbc;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+// import java.util.Date;
+import model.Passenger;
 import model.User;
+import model.Train;
 import java.util.HashSet;
 
 /**
@@ -24,6 +27,7 @@ public class JDBC {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
                     "jdbc:mysql://windflower.arvixe.com/ubc_cpsc304", "cpsc304", "trains");
+            stmt = con.createStatement();
             System.out.println("Connection opened");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,6 +48,93 @@ public class JDBC {
     public static Connection getCon() {
         return con;
     }
+
+    /* User login. Checks username and password against database.
+     * Arguments: String username, password
+     * Returns:   UserID for successful login, -1 otherwise
+     */
+    public static int userLogin(String userLogin, String loginPassword) {
+        try {
+            // ResultSet rs = stmt.executeQuery("CALL spLogin('" + username + "','" + password + "');");
+            ResultSet rs = stmt.executeQuery("CALL spLogin('" + userLogin + "','" + loginPassword + "')");
+            if (rs.next()) {
+                int userID = rs.getInt("userid");
+                int userType = rs.getInt("usertype"); // 0 for passenger, 1 for clerk
+                String name;
+                if (userType == 0) { // passenger
+                    rs = stmt.executeQuery("CALL spSearchPassengerInfo('" + userID + "')");
+                    if (rs.next()) {
+                        name = rs.getString("name");
+                        String number = rs.getString("phonenumber");
+                        int passengerID = rs.getInt("passengerid");
+                        currentUser = new Passenger(userID, name, userLogin, loginPassword, true, passengerID, number); // currently no stored proc to check if user is active
+                    } else {
+                        System.out.println("Error: could not find passenger info");
+                        return -1;
+                    }
+                } else { // clerk
+                    rs = stmt.executeQuery("CALL spClerkInfo('" + userID + "')");
+                    if (rs.next()) {
+                        name = rs.getString("name");
+                        currentUser = new User(userID, name, userLogin, loginPassword, true); // currently no stored proc to find clerk info
+                    } else {
+                        System.out.println("Error: could not clerk info");
+                        return -1;
+                    }
+                }
+                System.out.println("ID: " + userID +"\nName: " + name + "\nLogin: " + userLogin + "\nPassword: " + loginPassword);
+                return userID;
+
+            } else {
+                System.out.println("Error in username or password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Returning -1");
+        return -1;
+    }
+
+    /* Arguments: int userID
+     * Returns: The User associated with userID
+     */ /*
+    public static User getUser(int userID) {
+
+    }
+    */
+
+    public static ArrayList<model.Train> fillTrains() throws SQLException {
+        try {
+            ArrayList<model.Train> trains = new ArrayList<model.Train>();
+            ResultSet rs = stmt.executeQuery("SELECT * from Trains");
+            while (rs.next()) {
+                int trainNumber = rs.getInt(1);
+                int dayOfWeek = 2;
+                for (int i = 2; i < 9; i++) {
+                    if (rs.getBoolean(i)) dayOfWeek = i - 1;
+                }
+                String lineName = "placeholder";
+                int lineId = rs.getInt(10);
+                String seatClass = "placeholder";
+                int availableSeats = 22; // placeholder;
+                Date departTime = new Date(1000000000);
+                Date arrivalTime = new Date(1000500000);
+
+                Train newTrain = new Train(trainNumber, dayOfWeek, lineName, lineId, seatClass, availableSeats, departTime, arrivalTime);
+
+                trains.add(newTrain);
+            }
+            System.out.println("trains filled");
+            return trains;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
 
     public static void printLineWithActiveStops(Statement stmt) throws SQLException {
         ResultSet rs = runStoredProc(stmt, "spShowAllLinesAndStops");
