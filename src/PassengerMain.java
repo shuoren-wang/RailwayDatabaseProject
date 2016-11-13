@@ -9,6 +9,7 @@ public class PassengerMain {
         PassengerMainFrame frame = PassengerMainFrame.getInstance();
 
 //        openCon();
+        System.out.println("PassengerMain opened");
 
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {

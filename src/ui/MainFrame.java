@@ -139,11 +139,13 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 trainByStopses = new ArrayList<TrainByStops>();
                 //TODO: get data from database
+                /*
                 try {
                     trainByStopses = fillTrains();
                 } catch (SQLException f) {
                     f.printStackTrace();
                 }
+                */
             }
         });
 

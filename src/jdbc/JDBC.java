@@ -104,7 +104,7 @@ public class JDBC {
 
     }
     */
-
+/*
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {
             ArrayList<model.Train> trains = new ArrayList<model.Train>();
@@ -134,7 +134,7 @@ public class JDBC {
         return null;
     }
 
-
+*/
 
 
 
