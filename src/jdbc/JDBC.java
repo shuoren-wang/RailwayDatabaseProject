@@ -52,11 +52,11 @@ public class JDBC {
             // ResultSet rs = stmt.executeQuery("CALL spLogin('" + username + "','" + password + "');");
             ResultSet rs = stmt.executeQuery("CALL spLogin('" + userLogin + "','" + loginPassword + "')");
             if (rs.next()) {
-                int userID = rs.getInt(1);
-                String name = rs.getString(2);
-                String userName = rs.getString(3);
-                String password = rs.getString(4);
-                boolean active = rs.getBoolean(5);
+                int userID = rs.getInt("UserID");
+                String name = rs.getString("Name");
+                String userName = rs.getString("UserName");
+                String password = rs.getString("PASSWORD");
+                boolean active = rs.getBoolean("Active");
                 System.out.println(userID +" " + name + " " + userName + " " + password + " " + active);
                 currentUser.setUserID(userID);
                 currentUser.setName(name);
