@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 // import java.util.Date;
+import model.Passenger;
 import model.User;
 import model.Train;
 import java.util.HashSet;
@@ -52,24 +53,40 @@ public class JDBC {
             // ResultSet rs = stmt.executeQuery("CALL spLogin('" + username + "','" + password + "');");
             ResultSet rs = stmt.executeQuery("CALL spLogin('" + userLogin + "','" + loginPassword + "')");
             if (rs.next()) {
-                int userID = rs.getInt("UserID");
-                String name = rs.getString("Name");
-                String userName = rs.getString("UserName");
-                String password = rs.getString("PASSWORD");
-                boolean active = rs.getBoolean("Active");
-                System.out.println(userID +" " + name + " " + userName + " " + password + " " + active);
-                currentUser.setUserID(userID);
-                currentUser.setName(name);
-                currentUser.setUserName(userName);
-                currentUser.setPassword(password);
-                currentUser.setActive(active);
+                int userID = rs.getInt("userid");
+                int userType = rs.getInt("usertype"); // 0 for passenger, 1 for clerk
+                String name;
+                if (userType == 0) { // passenger
+                    rs = stmt.executeQuery("CALL spSearchPassengerInfo('" + userID + "')");
+                    if (rs.next()) {
+                        name = rs.getString("name");
+                        String number = rs.getString("phonenumber");
+                        int passengerID = rs.getInt("passengerid");
+                        currentUser = new Passenger(userID, name, userLogin, loginPassword, true, passengerID, number); // currently no stored proc to check if user is active
+                    } else {
+                        System.out.println("Error: could not find passenger info");
+                        return -1;
+                    }
+                } else { // clerk
+                    rs = stmt.executeQuery("CALL spClerkInfo('" + userID + "')");
+                    if (rs.next()) {
+                        name = rs.getString("name");
+                        currentUser = new User(userID, name, userLogin, loginPassword, true); // currently no stored proc to find clerk info
+                    } else {
+                        System.out.println("Error: could not clerk info");
+                        return -1;
+                    }
+                }
+                System.out.println("ID: " + userID +"\nName: " + name + "\nLogin: " + userLogin + "\nPassword: " + loginPassword);
                 return userID;
+
             } else {
                 System.out.println("Error in username or password");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("Returning -1");
         return -1;
     }
 
