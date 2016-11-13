@@ -16,7 +16,7 @@ import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
 
-public class SearchPassengerInfo extends JDialog{
+public class PassengerAccountRecovery extends JDialog{
 	private Clerk clerk;
 	
 	private JPanel contentPanel;
@@ -28,7 +28,7 @@ public class SearchPassengerInfo extends JDialog{
     private JList passengerInfoList;
     private ArrayList<Passenger> passengerList;
     
-    public SearchPassengerInfo(Clerk clerk) {
+    public PassengerAccountRecovery(Clerk clerk) {
     	this.clerk = clerk;
     	
     	contentPanel = new JPanel();
@@ -38,7 +38,7 @@ public class SearchPassengerInfo extends JDialog{
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setTitle("Manage Line Info");
-        setSize(750, 150);
+        setSize(300, 200);
         
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -46,8 +46,12 @@ public class SearchPassengerInfo extends JDialog{
         contentPanel.setLayout(new MigLayout("", "[][grow]", "[][][]"));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
     	
-        addUidLabel();
-        addUidDataLabel();
+        addUsernameLabel();
+        addUsernameDataLabel();
+        addNameLabel();
+        addNameDataLabel();
+        addPhoneLabel();
+        addPhoneDataLabel();
         
         addPassengerInfoList();
         
@@ -55,15 +59,37 @@ public class SearchPassengerInfo extends JDialog{
     	addCancelButton();
     }
     
-    private void addUidLabel() {
-        JLabel label = new JLabel("User ID :");
+    private void addUsernameLabel() {
+        JLabel label = new JLabel("Username :");
         contentPanel.add(label, "cell 0 1, alignx trailing");
     }
     
-    private void addUidDataLabel() {
+    private void addUsernameDataLabel() {
         String data = "";
         uidField = new JTextField(data);
         contentPanel.add(uidField, "cell 1 1, growx");
+    }
+    
+    private void addNameLabel() {
+        JLabel label = new JLabel("Name :");
+        contentPanel.add(label, "cell 0 2, alignx trailing");
+    }
+    
+    private void addNameDataLabel() {
+        String data = "";
+        uidField = new JTextField(data);
+        contentPanel.add(uidField, "cell 1 2, growx");
+    }
+    
+    private void addPhoneLabel() {
+        JLabel label = new JLabel("Phone Number :");
+        contentPanel.add(label, "cell 0 3, alignx trailing");
+    }
+    
+    private void addPhoneDataLabel() {
+        String data = "";
+        uidField = new JTextField(data);
+        contentPanel.add(uidField, "cell 1 3, growx");
     }
     
     private void addPassengerInfoList() {
@@ -73,10 +99,10 @@ public class SearchPassengerInfo extends JDialog{
 
         passengerInfoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         passengerInfoList.setLayoutOrientation(JList.VERTICAL);
-        listScroller.setPreferredSize(new Dimension(400, 200));
-        contentPanel.add(listScroller, "cell 0 2,grow,span");
-        passengerInfoListModel.addElement(String.format("%25s %25s %25s %25s %25s",
-                "User ID","Passenger ID","Username","Name","Phone Number"));
+        listScroller.setPreferredSize(new Dimension(300, 100));
+        contentPanel.add(listScroller, "cell 0 4,grow,span");
+        passengerInfoListModel.addElement(String.format("%25s %25s",
+                "User ID","Password"));
 
         if (passengerList != null && passengerList.size() > 0) {
             ArrayList<String> passengerInfoArr = new ArrayList<String>();
@@ -93,7 +119,7 @@ public class SearchPassengerInfo extends JDialog{
     
     private void addFindButton() {
     	JButton viewButton = new JButton("Find");
-    	final SearchPassengerInfo that=this;
+    	final PassengerAccountRecovery that=this;
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -116,8 +142,8 @@ public class SearchPassengerInfo extends JDialog{
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	SearchPassengerInfo.this.setVisible(false);
-            	SearchPassengerInfo.this.dispose();
+            	PassengerAccountRecovery.this.setVisible(false);
+            	PassengerAccountRecovery.this.dispose();
                 System.out.println("ManageLinesDialog:: GoBack button pressed");
             }
         });

@@ -37,6 +37,24 @@ public class ClerkMainFrame extends MainFrame {
         addManageLineStopsMenuItem();
         addSearchPassengerInfo();
         addViewAllPassengerInfoItem();
+        addPassengerAccountRecovery();
+    }
+    
+    private void addPassengerAccountRecovery() {
+        final MainFrame that = this;
+        JMenuItem userMenuItem = new JMenuItem("Search Passenger Info");
+        userMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	PassengerAccountRecovery dialog = new PassengerAccountRecovery(clerk);
+                dialog.setLocationRelativeTo(that);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+                System.out.println("ClerkMainFrame:: Recovery->AccountRecovery is Pressed");
+            }
+        });
+        manageMenu.add(userMenuItem);
+
     }
     
     private void addSearchPassengerInfo() {
