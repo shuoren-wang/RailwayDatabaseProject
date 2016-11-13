@@ -37,7 +37,7 @@ public class SearchPassengerInfo extends JDialog{
         setResizable(false);
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setTitle("Manage Line Info");
+        setTitle("Search Passenger Info");
         setSize(750, 150);
         
         getContentPane().setLayout(new BorderLayout());

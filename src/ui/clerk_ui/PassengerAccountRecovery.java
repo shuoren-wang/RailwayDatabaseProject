@@ -39,7 +39,7 @@ public class PassengerAccountRecovery extends JDialog{
         setResizable(false);
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setTitle("Manage Line Info");
+        setTitle("Passenger Account Recovery");
         setSize(300, 200);
         
         getContentPane().setLayout(new BorderLayout());
