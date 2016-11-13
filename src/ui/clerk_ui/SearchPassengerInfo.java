@@ -16,23 +16,19 @@ import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
 
-public class ViewAllPassengerInfo extends JDialog{
+public class SearchPassengerInfo extends JDialog{
 	private Clerk clerk;
-	private String passengerSortStat;
 	
 	private JPanel contentPanel;
     private JPanel buttonPanel;
     
-    private JComboBox passengerStatComboBox;
-    private DefaultComboBoxModel passengerStatComboBoxModel;
-    private JTextField displayAmountField;
-    private JTextField offsetField;
+    private JTextField uidField;
     
     private DefaultListModel passengerInfoListModel;
     private JList passengerInfoList;
     private ArrayList<Passenger> passengerList;
     
-    public ViewAllPassengerInfo(Clerk clerk) {
+    public SearchPassengerInfo(Clerk clerk) {
     	this.clerk = clerk;
     	
     	contentPanel = new JPanel();
@@ -42,7 +38,7 @@ public class ViewAllPassengerInfo extends JDialog{
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setTitle("Manage Line Info");
-        setSize(750, 350);
+        setSize(750, 150);
         
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -50,12 +46,8 @@ public class ViewAllPassengerInfo extends JDialog{
         contentPanel.setLayout(new MigLayout("", "[][grow]", "[][][]"));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
     	
-        addPassengerStatLabel();
-        passengerStatComboBox();
-        addDisplayAmountLabel();
-        addDisplayAmountDataLabel();
-        addOffsetLabel();
-        addOffsetDataLabel();
+        addUidLabel();
+        addUidDataLabel();
         
         addPassengerInfoList();
         
@@ -63,58 +55,16 @@ public class ViewAllPassengerInfo extends JDialog{
     	addCancelButton();
     }
     
-    private void addPassengerStatLabel() {
-        JLabel label = new JLabel("Passenger Sort By :");
+    private void addUidLabel() {
+        JLabel label = new JLabel("User ID :");
         contentPanel.add(label, "cell 0 1, alignx trailing");
     }
+
     
-    private void addDisplayAmountLabel() {
-        JLabel label = new JLabel("Display Amount :");
-        contentPanel.add(label, "cell 0 2, alignx trailing");
-    }
-    
-    private void addOffsetLabel() {
-        JLabel label = new JLabel("Offset :");
-        contentPanel.add(label, "cell 0 3, alignx trailing");
-    }
-    
-    private void passengerStatComboBox() {
-    	passengerStatComboBoxModel = new DefaultComboBoxModel();
-    	passengerStatComboBoxModel.addElement("uid");
-    	passengerStatComboBoxModel.addElement("pid");
-    	passengerStatComboBoxModel.addElement("uname");
-    	passengerStatComboBoxModel.addElement("name");
-    	passengerStatComboBoxModel.addElement("phone");
-    	
-    	passengerStatComboBox = new JComboBox(passengerStatComboBoxModel);
-    	passengerStatComboBox.setMaximumSize(new Dimension(300, 600));
-    	
-    	passengerStatComboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    passengerSortStat = (String) passengerStatComboBox.getSelectedItem();
-                    System.out.println("select item: " + passengerSortStat);
-                }
-            }
-        });
-    	
-    	if(passengerSortStat==null){
-    		passengerSortStat=(String) passengerStatComboBox.getSelectedItem();
-        }
-    	contentPanel.add(passengerStatComboBox, "cell 1 1,growx,span");
-    }
-    
-    private void addDisplayAmountDataLabel() {
+    private void addUidDataLabel() {
         String data = "";
-        displayAmountField = new JTextField(data);
-        contentPanel.add(displayAmountField, "cell 1 2, growx");
-    }
-    
-    private void addOffsetDataLabel() {
-        String data = "";
-        offsetField = new JTextField(data);
-        contentPanel.add(offsetField, "cell 1 3, growx");
+        uidField = new JTextField(data);
+        contentPanel.add(uidField, "cell 1 1, growx");
     }
     
     private void addPassengerInfoList() {
@@ -125,7 +75,7 @@ public class ViewAllPassengerInfo extends JDialog{
         passengerInfoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         passengerInfoList.setLayoutOrientation(JList.VERTICAL);
         listScroller.setPreferredSize(new Dimension(400, 200));
-        contentPanel.add(listScroller, "cell 0 4,grow,span");
+        contentPanel.add(listScroller, "cell 0 2,grow,span");
         passengerInfoListModel.addElement(String.format("%25s %25s %25s %25s %25s",
                 "User ID","Passenger ID","Username","Name","Phone Number"));
 
@@ -144,16 +94,16 @@ public class ViewAllPassengerInfo extends JDialog{
     
     private void addViewButton() {
     	JButton viewButton = new JButton("View");
-    	final ViewAllPassengerInfo that=this;
+    	final SearchPassengerInfo that=this;
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO database
-                if(displayAmountField.getText() != null && offsetField.getText() != null) {
+                if(uidField.getText() != null) {
                     
                 }else{
                     JOptionPane.showMessageDialog(that,
-                            "Display Amount and Offset cannot be empty",
+                            "UserID cannot be empty",
                             "Warning",
                             JOptionPane.WARNING_MESSAGE);
                 }
@@ -167,8 +117,8 @@ public class ViewAllPassengerInfo extends JDialog{
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	ViewAllPassengerInfo.this.setVisible(false);
-            	ViewAllPassengerInfo.this.dispose();
+            	SearchPassengerInfo.this.setVisible(false);
+            	SearchPassengerInfo.this.dispose();
                 System.out.println("ManageLinesDialog:: GoBack button pressed");
             }
         });
