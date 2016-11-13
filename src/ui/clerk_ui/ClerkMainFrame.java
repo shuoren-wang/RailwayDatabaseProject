@@ -35,6 +35,24 @@ public class ClerkMainFrame extends MainFrame {
         addManageStationsMenuItem();
         addManageTrainsMenuItem();
         addManageLineStopsMenuItem();
+        addViewAllPassengerInfoItem();
+    }
+    
+    private void addViewAllPassengerInfoItem() {
+        final MainFrame that = this;
+        JMenuItem userMenuItem = new JMenuItem("View All Passenger Info");
+        userMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ViewAllPassengerInfo dialog = new ViewAllPassengerInfo(clerk);
+                dialog.setLocationRelativeTo(that);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+                System.out.println("ClerkMainFrame:: View->ViewPassengers is Pressed");
+            }
+        });
+        manageMenu.add(userMenuItem);
+
     }
 
     private void addManageLineStopsMenuItem() {
