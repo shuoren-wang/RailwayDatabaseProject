@@ -22,7 +22,9 @@ public class PassengerAccountRecovery extends JDialog{
 	private JPanel contentPanel;
     private JPanel buttonPanel;
     
-    private JTextField uidField;
+    private JTextField usernameField;
+    private JTextField nameField;
+    private JTextField phoneField;
     
     private DefaultListModel passengerInfoListModel;
     private JList passengerInfoList;
@@ -66,8 +68,8 @@ public class PassengerAccountRecovery extends JDialog{
     
     private void addUsernameDataLabel() {
         String data = "";
-        uidField = new JTextField(data);
-        contentPanel.add(uidField, "cell 1 1, growx");
+        usernameField = new JTextField(data);
+        contentPanel.add(usernameField, "cell 1 1, growx");
     }
     
     private void addNameLabel() {
@@ -77,8 +79,8 @@ public class PassengerAccountRecovery extends JDialog{
     
     private void addNameDataLabel() {
         String data = "";
-        uidField = new JTextField(data);
-        contentPanel.add(uidField, "cell 1 2, growx");
+        nameField = new JTextField(data);
+        contentPanel.add(nameField, "cell 1 2, growx");
     }
     
     private void addPhoneLabel() {
@@ -88,8 +90,8 @@ public class PassengerAccountRecovery extends JDialog{
     
     private void addPhoneDataLabel() {
         String data = "";
-        uidField = new JTextField(data);
-        contentPanel.add(uidField, "cell 1 3, growx");
+        phoneField = new JTextField(data);
+        contentPanel.add(phoneField, "cell 1 3, growx");
     }
     
     private void addPassengerInfoList() {
@@ -124,11 +126,11 @@ public class PassengerAccountRecovery extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO database
-                if(uidField.getText() != null) {
+                if(usernameField.getText() != null && nameField.getText() != null && phoneField.getText() != null) {
                     
                 }else{
                     JOptionPane.showMessageDialog(that,
-                            "UserID cannot be empty",
+                            "Username, Name, and Phone Number cannot be empty",
                             "Warning",
                             JOptionPane.WARNING_MESSAGE);
                 }
