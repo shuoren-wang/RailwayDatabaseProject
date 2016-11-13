@@ -35,9 +35,27 @@ public class ClerkMainFrame extends MainFrame {
         addManageStationsMenuItem();
         addManageTrainsMenuItem();
         addManageLineStopsMenuItem();
+        ManageTrainType();
         addSearchPassengerInfo();
         addViewAllPassengerInfoItem();
         addPassengerAccountRecovery();
+    }
+    
+    private void ManageTrainType() {
+        final MainFrame that = this;
+        JMenuItem userMenuItem = new JMenuItem("Manage Train Type");
+        userMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ManageTrainType dialog = new ManageTrainType(clerk);
+                dialog.setLocationRelativeTo(that);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setVisible(true);
+                System.out.println("ClerkMainFrame:: Manage->ManageTrainType is Pressed");
+            }
+        });
+        manageMenu.add(userMenuItem);
+
     }
     
     private void addPassengerAccountRecovery() {
