@@ -15,6 +15,8 @@ import java.util.HashSet;
 public class JDBC {
 
     static Connection con;
+    private static Statement stmt;
+    private static User currentUser;
     private static JDBC instance=new JDBC();
 
     public static JDBC getInstance(){
