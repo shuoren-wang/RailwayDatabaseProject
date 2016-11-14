@@ -1,3 +1,4 @@
+import jdbc.JDBC;
 import ui.passenger_ui.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -8,14 +9,14 @@ public class PassengerMain {
 
         PassengerMainFrame frame = PassengerMainFrame.getInstance();
 
-//        openCon();
+        JDBC.getInstance().openCon();
         System.out.println("PassengerMain opened");
 
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-//                closeCon();
+                JDBC.getInstance().closeCon();
 
                 System.exit(0);
             }

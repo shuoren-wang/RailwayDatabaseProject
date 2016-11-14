@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static jdbc.JDBC.*;
+import jdbc.JDBC;
 
 /**
  * Created by shuorenwang on 2016-10-21.
@@ -92,10 +93,11 @@ public class LoginDialog extends JDialog{
                             JOptionPane.WARNING_MESSAGE);
                 }
 /*
-=======
+======= */
                 String password = passwordField.getText();
                 String username = usernameField.getText();
                 userLogin(username, password);
+                /*
 >>>>>>> communication
 */
             }
