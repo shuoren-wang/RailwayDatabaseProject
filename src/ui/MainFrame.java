@@ -354,4 +354,12 @@ public class MainFrame extends JFrame {
     public User getUser() {
         return user;
     }
+
+    /**
+     * @return true if no empty textFields
+     */
+    private boolean validationCheck(){
+        //TODO: check from/to station need to be different??
+        return false;
+    }
 }

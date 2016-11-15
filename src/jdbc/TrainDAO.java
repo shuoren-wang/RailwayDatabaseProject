@@ -64,29 +64,20 @@ public class TrainDAO {
 
                 trains.add(train);
             }
-            System.out.println(String.format("TrainDAO::Load data from trains: success!"));
+            System.out.println("TrainDAO::Load data from trains: success!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void modifyData(Train train) {
-        System.out.println(String.format("TrainDAO:: Modify data to trains"));
+        System.out.println("TrainDAO:: Modify data to trains");
         CallableStatement cs = null;
         try {
             cs = con.prepareCall("{CALL spModifyTrain("
                     +train.getId()+","
                     +train.getUpdatedByEmployeeID()+","
-                    +(train.isRunsOnMon()? 1 : 0)+","
-                    +(train.isRunsOnTue()? 1 : 0)+","
-                    +(train.isRunsOnWed()? 1 : 0)+","
-                    +(train.isRunsOnThu()? 1 : 0)+","
-                    +(train.isRunsOnFri()? 1 : 0)+","
-                    +(train.isRunsOnSat()? 1 : 0)+","
-                    +(train.isRunsOnSun()? 1 : 0)+","
-                    +train.getTrainTypeId()+","
-                    //TODO: train.isActive()
-                    +train.getLineId()+")}");
+                    +(train.isActive()? 1 : 0)+")}");
             cs.executeUpdate();
             System.out.println("TrainDAO:: Modify trains: success!");
         } catch (SQLException e) {

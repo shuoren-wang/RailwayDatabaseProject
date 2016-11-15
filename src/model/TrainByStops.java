@@ -5,8 +5,10 @@ import java.sql.Date;
 
 /**
  * Created by shuorenwang on 2016-11-05.
+ * For spGetLineTrainSeats_by_FromToStationDate
  */
 public class TrainByStops {
+    private Date date;
     private int trainNumber;
     private int dayOfWeek; //(1 = Sunday, 2 = Monday, …, 7 = Saturday)
     private String lineName;
@@ -15,19 +17,34 @@ public class TrainByStops {
     private int availableSeats;
     private Date departTime; //12:00:00
     private Date arrivalTime; //12:00:00
-
-    public TrainByStops(int trainNumber, int dayOfWeek, String lineName, int lineId, String seatClass, int availableSeats, Date departTime, Date arrivalTime) {
-        this.trainNumber = trainNumber;
-        this.dayOfWeek = dayOfWeek;
-        this.lineName = lineName;
-        this.lineId = lineId;
-        this.seatClass = seatClass;
-        this.availableSeats = availableSeats;
-        this.departTime = departTime;
-        this.arrivalTime = arrivalTime;
-    }
+    private int fromStationId;
+    private int toStationId;
 
     public TrainByStops() {}
+
+    public int getFromStationId() {
+        return fromStationId;
+    }
+
+    public void setFromStationId(int fromStationId) {
+        this.fromStationId = fromStationId;
+    }
+
+    public int getToStationId() {
+        return toStationId;
+    }
+
+    public void setToStationId(int toStationId) {
+        this.toStationId = toStationId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public int getTrainNumber() {
         return trainNumber;

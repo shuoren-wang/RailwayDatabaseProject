@@ -143,7 +143,7 @@ public class Train {
     }
 
     public String toString(){
-        String str1= "Type: "+ trainTypeColor+"; Line: "+lineName;
+        String str1= "Type:"+ trainTypeColor+"; Line:"+lineName;
         String str2=String.format("; RunOndays: %s%s%s%s%s%s%s",
                 (isRunsOnMon()?"M ":""),
                 (isRunsOnTue()?"Tu ":""),
@@ -152,6 +152,7 @@ public class Train {
                 (isRunsOnFri()?"F ":""),
                 (isRunsOnSat()?"Sa ":""),
                 (isRunsOnSun()?"Su ":""));
-        return str1+str2;
+        String str3=isActive()? "; Active": "; Disabled";
+        return str1+str2+str3;
     }
 }

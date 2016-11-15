@@ -154,7 +154,7 @@ public class PurchasedTicketsDialog extends JDialog{
     private void addFromLineIdDataLabel(){
         String fromLineData="";
         if(ticket!=null) {
-            fromLineData = Integer.toString(ticket.getFromLineId());
+            fromLineData = Integer.toString(ticket.getFromStationId());
         }
         fromLineIdLabel=new JLabel(fromLineData);
         contentPanel.add(fromLineIdLabel, "cell 1 4, growx");
@@ -168,7 +168,7 @@ public class PurchasedTicketsDialog extends JDialog{
     private void addToLineIdDataLabel(){
         String toLineData="";
         if(ticket!=null) {
-            toLineData=Integer.toString(ticket.getToLineId());
+            toLineData=Integer.toString(ticket.getToStationId());
         }
         toLineIdLabel=new JLabel(toLineData);
         contentPanel.add(toLineIdLabel, "cell 1 5, growx");
@@ -233,8 +233,8 @@ public class PurchasedTicketsDialog extends JDialog{
 
         ticketIdLabel.setText(Integer.toString(this.ticket.getId()));
         trainNoLabel.setText(Integer.toString(this.ticket.getTrainNo()));
-        fromLineIdLabel.setText(Integer.toString(this.ticket.getFromLineId()));
-        toLineIdLabel.setText(Integer.toString(this.ticket.getToLineId()));
+        fromLineIdLabel.setText(Integer.toString(this.ticket.getFromStationId()));
+        toLineIdLabel.setText(Integer.toString(this.ticket.getToStationId()));
         dateLabel.setText(this.ticket.getDepartDate().toString());
         seatNoLabel.setText(Integer.toString(this.ticket.getSeatNo()));
         seatClassLabel.setText(this.ticket.getSeatClass());

@@ -9,37 +9,38 @@ import java.util.Calendar;
 public class Ticket {
     private int id;
     private Date departDate; //2016-10-18
-    private int fromLineId;
-    private int toLineId;
+    private int fromStationId;
+    private int toStationId;
     private int passengerID;
     private String seatClass;
     private int seatNo;
+    private int lineId;
     private int trainNo;
     private User user;
 
-    public Ticket(User user, int id, Date departDate, int fromLineId, int toLineId, int passengerID, int seatNo, int trainNo, String seatClass) {
-        this.user=user;
-        this.id = id;
-        this.departDate = departDate;
-        this.fromLineId = fromLineId;
-        this.toLineId = toLineId;
-        this.passengerID = passengerID;
-        this.seatNo = seatNo;
-        this.trainNo = trainNo;
-        this.seatClass=seatClass;
+    public Ticket() {
     }
 
+
     //Used for test interface
-    public Ticket(){
+   /* public Ticket(){
         this.user=new User();
         this.id = 0;
         this.departDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());;
-        this.fromLineId = 0;
-        this.toLineId = 0;
+        this.fromStationId = 0;
+        this.toStationId = 0;
         this.passengerID = 0;
         this.seatNo = 0;
         this.trainNo = 0;
         this.seatClass="Economy";
+    }*/
+
+    public int getLineId() {
+        return lineId;
+    }
+
+    public void setLineId(int lineId) {
+        this.lineId = lineId;
     }
 
     public User getUser() {
@@ -54,12 +55,12 @@ public class Ticket {
         return departDate;
     }
 
-    public int getFromLineId() {
-        return fromLineId;
+    public int getFromStationId() {
+        return fromStationId;
     }
 
-    public int getToLineId() {
-        return toLineId;
+    public int getToStationId() {
+        return toStationId;
     }
 
     public int getPassengerID() {
@@ -90,12 +91,12 @@ public class Ticket {
         this.departDate = departDate;
     }
 
-    public void setFromLineId(int fromLineId) {
-        this.fromLineId = fromLineId;
+    public void setFromStationId(int fromStationId) {
+        this.fromStationId = fromStationId;
     }
 
-    public void setToLineId(int toLineId) {
-        this.toLineId = toLineId;
+    public void setToStationId(int toStationId) {
+        this.toStationId = toStationId;
     }
 
     public void setPassengerID(int passengerID) {
@@ -112,5 +113,10 @@ public class Ticket {
 
     public void setSeatClass(String seatClass) {
         this.seatClass = seatClass;
+    }
+
+    public String toString(){
+        return "From Station Id: "+fromStationId+", To Station Id: "+toStationId
+                +", Travel Date: "+departDate;
     }
 }

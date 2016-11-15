@@ -86,7 +86,7 @@ public class PurchaseDialog extends JDialog{
     }
 
     private void addFromLineIdDataLabel(){
-        String fromLineData=Integer.toString(currentTicket.getFromLineId());
+        String fromLineData=Integer.toString(currentTicket.getFromStationId());
         JLabel label=new JLabel(fromLineData);
         contentPanel.add(label, "cell 1 4, alignx trailing");
     }
@@ -97,7 +97,7 @@ public class PurchaseDialog extends JDialog{
     }
 
     private void addToLineIdDataLabel(){
-        String toLineData=Integer.toString(currentTicket.getToLineId());
+        String toLineData=Integer.toString(currentTicket.getToStationId());
         JLabel label=new JLabel(toLineData);
         contentPanel.add(label, "cell 1 5, alignx trailing");
     }

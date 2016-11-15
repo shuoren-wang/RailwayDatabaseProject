@@ -6,10 +6,9 @@
 
 import java.sql.*;
 
-import model.Line;
-import model.Train;
-import model.User;
+import model.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,88 +48,59 @@ public class test {
     }
 
 
-    public static void printLineWithActiveStops(Statement stmt) throws SQLException {
-        ResultSet rs = stmt.executeQuery("SELECT \n"+
-                "  l.linename,\n"+
-                "  ls.ArrivalTime,\n"+
-                "  ADDTIME(ls.arrivaltime, ls.stopsforduration) AS DepartureTime,\n"+
-                "  s.StationName,\n"+
-                "  s.Address AS StationAddress\n"+
-                "FROM \n"+
-                "  line l \n"+
-                "  INNER JOIN linestops ls ON l.id=ls.forline_id\n"+
-                "  INNER JOIN stations s ON ls.locatedstation_id = s.id\n"+
-                "WHERE \n"+
-                "  STATUS=1\n"+
-                "ORDER BY \n"+
-                "  Arrivaltime ASC");
-
-        while (rs.next()) {
-            String lineName = rs.getString(1);
-            Time arrivalTime = rs.getTime(2);
-            Time departureTime = rs.getTime(3);
-            String stationName = rs.getString(4);
-            String stationAddr = rs.getString(5);
-
-            System.out.println("lineName = "+lineName+
-                    ", arrivalTime = "+arrivalTime+
-                    "\n,departureTime = "+departureTime+
-                    " ,stationName = "+stationName+
-                    " ,stationAddress = "+stationAddr);
-        }
-    }
-
-    public static void modifyData(Line line) {
-        System.out.println(String.format("Modify data from lines"));
-        CallableStatement cs = null;
-        try {
-            cs = con.prepareCall("{CALL spModifyLine("
-                    +line.getUpdatedByEmployeeId()+","
-                    +line.getId()+","
-                    +line.getLineName()+","
-                    +(line.isActive()? 1 : 0)+")}");
-            cs.executeUpdate();
-//            cs = con.prepareCall("CALL spCreateLine(1,'test Line',1);");
-            cs.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     public static void loadData() {
-
-        System.out.println(String.format("Load data from trains"));
+        User user=new User();
+        user.setUserID(2);
+        System.out.println(String.format("Load data from trainByStopsList"));
         CallableStatement cs = null;
         try {
-            cs = con.prepareCall("{CALL spViewTrains('id',20,0)}");
+            cs = con.prepareCall("CALL spViewTickets("+user.getUserID()+")");
             ResultSet rs = cs.executeQuery();
 
             while (rs.next()) {
-                Train train=new Train();
-                train.setId(rs.getInt(1));
-                train.setRunsOnMon(rs.getBoolean(2));
-                train.setRunsOnTue(rs.getBoolean(3));
-                train.setRunsOnWed(rs.getBoolean(4));
-                train.setRunsOnThu(rs.getBoolean(5));
-                train.setRunsOnFri(rs.getBoolean(6));
-                train.setRunsOnSat(rs.getBoolean(7));
-                train.setRunsOnSun(rs.getBoolean(8));
-                train.setTrainTypeId(rs.getInt(9));
-                train.setTrainTypeColor(rs.getString(10));
-                train.setLineId(rs.getInt(11));
-                train.setLineName(rs.getString(12));
-                train.setCreatedByEmployeeID(rs.getInt(13));
-                train.setUpdatedByEmployeeID(rs.getInt(15));
-                train.setActive(rs.getBoolean(16));
-                System.out.println("id= "+train.getId()+";  name= "+train.getLineName()
-                        +"; isActive= "+train.isActive());
+                Ticket ticket = new Ticket();
 
+                ticket.setUser(user);
+                ticket.setId(rs.getInt("ticketId"));
+                ticket.setFromStationId(rs.getInt("fromStationId"));
+                ticket.setToStationId(rs.getInt("toStationId"));
+                ticket.setDepartDate(rs.getDate("travelDate"));
+                ticket.setSeatClass(rs.getString(6));
+                ticket.setLineId(rs.getInt("lineID"));
+                ticket.setTrainNo(rs.getInt("TrainNumber"));
+
+                System.out.println(ticket.toString());
             }
-            System.out.println(String.format("Load data from trains: success!"));
+            System.out.println("Load data from trainByStopsDAO: success!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static int PurchaseTickets() {
+        System.out.println("Purchase Tickets");
+        int ticketID=0;
+        CallableStatement cs = null;
+        try {
+            cs = con.prepareCall("CALL spPurchase(9,1,5,'2016-10-18','Business',1,1);");
+
+            ResultSet rs = cs.executeQuery();
+
+            if (rs.next()) {
+                ticketID = rs.getInt(0);
+            }
+
+            System.out.println("ticketID="+ticketID);
+        } catch (Exception e) {
+            System.out.println("throw error");
+
+            System.out.println(e.getMessage());
+//            JOptionPane.showMessageDialog(this,
+//                    e.getMessage(),"Warning",
+//                    JOptionPane.INFORMATION_MESSAGE);
+//        }
+        }
+        return ticketID;
     }
 
     public static void testProcedure() throws SQLException {

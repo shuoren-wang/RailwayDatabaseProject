@@ -11,13 +11,7 @@ public class Station {
     private int CreatedByEmployeeID;
     private int UpdatedByEmployeeID;
 
-    public Station(int id, String addr, String name, boolean isActive, int createdByEmployeeID, int updatedByEmployeeID) {
-        this.id = id;
-        this.addr = addr;
-        this.name = name;
-        this.isActive = isActive;
-        CreatedByEmployeeID = createdByEmployeeID;
-        UpdatedByEmployeeID = updatedByEmployeeID;
+    public Station() {
     }
 
     public int getId() {

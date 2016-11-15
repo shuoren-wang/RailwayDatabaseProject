@@ -52,14 +52,14 @@ public class LineDAO {
 
                 lines.add(line);
             }
-            System.out.println(String.format("Load data from lines: success!"));
+            System.out.println("Load data from lines: success!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void modifyData(Line line) {
-        System.out.println(String.format("Modify data to lines"));
+        System.out.println("Modify data to lines");
         CallableStatement cs = null;
         try {
             cs = con.prepareCall("{CALL spModifyLine("
