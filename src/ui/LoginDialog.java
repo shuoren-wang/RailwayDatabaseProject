@@ -134,7 +134,9 @@ public class LoginDialog extends JDialog{
      * @return true if find user, false otherwise
      */
     private boolean checkData(){
-        //TODO: database
+        String password = passwordField.getText();
+        String username = usernameField.getText();
+        userLogin()
 
         return false;
     }
