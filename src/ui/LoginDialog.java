@@ -138,7 +138,6 @@ public class LoginDialog extends JDialog{
         String username = usernameField.getText();
         boolean ret = userLogin(username, password);
 
-
         return ret;
     }
 }
