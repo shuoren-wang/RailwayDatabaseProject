@@ -96,7 +96,7 @@ public class LoginDialog extends JDialog{
 ======= */
                 String password = passwordField.getText();
                 String username = usernameField.getText();
-                userLogin(username, password);
+                // userLogin(username, password);
                 /*
 >>>>>>> communication
 */
@@ -136,8 +136,9 @@ public class LoginDialog extends JDialog{
     private boolean checkData(){
         String password = passwordField.getText();
         String username = usernameField.getText();
-        userLogin()
+        boolean ret = userLogin(username, password);
 
-        return false;
+
+        return ret;
     }
 }

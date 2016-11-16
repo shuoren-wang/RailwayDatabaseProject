@@ -55,7 +55,7 @@ public class JDBC {
      * Arguments: String username, password
      * Returns:   UserID for successful login, -1 otherwise
      */
-    public static int userLogin(String userLogin, String loginPassword) {
+    public static boolean userLogin(String userLogin, String loginPassword) {
         try {
             // ResultSet rs = stmt.executeQuery("CALL spLogin('" + username + "','" + password + "');");
             ResultSet rs = stmt.executeQuery("CALL spLogin('" + userLogin + "','" + loginPassword + "')");
@@ -72,7 +72,8 @@ public class JDBC {
                         currentUser = new Passenger(userID, name, userLogin, loginPassword, true, passengerID, number); // currently no stored proc to check if user is active
                     } else {
                         System.out.println("Error: could not find passenger info");
-                        return -1;
+                        //return -1;
+                        return false;
                     }
                 } else { // clerk
                     rs = stmt.executeQuery("CALL spClerkInfo('" + userID + "')");
@@ -81,11 +82,13 @@ public class JDBC {
                         currentUser = new User(userID, name, userLogin, loginPassword, true); // currently no stored proc to find clerk info
                     } else {
                         System.out.println("Error: could not clerk info");
-                        return -1;
+                        // return -1;
+                        return false;
                     }
                 }
                 System.out.println("ID: " + userID +"\nName: " + name + "\nLogin: " + userLogin + "\nPassword: " + loginPassword);
-                return userID;
+                // return userID;
+                return true;
 
             } else {
                 System.out.println("Error in username or password");
@@ -94,7 +97,8 @@ public class JDBC {
             e.printStackTrace();
         }
         System.out.println("Returning -1");
-        return -1;
+        // return -1;
+        return false;
     }
 
     /* Arguments: int userID
