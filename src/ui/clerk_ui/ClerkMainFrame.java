@@ -21,7 +21,10 @@ public class ClerkMainFrame extends MainFrame {
 
     private ClerkMainFrame() {
         super();
+        //TODO: for test
         clerk=new Clerk();
+        purchaseButton.setVisible(false);
+        manageMenu.remove(ticketMenuItem);
     }
 
     public static ClerkMainFrame getInstance() {
@@ -31,6 +34,7 @@ public class ClerkMainFrame extends MainFrame {
     @Override
     protected void addManageMenu() {
         super.addManageMenu();
+
         addManageLinesMenuItem();
         addManageStationsMenuItem();
         addManageTrainsMenuItem();
@@ -167,7 +171,7 @@ public class ClerkMainFrame extends MainFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO :database
-                ManageStationsDialog dialog = new ManageStationsDialog(that);
+                ManageStationsDialog dialog = new ManageStationsDialog(clerk);
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);

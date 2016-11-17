@@ -63,10 +63,12 @@ public class ManageLinesDialog extends JDialog {
         addLineNameDataLabel();
         addActiveLabel();
         addActiveCheckBox();
-
         addCreateButton();
         addStatusButton();
         addCancelButton();
+
+        pack();
+//        setVisible(true);
     }
 
     private void addAllLinesLabel() {
@@ -75,6 +77,7 @@ public class ManageLinesDialog extends JDialog {
     }
 
     private void addAllLinesComboBox() {
+        final ManageLinesDialog that=this;
         lineDAO.loadData();
         List<Line> lines = lineDAO.getLines();
 
@@ -87,14 +90,20 @@ public class ManageLinesDialog extends JDialog {
 
         allLinesComboBox = new JComboBox(allLineComboBoxModel);
         allLinesComboBox.setMaximumSize(new Dimension(300, 600));
+        allLinesComboBox.setSelectedIndex(0);
+        currentLine = lines.get(0);
 
         allLinesComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    index=allLinesComboBox.getSelectedIndex();
+                if (e.getStateChange() == ItemEvent.SELECTED &&
+                 (allLinesComboBox.getSelectedIndex()!= -1) ) {
+                    index=allLinesComboBox.getSelectedIndex()-1;
                     currentLine = LineDAO.getInstance().getLines().get(index);
                     boolean status = currentLine.isActive();
+
+                    that.revalidate();
+                    that.repaint();
 
                     System.out.println("select item: " + status);
                 }
@@ -102,9 +111,9 @@ public class ManageLinesDialog extends JDialog {
         });
 
         //set default line as the first line in database
-        if(currentLine==null){
-            currentLine=lineDAO.getLines().get(0);
-        }
+//        if(currentLine==null){
+//            currentLine=lineDAO.getLines().get(0);
+//        }
         contentPanel.add(allLinesComboBox, "cell 1 0,growx");
     }
 

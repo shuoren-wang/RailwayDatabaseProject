@@ -104,39 +104,44 @@ public class TicketDAO  extends Component {
     /**
      * @param user
      * @param trainByStops
-     * @return TicketID if success,  Warning message on JOptionPane on failure
+     * @return TicketID if success,  -1 if failed
      */
     public int purchaseTickets(User user, TrainByStops trainByStops) {
-        System.out.println("Purchase Tickets");
+        System.out.println("Purchase Tickets"+user);
+        System.out.println("Purchase Tickets"+trainByStops);
         int ticketID=0;
         CallableStatement cs = null;
+
         try {
+            System.out.println("sp= "+"{CALL spPurchase("
+                    + user.getUserID() + ","
+                    + trainByStops.getFromStationId() + ","
+                    + trainByStops.getToStationId() + ","
+                    + "'"+trainByStops.getDate() + "',"
+                    + "'"+trainByStops.getSeatClass() + "',"
+                    + trainByStops.getLineId() + ","
+                    + trainByStops.getTrainNumber() +")}");
+
             cs = con.prepareCall("{CALL spPurchase("
                     + user.getUserID() + ","
                     + trainByStops.getFromStationId() + ","
                     + trainByStops.getToStationId() + ","
-                    + trainByStops.getDate() + ","
-                    + trainByStops.getSeatClass() + ","
+                    + "'"+trainByStops.getDate() + "',"
+                    + "'"+trainByStops.getSeatClass() + "',"
                     + trainByStops.getLineId() + ","
                     + trainByStops.getTrainNumber() +")}");
 
             ResultSet rs = cs.executeQuery();
 
             if (rs.next()) {
-                ticketID = rs.getInt(0);
-            }else{
-                JOptionPane.showMessageDialog(this,
-                        "Ticket does not exist",
-                        "Warning",
-                        JOptionPane.INFORMATION_MESSAGE);
+                ticketID = rs.getInt(1);
             }
 
+            return ticketID;
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage(),"Warning",
-                    JOptionPane.INFORMATION_MESSAGE);
+            return -1;
         }
-        return ticketID;
     }
 
 

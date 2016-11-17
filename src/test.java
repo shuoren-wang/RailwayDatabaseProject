@@ -37,6 +37,7 @@ public class test {
 
 //            System.out.println(Integer.getInteger(false));
 //            insertData();
+            PurchaseTickets();
             loadData();
             con.close();
 
@@ -82,17 +83,18 @@ public class test {
         int ticketID=0;
         CallableStatement cs = null;
         try {
-            cs = con.prepareCall("CALL spPurchase(9,1,5,'2016-10-18','Business',1,1);");
+//            cs = con.prepareCall("CALL spPurchase(9,1,5,'2016-10-18','Business',1,1)");
+            cs = con.prepareCall("CALL spPurchase(0,1,5,'2016-10-18','Economy',1,2);");
 
             ResultSet rs = cs.executeQuery();
 
             if (rs.next()) {
-                ticketID = rs.getInt(0);
+                ticketID = rs.getInt(1);
             }
 
             System.out.println("ticketID="+ticketID);
         } catch (Exception e) {
-            System.out.println("throw error");
+            System.out.println("throw error: "+e.getMessage());
 
             System.out.println(e.getMessage());
 //            JOptionPane.showMessageDialog(this,

@@ -7,10 +7,7 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +39,15 @@ public class TrainByStopsDAO{
         }
     }
 
-    public void loadData() {
-        System.out.println(String.format("Load data from trainByStopsList"));
+    public void loadData(int fromStationId, int toStationId, Date travelDate) {
+        System.out.println("Load data from trainByStopsList");
         trainByStopsList = new ArrayList<TrainByStops>();
         CallableStatement cs = null;
         try {
-            cs = con.prepareCall("{CALL spGetLineTrainSeats_by_FromToStationDate('id',20,0)}");
+            cs = con.prepareCall("{CALL spGetLineTrainSeats_by_FromToStationDate("
+                    +fromStationId+","
+                    +toStationId+","
+                    +"'"+travelDate+"'"+")}");
             ResultSet rs = cs.executeQuery();
 
             while (rs.next()) {
@@ -71,7 +71,9 @@ public class TrainByStopsDAO{
     }
 
 
-    public List<TrainByStops> getTrainByStopsList() {
+    public List<TrainByStops> getTrainByStopsList(int fromStationId, int toStationId, Date travelDate) {
+        loadData( fromStationId,  toStationId,  travelDate);
+
         return trainByStopsList;
     }
 }

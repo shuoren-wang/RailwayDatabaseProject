@@ -33,12 +33,23 @@ public class PassengerSignUpDialog extends SignUpDialog {
 
     @Override
     protected void addSubmitButton(){
-        super.addSubmitButton();
+        final SignUpDialog that=this;
+        JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+                if(validationCheck()){
+                    JOptionPane.showMessageDialog(that,
+                            "Username/Password/FullName is empty!",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                }else{
+                    //TODO
+                }
+
             }
         });
+        submitButton.setActionCommand("OK");
+        buttonPanel.add(submitButton);
     }
 }

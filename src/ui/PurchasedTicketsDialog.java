@@ -1,5 +1,6 @@
 package ui;
 
+import jdbc.TicketDAO;
 import model.Ticket;
 import model.User;
 import net.miginfocom.swing.MigLayout;
@@ -30,9 +31,14 @@ public class PurchasedTicketsDialog extends JDialog{
     private JLabel trainNoLabel;
     private JLabel seatClassLabel;
     private JLabel seatNoLabel;
+    private TicketDAO ticketDAO;
 
 
-    public PurchasedTicketsDialog(JFrame frame){
+    public PurchasedTicketsDialog(User user){
+        this.user=user;
+        ticketDAO=TicketDAO.getInstance();
+        ticketDAO.init();
+
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
 
@@ -81,10 +87,8 @@ public class PurchasedTicketsDialog extends JDialog{
 
         ArrayList<Ticket> tickets=new ArrayList<Ticket>();
         //TODO: get data from database
-
         if(tickets.size()>0) {
             Object[] ticketsArr = tickets.toArray();
-
             synchronized (tickets.toArray()) {
                 for (Object next : ticketsArr) {
                     ticketComboBoxModel.addElement(next);
@@ -101,7 +105,6 @@ public class PurchasedTicketsDialog extends JDialog{
                 }
             });
         }
-
     }
 
     private void addTicketIdLabel(){

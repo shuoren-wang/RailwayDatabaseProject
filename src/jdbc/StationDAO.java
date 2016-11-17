@@ -19,7 +19,6 @@ public class StationDAO {
     private Connection con;
 
     private StationDAO() {
-
         System.out.println("Instantiating StationDAO");
     }
 
@@ -52,6 +51,34 @@ public class StationDAO {
                 station.setName(rs.getString("stationname"));
                 station.setCreatedByEmployeeID(rs.getInt("createdby_employeeid"));
                 station.setUpdatedByEmployeeID(rs.getInt("updatedby_employeeid"));
+                station.setActive(rs.getBoolean("active"));
+                stations.add(station);
+            }
+            System.out.println("Load data from stations: success!");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * load info for active stations
+     */
+    public void loadActiveStations() {
+        System.out.println(String.format("Load data from stations"));
+        stations = new ArrayList<Station>();
+        CallableStatement cs = null;
+        try {
+            cs = con.prepareCall("{CALL spViewActiveStations('id',20,0)}");
+            ResultSet rs = cs.executeQuery();
+
+            while (rs.next()) {
+                Station station=new Station();
+                station.setId(rs.getInt("id"));
+                station.setAddr(rs.getString("address"));
+                station.setName(rs.getString("stationname"));
+                station.setCreatedByEmployeeID(rs.getInt("createdby_employeeid"));
+                station.setUpdatedByEmployeeID(rs.getInt("updatedby_employeeid"));
+                station.setActive(rs.getBoolean("active"));
                 stations.add(station);
             }
             System.out.println("Load data from stations: success!");
@@ -68,8 +95,7 @@ public class StationDAO {
                     +station.getId()+","
                     +station.getUpdatedByEmployeeID()+","
                     +"'"+station.getAddr()+"',"
-                    +"'"+station.getName()+"',"
-                    +(station.isActive()? 1 : 0)+")}");
+                    +"'"+station.getName()+"')}");
             cs.executeUpdate();
             System.out.println("Update data from stations: success!");
         } catch (SQLException e) {
@@ -84,8 +110,7 @@ public class StationDAO {
             cs = con.prepareCall("{CALL spCreateStation("
                     +station.getCreatedByEmployeeID()+","
                     +"'"+station.getAddr()+"',"
-                    +"'"+station.getName()+"',"
-                    +(station.isActive()? 1 : 0)+")}");
+                    +"'"+station.getName()+"')}");
             cs.executeUpdate();
             System.out.println("Insert data from stations success!");
         } catch (SQLException e) {
@@ -94,6 +119,12 @@ public class StationDAO {
     }
 
     public List<Station> getStations() {
+        loadData();
+        return stations;
+    }
+
+    public List<Station> getActiveStations(){
+        loadActiveStations();
         return stations;
     }
 }

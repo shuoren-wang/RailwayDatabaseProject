@@ -66,8 +66,9 @@ public class LineStopDAO {
     }
 
     //TODO: may need test on time format
+    //CALL spModifyLineStop(6,3,'00:10:00',1);
     public void modifyData(LineStop lineStop) {
-        System.out.println("Modify data to lineStops");
+        System.out.println("Modify data on lineStops");
         CallableStatement cs = null;
         try {
             cs = con.prepareCall("{CALL spModifyLineStop("
@@ -79,14 +80,14 @@ public class LineStopDAO {
                     +lineStop.getLocatedStationId()+","
                     +lineStop.getForLineId()+")}");
             cs.executeUpdate();
-            System.out.println("Update data from lineStops: success!");
+            System.out.println("Update data on lineStops: success!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void insertData(LineStop lineStop) {
-        System.out.println("Insert data from lineStops");
+        System.out.println("Insert data to lineStops");
         CallableStatement cs = null;
         try {
             cs = con.prepareCall("{CALL spCreateLineStop("
@@ -97,13 +98,14 @@ public class LineStopDAO {
                     +lineStop.getLocatedStationId()+","
                     +lineStop.getForLineId()+")}");
             cs.executeUpdate();
-            System.out.println("Insert data from lineStops success!");
+            System.out.println("Insert data to lineStops success!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public List<LineStop> getLineStops() {
+        loadData();
         return lineStops;
     }
 }

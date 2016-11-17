@@ -20,7 +20,7 @@ public class User {
 
     //Used for test interface
     public User(){
-        userID = 0;
+        userID = 6; //6 is passengerID
         name = "";
         userName = "";
         password = "";

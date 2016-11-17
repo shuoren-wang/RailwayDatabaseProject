@@ -14,8 +14,14 @@ public class JDBC {
     static Connection con;
     private static JDBC instance=new JDBC();
 
+    JDBC(){};
+
     public static JDBC getInstance(){
         System.out.println("JDBC::Retrieve Database ");
+//        if(instance==null) {
+//            instance=new JDBC();
+//        }
+
         return instance;
     }
 

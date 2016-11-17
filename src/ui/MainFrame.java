@@ -1,5 +1,9 @@
 package ui;
 
+import jdbc.JDBC;
+import jdbc.StationDAO;
+import jdbc.TicketDAO;
+import jdbc.TrainByStopsDAO;
 import model.Station;
 import model.TrainByStops;
 import model.User;
@@ -11,9 +15,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import static jdbc.JDBC.*;
-
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 
 /**
@@ -26,10 +30,8 @@ public class MainFrame extends JFrame {
     protected static final MainFrame instance = new MainFrame();
     protected JMenuBar menuBar;
     protected JPanel mainWindow;
-
     protected JMenu manageMenu;
     protected JMenu startMenu;
-
     protected JComboBox fromStationComboBox;
     protected DefaultComboBoxModel fromStationModel;
     protected JComboBox toStationComboBox;
@@ -37,9 +39,23 @@ public class MainFrame extends JFrame {
     protected JTextField dateField;
     protected JList trainsList;
     protected DefaultListModel trainsListModel;
+    protected JButton purchaseButton;
+    protected JMenuItem ticketMenuItem;
+
+    protected TicketDAO ticketDAO;
+    protected StationDAO stationDAO;
+    protected TrainByStopsDAO trainByStopsDAO;
+
+    protected Station fromStation;
+    protected Station toStation;
+    protected List<Station> stations;
+    protected Date date;
     protected TrainByStops currentTrainByStops;
+    protected int fromStationIndex;
+    protected int toStationIndex;
     protected int index;
-    protected ArrayList<TrainByStops> trainByStopses;
+    //    protected ArrayList<TrainByStops> trainByStopses;
+    protected JDBC jdbc;
 
 
     public static MainFrame getInstance() {
@@ -47,22 +63,34 @@ public class MainFrame extends JFrame {
     }
 
     public MainFrame() {
+
+        jdbc = JDBC.getInstance();
+        ticketDAO = TicketDAO.getInstance();
+        stationDAO = StationDAO.getInstance();
+        trainByStopsDAO = TrainByStopsDAO.getInstance();
+        ticketDAO.init();
+        stationDAO.init();
+        trainByStopsDAO.init();
+        stations = stationDAO.getActiveStations();
+
+
         setTitle("304 Project");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setBounds(100, 100, 800, 600);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-//                closeCon();
-
+                jdbc.closeCon();
                 System.exit(0);
             }
         });
+
 
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         addStartMenu();
         addManageMenu();
+
 
         mainWindow = new JPanel();
         mainWindow.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -76,7 +104,7 @@ public class MainFrame extends JFrame {
         JLabel toStationLabel = new JLabel("To");
         mainWindow.add(toStationLabel, "cell 0 1");
 
-        JLabel dateLabel = new JLabel("Date");
+        JLabel dateLabel = new JLabel("Date(yyyy-mm-dd):");
         mainWindow.add(dateLabel, "cell 0 2");
 
         addFromStationComboBox();
@@ -84,48 +112,75 @@ public class MainFrame extends JFrame {
         addDateField();
         addPurchaseButton();
         addGetTrainsButton();
-        addTrainsList();
+        addEmptyTrainsList();
+        pack();
+//        setVisible(true);
     }
 
+    //TODO: need to change to only active stations
     protected void addFromStationComboBox() {
-        ArrayList<Station> stations = new ArrayList<Station>();
-        //TODO: get data from database
-
-        ArrayList<String> statNameArr = new ArrayList<String>();
-        for (Station next : stations) {
-            statNameArr.add(next.getName());
-        }
-
+        final MainFrame that=this;
         fromStationModel = new DefaultComboBoxModel();
-        synchronized (statNameArr) {
-            for (String next : statNameArr) {
-                fromStationModel.addElement(next);
+        synchronized (stations) {
+            for (Station next : stations) {
+                fromStationModel.addElement(next.toString());
             }
         }
         fromStationComboBox = new JComboBox(fromStationModel);
         fromStationComboBox.setMinimumSize(new Dimension(400, 27));
         fromStationComboBox.setMaximumRowCount(10);
+        fromStationComboBox.setSelectedIndex(0);
+        fromStation = stations.get(0);
+
+        fromStationComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    fromStationIndex = fromStationComboBox.getSelectedIndex();
+                    fromStation = stations.get(fromStationIndex);
+                    System.out.println("selected station: " + fromStation.getName());
+                    that.revalidate();
+                    that.repaint();
+                }
+            }
+        });
+
         mainWindow.add(fromStationComboBox, "cell 1 0, growx");
     }
 
+    //TODO: need to change to only active stations
     protected void addToStationComboBox() {
-        ArrayList<Station> stations = new ArrayList<Station>();
-        //TODO: get data from database
-
-        ArrayList<String> statNameArr = new ArrayList<String>();
-        for (Station next : stations) {
-            statNameArr.add(next.getName());
-        }
-
+        final MainFrame that=this;
         toStationModel = new DefaultComboBoxModel();
-        synchronized (statNameArr) {
-            for (String next : statNameArr) {
-                toStationModel.addElement(next);
+        synchronized (stations) {
+            for (Station next : stations) {
+                toStationModel.addElement(next.toString());
             }
         }
         toStationComboBox = new JComboBox(toStationModel);
         toStationComboBox.setMinimumSize(new Dimension(400, 27));
         toStationComboBox.setMaximumRowCount(10);
+        toStationComboBox.setSelectedIndex(0);
+        toStation = stations.get(0);
+
+        toStationComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    toStationIndex = toStationComboBox.getSelectedIndex();
+                    toStation = stations.get(toStationIndex);
+                    System.out.println("selected station: " + toStation.getName());
+                    that.revalidate();
+                    that.repaint();
+//                    update();
+                }
+            }
+        });
+
+        //set default station as the first station in database
+//        if (toStation == null) {
+//            toStation = stations.get(0);
+//        }
         mainWindow.add(toStationComboBox, "cell 1 1, growx");
     }
 
@@ -136,14 +191,37 @@ public class MainFrame extends JFrame {
         getTrainsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                trainByStopses = new ArrayList<TrainByStops>();
                 //TODO: get data from database
+                if (validationCheck()) {
+                    //test (1,5,2016-10-18)
+                    loadTrainsList();
+                }
             }
         });
 
     }
 
-    protected void addTrainsList() {
+    protected Date strToDate(String dateStr) {
+        return java.sql.Date.valueOf(dateStr);
+    }
+
+    protected String dateToStr(Date date) {
+        SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
+
+        String str = parse.format(date);
+
+        return str;
+    }
+
+    protected String timeToStr(Date time) {
+        SimpleDateFormat parse = new SimpleDateFormat("hh:mm");
+
+        String str = parse.format(date);
+
+        return str;
+    }
+
+    protected void addEmptyTrainsList() {
         trainsListModel = new DefaultListModel();
         trainsList = new JList(trainsListModel);
         JScrollPane listScroller = new JScrollPane(trainsList);
@@ -152,32 +230,46 @@ public class MainFrame extends JFrame {
         trainsList.setLayoutOrientation(JList.VERTICAL);
         listScroller.setPreferredSize(new Dimension(400, 200));
         mainWindow.add(listScroller, "cell 0 3 3 1,grow,span");
-        trainsListModel.addElement(String.format("%25s %25s %25s %25s %25s",
-                "Line Id.","TrainByStops Nos","Seat Class","Available Seats","Departure Time"));
+        trainsListModel.addElement(String.format("%15s %25s %25s %25s %25s %25s",
+                "Line Id.", "Train No", "Seat Class", "Available Seats", "Dep. Time", "Arr. Time"));
+    }
 
-        if (trainByStopses != null && trainByStopses.size() > 0) {
-            ArrayList<String> trainsInfoArr = new ArrayList<String>();
-            for (TrainByStops next : trainByStopses) {
-                trainsInfoArr.add(next.toString());
-            }
-            synchronized (trainsInfoArr) {
-                for (String next : trainsInfoArr) {
-                    trainsListModel.addElement(next);
-                }
-            }
+    protected void loadTrainsList() {
+        trainsListModel.removeAllElements();
+        trainsListModel.addElement(String.format("%15s %25s %25s %25s %25s %25s",
+                "Line Id.", "Train No", "Seat Class", "Available Seats", "Dep. Time", "Arr. Time"));
 
-            trainsList.addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent e) {
-                    if (e.getValueIsAdjusting() == false) {
-                        if (trainsList.getSelectedIndex() != -1) {
-                            index = trainsList.getSelectedIndex()-1;
-                            currentTrainByStops = trainByStopses.get(index);
-                        }
+        final List<TrainByStops> trainByStopses =
+                trainByStopsDAO.getTrainByStopsList(fromStation.getId(), toStation.getId(), strToDate(dateField.getText()));
+
+        for (TrainByStops next : trainByStopses) {
+            trainsListModel.addElement(String.format("%15s %25s %25s %25s %25s %25s",
+                    Integer.toString(next.getLineId()),
+                    Integer.toString(next.getTrainNumber()),
+                    next.getSeatClass(),
+                    Integer.toString(next.getAvailableSeats()),
+                    timeToStr(next.getDepartTime()),
+                    timeToStr(next.getArrivalTime())));
+        }
+
+
+        trainsList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting() == false) {
+                    if (trainsList.getSelectedIndex() != -1) {
+                        index = trainsList.getSelectedIndex() - 1;
+                        System.out.println("index="+index);
+
+                        currentTrainByStops = trainByStopses.get(index);
+
+                        System.out.println("currentTrainByStops: fromStatId="+currentTrainByStops.getLineId()
+                                        +"; toStatId"+currentTrainByStops.getTrainNumber());
+
                     }
                 }
-            });
-        }
+            }
+        });
     }
 
     protected void addDateField() {
@@ -186,51 +278,59 @@ public class MainFrame extends JFrame {
     }
 
     protected void addPurchaseButton() {
-        JButton purchaseButton = new JButton("Purchase");
+        purchaseButton = new JButton("Purchase");
         mainWindow.add(purchaseButton, "cell 2 4");
 
         final MainFrame that = this;
         purchaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentTrainByStops == null) {
+                if (currentTrainByStops == null || !validationCheck()) {
                     JOptionPane.showMessageDialog(that,
                             "No train is selected!",
                             "Warning",
                             JOptionPane.WARNING_MESSAGE);
-
                 } else {
 
-                    int returnedTicketId=0;
-                    //TODO database:
-                    // (SP NAME: spReturnTicket) return string/int;
+                    currentTrainByStops.setFromStationId(fromStation.getId());
+                    currentTrainByStops.setToStationId(toStation.getId());
+                    currentTrainByStops.setDate(strToDate(dateField.getText()));
 
-                    if(isTicketIdReturned()){
-                        JOptionPane.showMessageDialog(that,
-                                "Purchase successful ! You Ticket ID is"+ Integer.toString(returnedTicketId),
-                                "Info",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    }else{
-                        JOptionPane.showMessageDialog(that,
-                                "Purchase failed",
-                                "Info",
-                                JOptionPane.WARNING_MESSAGE);
-                    }
+                    //TODO database:
+                    System.out.println("MainFrame::addPurchaseButton():goto purchseTicket");
+                    purchaseTicket();
+                    loadTrainsList();
                 }
                 System.out.println("MainFrame::Purchase Button is Pressed");
             }
         });
     }
 
+
     /**
-     * fails if requesting UserId is not clerk and not owner of ticket or ticket doesnt exist
-     * (SP NAME:  spReturnTicket)
-     * @return cell(0,0) is 1 if success, 0 if failure.
+     * purchase tickets; fails if requesting UserId is not clerk and not owner of ticket or ticket doesnt exist
      */
-    protected boolean isTicketIdReturned(){
-        //TODO:
-        return false;
+    protected void purchaseTicket(){
+        //TODO: delete after implement login
+        user=new User();
+        ////////////////
+
+
+        int ticketId =ticketDAO.purchaseTickets(user, currentTrainByStops);
+
+        if(ticketId!=-1){
+            JOptionPane.showMessageDialog(this,
+                    "Purchase successful ! You Ticket ID is" + Integer.toString(ticketId),
+                    "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(this,
+                    "Purchase failed",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+        }
     }
+
 
     protected void addStartMenu() {
         startMenu = new JMenu("Start");
@@ -240,7 +340,7 @@ public class MainFrame extends JFrame {
         addLoginMenuItem();
     }
 
-    protected void addLoginMenuItem(){
+    protected void addLoginMenuItem() {
         final MainFrame that = this;
         JMenuItem loginMenuItem = new JMenuItem("Sign In");
         loginMenuItem.addActionListener(new ActionListener() {
@@ -257,7 +357,7 @@ public class MainFrame extends JFrame {
     }
 
 
-    protected void addSignUpMenuItem(){
+    protected void addSignUpMenuItem() {
         final MainFrame that = this;
 
         JMenuItem signUpMenuItem = new JMenuItem("Sign Up");
@@ -276,7 +376,7 @@ public class MainFrame extends JFrame {
 
     protected void addPurchasedTicketsMenuItem() {
         final MainFrame that = this;
-        JMenuItem ticketMenuItem = new JMenuItem("Purchased Tickets");
+        ticketMenuItem = new JMenuItem("Purchased Tickets");
         ticketMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -289,13 +389,13 @@ public class MainFrame extends JFrame {
 
                      /*only for test*/
                     user = new User();
-                    PurchasedTicketsDialog dialog = new PurchasedTicketsDialog(that);
+                    PurchasedTicketsDialog dialog = new PurchasedTicketsDialog(user);
                     dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
                      /*only for test*/
                 } else {
-                    PurchasedTicketsDialog dialog = new PurchasedTicketsDialog(that);
+                    PurchasedTicketsDialog dialog = new PurchasedTicketsDialog(user);
                     dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.setVisible(true);
@@ -356,10 +456,38 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * @return true if no empty textFields
+     * @return true if no empty textFields, date format is write
      */
-    private boolean validationCheck(){
+    private boolean validationCheck() {
         //TODO: check from/to station need to be different??
-        return false;
+
+        String dateStr = dateField.getText();
+
+        if (toStation == null || fromStation == null || dateStr == null) {
+            JOptionPane.showMessageDialog(this,
+                    "toStation/fromStaion/date is empty",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else if (toStation.getId() == fromStation.getId()) {
+            JOptionPane.showMessageDialog(this,
+                    "toStation/fromStaion need to be different",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else {
+            try {
+                date = strToDate(dateStr);
+                return true;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "date format is wrong. (right format i.e.2016-10-18)",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+
+                return false;
+            }
+        }
     }
+
 }

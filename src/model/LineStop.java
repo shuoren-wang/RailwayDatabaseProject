@@ -99,4 +99,8 @@ public class LineStop {
     public void setUpdatedByEmployeeId(int updatedByEmployeeId) {
         this.updatedByEmployeeId = updatedByEmployeeId;
     }
+
+    public String toString(){
+        return "Station Name: "+stationName+" ; Line Name= "+lineName;
+    }
 }

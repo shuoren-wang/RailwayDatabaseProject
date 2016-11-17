@@ -61,4 +61,9 @@ public class Station {
     public void setUpdatedByEmployeeID(int updatedByEmployeeID) {
         UpdatedByEmployeeID = updatedByEmployeeID;
     }
+
+    public String toString(){
+        return getId()+". Name:"+name+" ; Address:"+addr+
+                " ; status: "+isActive();
+    }
 }
