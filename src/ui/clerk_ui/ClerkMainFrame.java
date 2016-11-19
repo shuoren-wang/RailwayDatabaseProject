@@ -20,7 +20,9 @@ public class ClerkMainFrame extends MainFrame {
     protected static final ClerkMainFrame instance = new ClerkMainFrame();
 
     private ClerkMainFrame() {
-        super();
+        MainFrame clerkFrame = new MainFrame();
+        clerkFrame.isClerk = true;
+        clerkFrame.isPassenger = false;
         //TODO: for test
         clerk=new Clerk();
         purchaseButton.setVisible(false);
