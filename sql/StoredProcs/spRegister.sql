@@ -71,6 +71,7 @@ SELECT 'Error' as Err;
 	ROLLBACK;
 ELSE
 	COMMIT;
+  SELECT userId FROM users WHERE username = in_username;
 END IF;
 
 END$$

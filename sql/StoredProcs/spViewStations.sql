@@ -15,6 +15,7 @@ SELECT
 	s.id,
 	s.address,
 	s.stationname,
+	s.active,
 	s.createdby_employeeid,
 	cru.username AS CreatedByEmployee_Username,
 	s.updatedby_employeeid,
@@ -30,6 +31,7 @@ FROM stations s
 	LEFT JOIN users upu ON upu.userid = upc.userid
 	LEFT JOIN linestops ls ON ls.locatedstation_id = s.id
 	LEFT JOIN linestops als ON als.locatedstation_id = s.id AND als.status = 1
+
 GROUP BY
 	s.id,
 	s.address,
