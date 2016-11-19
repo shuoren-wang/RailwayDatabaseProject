@@ -114,6 +114,30 @@ public class JDBC {
         return currentUser;
     }
 
+    /* Passenger sign up.
+     * Returns new User ID if Passenger was successfully added, -1 if username already exists.
+     */
+    public static int passengerSignUp(String uName, String pass, String fName, String phone) {
+        try {
+            ResultSet rs = stmt.executeQuery("CALL spRegister('" + uName + "','" + pass + "','" + fName + "','" + phone + "','0',0);");
+            //ResultSet rs = stmt.executeQuery("CALL spRegister('news','newpass','batman superman','6047897899','111',0)");
+            System.out.println("rs: " + rs);
+            if (rs.next()) {
+                int userID = rs.getInt(1);
+                System.out.println("Success, new userID: " + userID);
+                userLogin(uName, pass);
+                return userID;
+            } else {
+                System.out.println("Failed, username " + uName + " already exists.");
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Returning -1");
+        return -1;
+    }
+
 /*
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {
