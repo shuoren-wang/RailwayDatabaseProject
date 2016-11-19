@@ -65,6 +65,7 @@ public class JDBC {
         try {
             // ResultSet rs = stmt.executeQuery("CALL spLogin('" + username + "','" + password + "');");
             ResultSet rs = stmt.executeQuery("CALL spLogin('" + userLogin + "','" + loginPassword + "')");
+            System.out.println("rs: " + rs);
             if (rs.next()) {
                 int userID = rs.getInt("userid");
                 int userType = rs.getInt("usertype"); // 0 for passenger, 1 for clerk
