@@ -73,7 +73,6 @@ public class LoginDialog extends JDialog{
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-// <<<<<<< HEAD
 
                 if(validationCheck()){
                     if(checkData()){
@@ -92,14 +91,6 @@ public class LoginDialog extends JDialog{
                             "Warning",
                             JOptionPane.WARNING_MESSAGE);
                 }
-/*
-======= */
-                String password = passwordField.getText();
-                String username = usernameField.getText();
-                // userLogin(username, password);
-                /*
->>>>>>> communication
-*/
             }
         });
         submitButton.setActionCommand("OK");
@@ -136,8 +127,13 @@ public class LoginDialog extends JDialog{
     private boolean checkData(){
         String password = passwordField.getText();
         String username = usernameField.getText();
-        boolean ret = userLogin(username, password);
+        int uid = userLogin(username, password);
 
-        return ret;
+        if (uid < 0) {
+            return false;
+        } else {
+            user = getCurrentUser();
+            return true;
+        }
     }
 }
