@@ -6,6 +6,7 @@ import ui.SignUpDialog;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static jdbc.JDBC.*;
 
 /**
  * Created by shuorenwang on 2016-11-06.
@@ -38,13 +39,18 @@ public class PassengerSignUpDialog extends SignUpDialog {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(validationCheck()){
+                if(validationCheck() == false){
                     JOptionPane.showMessageDialog(that,
-                            "Username/Password/FullName is empty!",
+                            "Please make sure your passwords match and that you fill out all the fields.",
                             "Warning",
                             JOptionPane.WARNING_MESSAGE);
                 }else{
-                    //TODO
+                    String newUserName = usernameField.getText();
+                    String newPassword = passwordField_1.getText();
+                    String newFullName = fullNameField.getText();
+                    String newPhoneNum = phoneField.getText();
+
+                    int newUid = passengerSignUp(newUserName, newPassword, newFullName, newPhoneNum);
                 }
 
             }

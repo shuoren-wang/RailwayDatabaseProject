@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static jdbc.JDBC.getCurrentUser;
+
 /**
  * Created by shuorenwang on 2016-10-21.
  */
@@ -22,29 +24,35 @@ public class UserInfoDialog extends JDialog{
 
     public UserInfoDialog(MainFrame frame){
 
-        this.user=frame.getUser();
+        // this.user=frame.getUser();
+        user = getCurrentUser();
 
-        contentPanel=new JPanel();
-        buttonPanel=new JPanel();
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "Please sign in first.", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
 
-        setResizable(false);
-        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-        setSize(500,200);
+            contentPanel = new JPanel();
+            buttonPanel = new JPanel();
 
-        getContentPane().add(contentPanel, BorderLayout.CENTER);
-        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-        contentPanel.setLayout(new MigLayout("", "[][grow]",
-                "[][][][][]"));
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+            setResizable(false);
+            setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            setSize(500, 200);
 
-        addUsernameLabel();
-        addUsernameField();
-        addFullNameLabel();
-        addFullNameField();
+            getContentPane().add(contentPanel, BorderLayout.CENTER);
+            getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+            contentPanel.setLayout(new MigLayout("", "[][grow]",
+                    "[][][][][]"));
+            buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        addChangePasswordButton();
-        addSaveButton();
-        addCancelButton();
+            addUsernameLabel();
+            addUsernameField();
+            addFullNameLabel();
+            addFullNameField();
+
+            addChangePasswordButton();
+            addSaveButton();
+            addCancelButton();
+        }
     }
 
     private void addUsernameLabel(){

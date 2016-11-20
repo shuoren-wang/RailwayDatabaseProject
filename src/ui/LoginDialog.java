@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static jdbc.JDBC.*;
+import jdbc.JDBC;
+
 /**
  * Created by shuorenwang on 2016-10-21.
  */
@@ -88,7 +91,6 @@ public class LoginDialog extends JDialog{
                             "Warning",
                             JOptionPane.WARNING_MESSAGE);
                 }
-
             }
         });
         submitButton.setActionCommand("OK");
@@ -123,8 +125,15 @@ public class LoginDialog extends JDialog{
      * @return true if find user, false otherwise
      */
     private boolean checkData(){
-        //TODO: database
+        String password = passwordField.getText();
+        String username = usernameField.getText();
+        int uid = userLogin(username, password);
 
-        return false;
+        if (uid < 0) {
+            return false;
+        } else {
+            user = getCurrentUser();
+            return true;
+        }
     }
 }

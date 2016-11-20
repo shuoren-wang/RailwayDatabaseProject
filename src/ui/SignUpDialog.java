@@ -117,7 +117,7 @@ public class SignUpDialog extends JDialog{
     }
 
     /**
-     * @return true if no empty textFields for username, password, fullname
+     * @return true if no empty textFields for username, password, fullname, and passwords match
      */
     protected boolean validationCheck(){
         String username=usernameField.getText();
@@ -126,12 +126,13 @@ public class SignUpDialog extends JDialog{
         String fullName=fullNameField.getText();
 
         SignUpDialog that=this;
-        if(password1!=password2){
+        if(password1.equals(password2) == false){
             JOptionPane.showMessageDialog(that,
-                    "Passwords not match!",
+                    "Passwords do not match!",
                     "Warning",
                     JOptionPane.WARNING_MESSAGE);
+            return false;
         }
-        return password1.length()>0 && password2.length()>0 && username.length()>0 && fullName.length()>0;
+        return ((password1.length()>0) && (password2.length()>0) && (username.length()>0) && (fullName.length()>0));
     }
 }

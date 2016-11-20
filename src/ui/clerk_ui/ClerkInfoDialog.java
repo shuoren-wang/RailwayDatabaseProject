@@ -6,6 +6,8 @@ import ui.UserInfoDialog;
 
 import javax.swing.*;
 
+import static jdbc.JDBC.makeClerk;
+
 /**
  * Created by shuorenwang on 2016-11-06.
  */
@@ -42,7 +44,7 @@ public class ClerkInfoDialog extends UserInfoDialog {
      */
     private Clerk getClerkByUserId(){
         int userId=getUser().getUserID();
-        //TODO: database
+        clerk = makeClerk(userId);
 
         return clerk;
     }
