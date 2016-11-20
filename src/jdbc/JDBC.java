@@ -8,6 +8,8 @@ import model.User;
 import model.Passenger;
 import model.Clerk;
 import model.Train;
+
+import javax.xml.transform.Result;
 import java.util.HashSet;
 
 /**
@@ -251,6 +253,54 @@ public class JDBC {
         }
 
         return null;
+    }
+
+    // public static void fillPassengerList(ArrayList<Passenger> passengerList, String orderBy, int take, int offset) {
+    public static ArrayList<Passenger> fillPassengerList(String orderBy, int take, int offset) {
+        ArrayList<Passenger> passengerList = new ArrayList<Passenger>();
+        int[] userID = new int[take];
+        int[] passengerID = new int[take];
+        boolean[] active = new boolean[take];
+        String[] password = new String[take];
+        String[] name = new String[take];
+        String[] username = new String[take];
+        String[] phone = new String[take];
+
+        int i = 0;
+
+        try {
+            ResultSet rs = stmt.executeQuery("CALL spViewPassengerInfo('" + orderBy + "'," + take + "," + offset + ")");
+            while (rs.next()) {
+                userID[i] = rs.getInt("userid");
+                passengerID[i] = rs.getInt("passengerid");
+                username[i] = rs.getString("username");
+                name[i] = rs.getString("name");
+                phone[i] = rs.getString("phonenumber");
+                i++;
+            }
+            for (int k = 0; k < i; k++) {
+                rs = stmt.executeQuery("SELECT PASSWORD from Users where UserID = " + userID[k] + ";");
+                if (rs.next()) {
+                    password[k] = rs.getString("PASSWORD");
+                }
+            }
+            for (int j = 0; j < i; j++) {
+                rs = stmt.executeQuery("SELECT Active from Users where UserID = " + userID[j] + ";");
+                if (rs.next()) {
+                    active[j] = rs.getBoolean("Active");
+                }
+            }
+
+            for (int x = 0; x < i; x++) {
+                Passenger newPassenger = new Passenger(userID[x], name[x], username[x], password[x], active[x], passengerID[x], phone[x]);
+                System.out.println("New Passenger: " + newPassenger.getPassengerID());
+                passengerList.add(newPassenger);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return passengerList;
     }
 
 /*

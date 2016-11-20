@@ -45,7 +45,6 @@ public class PassengerInfoDialog extends UserInfoDialog {
      */
     private Passenger getPassengerByUserId(){
         int userId=getUser().getUserID();
-        //TODO: database
         passenger = makePassenger(userId);
 
         return passenger;
