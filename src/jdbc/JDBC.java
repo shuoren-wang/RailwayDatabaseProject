@@ -121,13 +121,18 @@ public class JDBC {
     public static int passengerSignUp(String uName, String pass, String fName, String phone) {
         try {
             ResultSet rs = stmt.executeQuery("CALL spRegister('" + uName + "','" + pass + "','" + fName + "','" + phone + "','0',0);");
-            //ResultSet rs = stmt.executeQuery("CALL spRegister('news','newpass','batman superman','6047897899','111',0)");
-            System.out.println("rs: " + rs);
+            // System.out.println("rs: " + rs);
             if (rs.next()) {
-                int userID = rs.getInt(1);
-                System.out.println("Success, new userID: " + userID);
-                userLogin(uName, pass);
-                return userID;
+                ResultSetMetaData rsmd = rs.getMetaData();
+                if (rsmd.getColumnType(1) == 12) { // code for varchar
+                    System.out.println("Failed, username " + uName + " already exists");
+                    return -1;
+                } else {
+                    int userID = rs.getInt(1);
+                    System.out.println("Success, new userID: " + userID);
+                    userLogin(uName, pass);
+                    return userID;
+                }
             } else {
                 System.out.println("Failed, username " + uName + " already exists.");
                 return -1;
