@@ -115,6 +115,34 @@ public class JDBC {
         return currentUser;
     }
 
+    /* Clerk sign up.
+     * Returns new User ID if Clerk was successfully added, -1 if username already exists.
+     */
+    public static int clerkSignUp(String uName, String pass, String fName, String position) {
+        try {
+            ResultSet rs = stmt.executeQuery("CALL spRegister('" + uName + "','" + pass + "','" + fName + "','0','" + position + "',0);");
+            if (rs.next()) {
+                ResultSetMetaData rsmd = rs.getMetaData();
+                if (rsmd.getColumnType(1) == 12) { // code for varchar
+                    System.out.println("Failed, username " + uName + " already exists");
+                    return -1;
+                } else {
+                    int userID = rs.getInt(1);
+                    System.out.println("Success, new userID: " + userID);
+                    userLogin(uName, pass);
+                    return userID;
+                }
+            } else {
+                System.out.println("Failed, username " + uName + " already exists.");
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Returning -1");
+        return -1;
+    }
+
     /* Passenger sign up.
      * Returns new User ID if Passenger was successfully added, -1 if username already exists.
      */
