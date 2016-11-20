@@ -172,6 +172,20 @@ public class JDBC {
         return -1;
     }
 
+    public static boolean changePassword(int uid, String oldPassword, String newPassword) {
+        int ret = 0;
+        try {
+            ResultSet rs = stmt.executeQuery("CALL spChangePassword(" + uid + ",'" + oldPassword + "','" + newPassword + "')");
+            if (rs.next()) {
+                ret = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (ret == 1) { return true; }
+        else { return false; }
+    }
+
 /*
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {

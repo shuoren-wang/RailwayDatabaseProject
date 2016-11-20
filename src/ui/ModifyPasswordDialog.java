@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static jdbc.JDBC.*;
+
 /**
  * Created by shuorenwang on 2016-11-06.
  */
@@ -85,7 +87,21 @@ public class ModifyPasswordDialog extends JDialog{
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                if (validationCheck()) {
+                    user = getCurrentUser();
+                    if (user != null) {
+                        int uid = user.getUserID();
+                        String oldPassword = oldPasswordField.getText();
+                        String newPassword = newPasswordField_1.getText();
+                        boolean success = changePassword(uid, oldPassword, newPassword);
+
+                        if (!success) {
+                            oldPasswordWarning();
+                        } else {
+                            System.out.println("Password successfully changed.");
+                        }
+                    } else { System.out.println("You need to sign in first."); }
+                }
             }
         });
         submitButton.setActionCommand("OK");
@@ -104,5 +120,35 @@ public class ModifyPasswordDialog extends JDialog{
         });
         cancelButton.setActionCommand("Cancel");
         buttonPanel.add(cancelButton);
+    }
+
+    private boolean validationCheck() {
+        String oldPassword = oldPasswordField.getText();
+        String newPassword1 = newPasswordField_1.getText();
+        String newPassword2 = newPasswordField_2.getText();
+
+        ModifyPasswordDialog that=this;
+
+        if (newPassword1.equals(newPassword2) == false) {
+            JOptionPane.showMessageDialog(that,
+                    "Passwords do not match!",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if ( (oldPassword.length() < 1) || (newPassword1.length() < 1 ) || (newPassword2.length() < 1 ) ) {
+            JOptionPane.showMessageDialog(that, "Please fill out all the fields.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void oldPasswordWarning() {
+        JOptionPane.showMessageDialog(this,
+                "Old password is incorrect.",
+                "Warning",
+                JOptionPane.WARNING_MESSAGE);
     }
 }
