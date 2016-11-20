@@ -6,6 +6,8 @@ import ui.UserInfoDialog;
 
 import javax.swing.*;
 
+import static jdbc.JDBC.makePassenger;
+
 /**
  * Created by shuorenwang on 2016-11-06.
  */
@@ -44,7 +46,7 @@ public class PassengerInfoDialog extends UserInfoDialog {
     private Passenger getPassengerByUserId(){
         int userId=getUser().getUserID();
         //TODO: database
-
+        passenger = makePassenger(userId);
 
         return passenger;
     }

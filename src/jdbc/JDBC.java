@@ -190,6 +190,7 @@ public class JDBC {
     public static Clerk makeClerk(int uid) {
         String name, userName, password, position = "error";
         int employeeID = -1;
+        boolean active = false;
 
         try {
             ResultSet rs = stmt.executeQuery("CALL spClerkInfo(" + uid + ")");
@@ -203,8 +204,45 @@ public class JDBC {
                     rs = stmt.executeQuery("SELECT EmployeeID from Clerks where UserID = " + uid + ";");
                     if (rs.next()) {
                         employeeID = rs.getInt("EmployeeID");
-                        Clerk newClerk = new Clerk(uid, name, userName, password, true, employeeID, position);
-                        return newClerk;
+                        rs = stmt.executeQuery("Select Active from Users where UserID = " + uid + ";");
+                        if (rs.next()) {
+                            active = rs.getBoolean("Active");
+                            Clerk newClerk = new Clerk(uid, name, userName, password, active, employeeID, position);
+                            return newClerk;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Passenger makePassenger(int uid) {
+        String name, userName, password, phone = "error";
+        int passengerID = -1;
+        boolean active = false;
+
+        try {
+            ResultSet rs = stmt.executeQuery("CALL spPassengerInfo(" + uid + ")");
+            if (rs.next()) {
+                name = rs.getString("Name");
+                userName = rs.getString("UserName");
+                phone = rs.getString("PhoneNumber");
+                rs = stmt.executeQuery("SELECT PASSWORD from Users where UserID = " + uid + ";");
+                if (rs.next()) {
+                    password = rs.getString("PASSWORD");
+                    rs = stmt.executeQuery("SELECT PassengerID from Passengers where UserID = " + uid + ";");
+                    if (rs.next()) {
+                        passengerID = rs.getInt("PassengerID");
+                        rs = stmt.executeQuery("SELECT Active from Users where UserID = " + uid + ";");
+                        if (rs.next()) {
+                            active = rs.getBoolean("Active");
+                            Passenger newPassenger = new Passenger(uid, name, userName, password, active, passengerID, phone);
+                            return newPassenger;
+                        }
                     }
                 }
             }
