@@ -4,8 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 // import java.util.Date;
-import model.Passenger;
 import model.User;
+import model.Passenger;
+import model.Clerk;
 import model.Train;
 import java.util.HashSet;
 
@@ -184,6 +185,34 @@ public class JDBC {
         }
         if (ret == 1) { return true; }
         else { return false; }
+    }
+
+    public static Clerk makeClerk(int uid) {
+        String name, userName, password, position = "error";
+        int employeeID = -1;
+
+        try {
+            ResultSet rs = stmt.executeQuery("CALL spClerkInfo(" + uid + ")");
+            if (rs.next()) {
+                name = rs.getString("Name");
+                userName = rs.getString("UserName");
+                position = rs.getString("EmpPosition");
+                rs = stmt.executeQuery("SELECT PASSWORD from Users where UserID = " + uid + ";");
+                if (rs.next()) {
+                    password = rs.getString("PASSWORD");
+                    rs = stmt.executeQuery("SELECT EmployeeID from Clerks where UserID = " + uid + ";");
+                    if (rs.next()) {
+                        employeeID = rs.getInt("EmployeeID");
+                        Clerk newClerk = new Clerk(uid, name, userName, password, true, employeeID, position);
+                        return newClerk;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 /*
