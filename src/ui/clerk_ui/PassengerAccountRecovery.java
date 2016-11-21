@@ -135,7 +135,11 @@ public class PassengerAccountRecovery extends JDialog{
                     String password = ret[1];
                     System.out.println("User ID:  " + uid + "\nPassword: " + password);
 
-                    // TODO: Update UI with UserID and password
+                    passengerInfoListModel.removeAllElements();
+		    passengerInfoListModel.addElement(String.format("%25s %25s",
+								    "User ID","Password"));
+		    passengerInfoListModel.addElement(String.format("%25s %25s",
+								    Integer.toString(uid),password));
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Username, Name, and Phone Number cannot be empty",
