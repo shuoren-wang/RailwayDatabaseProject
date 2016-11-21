@@ -18,12 +18,19 @@ import java.awt.event.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import static jdbc.JDBC.*;
+
 
 
 /**
  * Created by shuorenwang on 2016-10-21.
  */
 public class MainFrame extends JFrame {
+	public boolean isPassenger;
+	public boolean isClerk;
+	
     protected User user;
     protected boolean loginStatus; //signed in=>true, otherwise=>false
 
@@ -196,11 +203,19 @@ public class MainFrame extends JFrame {
                     //test (1,5,2016-10-18)
                     loadTrainsList();
                 }
+                /*
+                try {
+                    trainByStopses = fillTrains();
+                } catch (SQLException f) {
+                    f.printStackTrace();
+                }
+                */
             }
         });
 
     }
 
+// <<<<<<< HEAD
     protected Date strToDate(String dateStr) {
         return java.sql.Date.valueOf(dateStr);
     }
@@ -222,6 +237,11 @@ public class MainFrame extends JFrame {
     }
 
     protected void addEmptyTrainsList() {
+/* =======
+    protected void addTrainsList() {
+
+ >>>>>>> communication2 */
+
         trainsListModel = new DefaultListModel();
         trainsList = new JList(trainsListModel);
         JScrollPane listScroller = new JScrollPane(trainsList);

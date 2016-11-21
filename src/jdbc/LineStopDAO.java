@@ -48,8 +48,8 @@ public class LineStopDAO {
             while (rs.next()) {
                 LineStop lineStop=new LineStop();
                 lineStop.setId(rs.getInt("id"));
-                lineStop.setArrivalTime(rs.getDate("arrivaltime"));
-                lineStop.setStopsForDuration(rs.getDate("stopsforduration")); //'00:05:00'
+                lineStop.setArrivalTime(rs.getTime("arrivaltime"));
+                lineStop.setStopsForDuration(rs.getTime("stopsforduration")); //'00:05:00'
                 lineStop.setStatus(rs.getBoolean("status"));
                 lineStop.setLocatedStationId(rs.getInt("locatedstation_id"));
                 lineStop.setStationName(rs.getString("stationname"));
@@ -74,11 +74,8 @@ public class LineStopDAO {
             cs = con.prepareCall("{CALL spModifyLineStop("
                     +lineStop.getUpdatedByEmployeeId()+","
                     +lineStop.getId()+","
-                    +"'"+lineStop.getArrivalTime()+"',"
                     +"'"+lineStop.getStopsForDuration()+"',"
-                    +(lineStop.isStatus()? 1 : 0)+","
-                    +lineStop.getLocatedStationId()+","
-                    +lineStop.getForLineId()+")}");
+                    +(lineStop.isActive()? 1 : 0)+")}");
             cs.executeUpdate();
             System.out.println("Update data on lineStops: success!");
         } catch (SQLException e) {
@@ -94,7 +91,7 @@ public class LineStopDAO {
                     +lineStop.getUpdatedByEmployeeId()+","
                     +"'"+lineStop.getArrivalTime()+"',"
                     +"'"+lineStop.getStopsForDuration()+"',"
-                    +(lineStop.isStatus()? 1 : 0)+","
+                    +(lineStop.isActive()? 1 : 0)+","
                     +lineStop.getLocatedStationId()+","
                     +lineStop.getForLineId()+")}");
             cs.executeUpdate();

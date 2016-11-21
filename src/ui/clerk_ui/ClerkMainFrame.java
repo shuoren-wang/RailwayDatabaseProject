@@ -20,7 +20,9 @@ public class ClerkMainFrame extends MainFrame {
     protected static final ClerkMainFrame instance = new ClerkMainFrame();
 
     private ClerkMainFrame() {
-        super();
+        MainFrame clerkFrame = new MainFrame();
+        clerkFrame.isClerk = true;
+        clerkFrame.isPassenger = false;
         //TODO: for test
         clerk=new Clerk();
         purchaseButton.setVisible(false);
@@ -64,7 +66,7 @@ public class ClerkMainFrame extends MainFrame {
     
     private void addPassengerAccountRecovery() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Search Passenger Info");
+        JMenuItem userMenuItem = new JMenuItem("Passenger Account Recovery");
         userMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -119,7 +121,7 @@ public class ClerkMainFrame extends MainFrame {
         userMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ManageLineStopsDialog dialog = new ManageLineStopsDialog(that);
+                ManageLineStopsDialog dialog = new ManageLineStopsDialog(clerk);
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.setVisible(true);

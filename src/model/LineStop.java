@@ -1,14 +1,14 @@
 package model;
 
-import java.sql.Date;
+import java.sql.Time;
 
 /**
  * Created by shuorenwang on 2016-10-16.
  */
 public class LineStop {
     private int id;
-    private Date arrivalTime;
-    private Date stopsForDuration;
+    private Time arrivalTime;
+    private Time stopsForDuration;
     private boolean status;
     private int locatedStationId;
     private String stationName;
@@ -36,23 +36,23 @@ public class LineStop {
         this.id = id;
     }
 
-    public Date getArrivalTime() {
+    public Time getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(Date arrivalTime) {
+    public void setArrivalTime(Time arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
-    public Date getStopsForDuration() {
+    public Time getStopsForDuration() {
         return stopsForDuration;
     }
 
-    public void setStopsForDuration(Date stopsForDuration) {
+    public void setStopsForDuration(Time stopsForDuration) {
         this.stopsForDuration = stopsForDuration;
     }
 
-    public boolean isStatus() {
+    public boolean isActive() {
         return status;
     }
 
@@ -101,6 +101,6 @@ public class LineStop {
     }
 
     public String toString(){
-        return "Station Name: "+stationName+" ; Line Name= "+lineName;
-    }
+        return "Stat:" +locatedStationId+" ;Line:"+forLineId+" ;active:"+ (isActive()?"true":"false")
+                +" ;arrival:"+arrivalTime + " ;duration:"+stopsForDuration;}
 }

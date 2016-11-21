@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.Time;
 import java.util.List;
 
 /**
@@ -48,7 +49,8 @@ public class ManageLineStopsDialog extends JDialog {
     private JCheckBox statusCheckBox;
 
 
-    public ManageLineStopsDialog(JFrame frame) {
+    public ManageLineStopsDialog(Clerk clerk) {
+        this.clerk=clerk;
         lineDAO=LineDAO.getInstance();
         stationDAO=StationDAO.getInstance();
         lineStopDAO =LineStopDAO.getInstance();
@@ -63,6 +65,7 @@ public class ManageLineStopsDialog extends JDialog {
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setSize(520, 200);
+        setTitle("Manage LineStops");
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -84,7 +87,7 @@ public class ManageLineStopsDialog extends JDialog {
         addActiveCheckBox();
         addActiveLabel();
         addCreateButton();
-        addDisableButton();
+        addStatusButton();
         addCancelButton();
         pack();
     }
@@ -97,7 +100,7 @@ public class ManageLineStopsDialog extends JDialog {
     private void addAllLineStopsComboBox() {
         final ManageLineStopsDialog that=this;
         lineStopDAO.loadData();
-        List<LineStop> lineStops = lineStopDAO.getLineStops();
+        final List<LineStop> lineStops = lineStopDAO.getLineStops();
 
         allLineStopComboBoxModel = new DefaultComboBoxModel();
         synchronized (lineStops) {
@@ -114,9 +117,9 @@ public class ManageLineStopsDialog extends JDialog {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED &&
                         (allLineStopsComboBox.getSelectedIndex()!= -1) ) {
-                    index=allLineStopsComboBox.getSelectedIndex()-1;
-                    currentLine = LineDAO.getInstance().getLines().get(index);
-                    boolean status = currentLine.isActive();
+                    index=allLineStopsComboBox.getSelectedIndex();
+                    currentLineStop = LineStopDAO.getInstance().getLineStops().get(index);
+                    boolean status = currentLineStop.isActive();
 
                     that.revalidate();
                     that.repaint();
@@ -127,11 +130,11 @@ public class ManageLineStopsDialog extends JDialog {
         });
 
         //set default line as the first line in database
-        if(currentLine==null){
+        if(currentLineStop==null){
             currentLineStop=lineStopDAO.getLineStops().get(0);
         }
 
-        contentPanel.add(allLineStopsComboBox, "cell 1 0,growx,span");
+        contentPanel.add(allLineStopsComboBox, "cell 1 0,growx");
     }
 
     private void addStationLabel() {
@@ -210,7 +213,7 @@ public class ManageLineStopsDialog extends JDialog {
             currentLine=lineDAO.getLines().get(0);
         }
 
-        contentPanel.add(lineComboBox, "cell 1 2,growx,span");
+        contentPanel.add(lineComboBox, "cell 1 2,growx");
     }
 
     private void addArrivalTimeLabel() {
@@ -245,45 +248,66 @@ public class ManageLineStopsDialog extends JDialog {
         contentPanel.add(statusCheckBox, "cell 1 5, alignx leading");
     }
 
+    protected Time strToTime(String timeStr) {
+        return java.sql.Time.valueOf(timeStr);
+    }
+
     private void addCreateButton() {
-//        final ManageLinesDialog that=this;
+        final ManageLineStopsDialog that=this;
         JButton submitButton = new JButton("Create");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO database
                 if(validationCheck()) {
-//                    Line line = new Line();
-//                    line.setCreatedByEmployeeId(clerk.getEmployeeId());
-//                    line.setLineName(lineNameField.getText());
-//                    line.setActive(isActiveCheckBox.isSelected());
+                    LineStop lineStop = new LineStop();
+                    lineStop.setCreatedByEmployeeId(clerk.getEmployeeId());
+                    lineStop.setStatus(statusCheckBox.isSelected());
+                    lineStop.setStopsForDuration(strToTime(stopsForDurationField.getText()));
+                    lineStop.setArrivalTime(strToTime(arrivalTimeTextField.getText()));
+                    lineStop.setForLineId(currentLine.getId());
+                    lineStop.setLocatedStationId(currentStation.getId());
 
-//                    lineDAO.insertData(line);
-//
-//                    loadAllLineStopsComboBox();
-//                }else{
-//                    JOptionPane.showMessageDialog(that,
-//                            "LineName is empty!",
-//                            "Warning",
-//                            JOptionPane.WARNING_MESSAGE);
+                    System.out.println("ManageLineStopsDialog::addCreateButton()"+lineStop.toString());
+                    lineStopDAO.insertData(lineStop);
+
+                    loadAllLineStopsComboBox();
+                }else{
+                    JOptionPane.showMessageDialog(that,
+                            "Line/Station/Arrival/Duration cannot be empty/null!",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
         buttonPanel.add(submitButton);
     }
 
-    private void addDisableButton() {
-        JButton submitButton = new JButton("Disable");
+    private void addStatusButton() {
+        JButton submitButton = new JButton("Status");
+        final ManageLineStopsDialog that=this;
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO database
+                currentLineStop.setUpdatedByEmployeeId(clerk.getEmployeeId());
+                currentLineStop.setStatus(!currentLineStop.isActive());
+
+                System.out.println(currentLineStop.toString());
+
+                lineStopDAO.modifyData(currentLineStop);
+
+                JOptionPane.showMessageDialog(that,
+                        "LineStop : "+currentLineStop.getLineName()+","+currentLineStop.getStationName()+" changed to "+ (currentLineStop.isActive()? "active": "inactive" ),
+                        "Info",
+                        JOptionPane.INFORMATION_MESSAGE);
 
                 loadAllLineStopsComboBox();
             }
         });
         buttonPanel.add(submitButton);
     }
+
 
     private void addCancelButton() {
         JButton cancelButton = new JButton("Go Back");
@@ -301,25 +325,29 @@ public class ManageLineStopsDialog extends JDialog {
     //update AllLineStops Combo Box
     private void loadAllLineStopsComboBox() {
         //TODO database
-        lineStopDAO.loadData();
-        List<LineStop> lineStopss = lineStopDAO.getLineStops();
+        List<LineStop> lineStops = lineStopDAO.getLineStops();
 //        System.out.println("lineStopss.size():"+lineStopss.size());
 
         allLineStopComboBoxModel.removeAllElements();
 
-        for (LineStop next : lineStopss) {
+        for (LineStop next : lineStops) {
             allLineStopComboBoxModel.addElement(next.toString());
         }
         System.out.println("allLineStopsComboBoxModel.getSize():"+allLineStopComboBoxModel.getSize());
 
-
         allLineStopsComboBox.setModel(allLineStopComboBoxModel);
+
+        index=0;
     }
 
     /**
      * @return true if currentLine and currentStation not null
      */
     private boolean validationCheck(){
-        return currentLine!= null && currentStation !=null;
+        String arrivalTime=arrivalTimeTextField.getText();
+        String duration=stopsForDurationField.getText();
+
+        return currentLine!= null && currentStation !=null
+                && arrivalTime!="" && duration!="";
     }
 }
