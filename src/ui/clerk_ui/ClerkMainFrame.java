@@ -64,7 +64,7 @@ public class ClerkMainFrame extends MainFrame {
     
     private void addPassengerAccountRecovery() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Search Passenger Info");
+        JMenuItem userMenuItem = new JMenuItem("Passenger Account Recovery");
         userMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

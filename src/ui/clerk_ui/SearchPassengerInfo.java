@@ -5,6 +5,7 @@ import model.Passenger;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -15,6 +16,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
+
+import static jdbc.JDBC.searchPassenger;
 
 public class SearchPassengerInfo extends JDialog{
 	private Clerk clerk;
@@ -97,7 +100,24 @@ public class SearchPassengerInfo extends JDialog{
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+
+                int uid = Integer.parseInt(uidField.getText());
+                passengerList = searchPassenger(uid);
+
+                passengerInfoListModel.removeAllElements();
+                passengerInfoListModel.addElement(String.format("%25s %25s %25s %25s %25s",
+                        "User ID","Passenger ID","Username","Name","Phone Number"));
+
+                for (Passenger next : passengerList) {
+                    passengerInfoListModel.addElement(String.format("%25s %25s %25s %25s %25s",
+                            Integer.toString(next.getUserID()),
+                            Integer.toString(next.getPassengerID()),
+                            next.getUserName(),
+                            next.getName(),
+                            next.getPhone()));
+                }
+
+
                 if(uidField.getText() != null) {
                     
                 }else{
