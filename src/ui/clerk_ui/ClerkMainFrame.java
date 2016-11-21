@@ -20,9 +20,7 @@ public class ClerkMainFrame extends MainFrame {
     protected static final ClerkMainFrame instance = new ClerkMainFrame();
 
     private ClerkMainFrame() {
-        MainFrame clerkFrame = new MainFrame();
-        clerkFrame.isClerk = true;
-        clerkFrame.isPassenger = false;
+        super();
         //TODO: for test
         clerk=new Clerk();
         purchaseButton.setVisible(false);
@@ -66,7 +64,7 @@ public class ClerkMainFrame extends MainFrame {
     
     private void addPassengerAccountRecovery() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Passenger Account Recovery");
+        JMenuItem userMenuItem = new JMenuItem("Search Passenger Info");
         userMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

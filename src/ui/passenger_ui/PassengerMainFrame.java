@@ -19,9 +19,7 @@ public class PassengerMainFrame extends MainFrame {
     protected static final PassengerMainFrame instance = new PassengerMainFrame();
 
     private PassengerMainFrame() {
-    	MainFrame passengerFrame = new MainFrame();
-    	passengerFrame.isClerk = false;
-    	passengerFrame.isPassenger = true;
+        super();
     }
 
 

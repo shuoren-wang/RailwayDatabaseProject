@@ -16,8 +16,6 @@ import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
 
-import static jdbc.JDBC.fillPassengerList;
-
 public class ViewAllPassengerInfo extends JDialog{
 	private Clerk clerk;
 	private String passengerSortStat;
@@ -150,14 +148,8 @@ public class ViewAllPassengerInfo extends JDialog{
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO database
                 if(displayAmountField.getText() != null && offsetField.getText() != null) {
-
-                    int take = Integer.parseInt(displayAmountField.getText());
-                    int offset = Integer.parseInt(offsetField.getText());
-
-                    // fillPassengerList(passengerList, passengerSortStat, take, offset);
-                    passengerList = fillPassengerList(passengerSortStat, take, offset);
                     
                 }else{
                     JOptionPane.showMessageDialog(that,

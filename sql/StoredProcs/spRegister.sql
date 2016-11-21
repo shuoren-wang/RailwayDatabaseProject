@@ -22,8 +22,6 @@ proc_label:BEGIN
 START TRANSACTION;
 
 IF EXISTS (SELECT username FROM users WHERE username = in_username) THEN
-  SET `_rollback` = 1;
-  SELECT 'Username Exists';
 	LEAVE proc_label;
 END IF;
 
@@ -69,11 +67,10 @@ END IF;
 
 
 IF `_rollback` THEN
+SELECT 'Error' as Err;
 	ROLLBACK;
-  SELECT 'Username Exists';
 ELSE
 	COMMIT;
-  SELECT userId FROM users WHERE username = in_username;
 END IF;
 
 END$$

@@ -16,7 +16,6 @@ public class ClerkMain {
     public static void main(String[] args) {
 
         JDBC.getInstance().openCon();
-        System.out.println("ClerkMain opened");
 
         ClerkMainFrame frame = ClerkMainFrame.getInstance();
         frame.setVisible(true);

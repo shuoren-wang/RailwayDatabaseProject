@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static jdbc.JDBC.getCurrentUser;
-
 /**
  * Created by shuorenwang on 2016-10-21.
  */
@@ -24,35 +22,29 @@ public class UserInfoDialog extends JDialog{
 
     public UserInfoDialog(MainFrame frame){
 
-        // this.user=frame.getUser();
-        user = getCurrentUser();
+        this.user=frame.getUser();
 
-        if (user == null) {
-            JOptionPane.showMessageDialog(this, "Please sign in first.", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else {
+        contentPanel=new JPanel();
+        buttonPanel=new JPanel();
 
-            contentPanel = new JPanel();
-            buttonPanel = new JPanel();
+        setResizable(false);
+        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        setSize(500,200);
 
-            setResizable(false);
-            setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            setSize(500, 200);
+        getContentPane().add(contentPanel, BorderLayout.CENTER);
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        contentPanel.setLayout(new MigLayout("", "[][grow]",
+                "[][][][][]"));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-            getContentPane().add(contentPanel, BorderLayout.CENTER);
-            getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-            contentPanel.setLayout(new MigLayout("", "[][grow]",
-                    "[][][][][]"));
-            buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        addUsernameLabel();
+        addUsernameField();
+        addFullNameLabel();
+        addFullNameField();
 
-            addUsernameLabel();
-            addUsernameField();
-            addFullNameLabel();
-            addFullNameField();
-
-            addChangePasswordButton();
-            addSaveButton();
-            addCancelButton();
-        }
+        addChangePasswordButton();
+        addSaveButton();
+        addCancelButton();
     }
 
     private void addUsernameLabel(){
