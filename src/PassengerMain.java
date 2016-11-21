@@ -14,7 +14,6 @@ public class PassengerMain {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                //TODO shutdown database
                 JDBC.getInstance().closeCon();
                 System.exit(0);
             }

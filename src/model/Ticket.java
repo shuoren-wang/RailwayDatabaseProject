@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 /**
  * Created by shuorenwang on 2016-10-21.
@@ -18,7 +19,22 @@ public class Ticket {
     private int trainNo;
     private User user;
 
+    public Ticket(int id, Date departDate, int fromStationId, int toStationId,
+                  int passengerID, String seatClass, int seatNo, int lineId, int trainNo, User user) {
+        this.id = id;
+        this.departDate = departDate;
+        this.fromStationId = fromStationId;
+        this.toStationId = toStationId;
+        this.passengerID = passengerID;
+        this.seatClass = seatClass;
+        this.seatNo = seatNo;
+        this.lineId = lineId;
+        this.trainNo = trainNo;
+        this.user = user;
+    }
+
     public Ticket() {
+
     }
 
 

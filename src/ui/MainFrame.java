@@ -198,7 +198,7 @@ public class MainFrame extends JFrame {
         getTrainsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: get data from database
+
                 if (validationCheck()) {
                     //test (1,5,2016-10-18)
                     loadTrainsList();
@@ -316,7 +316,6 @@ public class MainFrame extends JFrame {
                     currentTrainByStops.setToStationId(toStation.getId());
                     currentTrainByStops.setDate(strToDate(dateField.getText()));
 
-                    //TODO database:
                     System.out.println("MainFrame::addPurchaseButton():goto purchseTicket");
                     purchaseTicket();
                     loadTrainsList();
@@ -331,10 +330,10 @@ public class MainFrame extends JFrame {
      * purchase tickets; fails if requesting UserId is not clerk and not owner of ticket or ticket doesnt exist
      */
     protected void purchaseTicket(){
-        //TODO: delete after implement login
-        user=new User();
+        //TODO: delete after implement login, and PurchasedTicketsDialog implemented
+        // user=new User();
         ////////////////
-
+        user = getCurrentUser();
 
         int ticketId =ticketDAO.purchaseTickets(user, currentTrainByStops);
 
@@ -408,7 +407,7 @@ public class MainFrame extends JFrame {
                             JOptionPane.WARNING_MESSAGE);*/
 
                      /*only for test*/
-                    user = new User();
+                    user = getCurrentUser();
                     PurchasedTicketsDialog dialog = new PurchasedTicketsDialog(user);
                     dialog.setLocationRelativeTo(that);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -479,7 +478,6 @@ public class MainFrame extends JFrame {
      * @return true if no empty textFields, date format is write
      */
     private boolean validationCheck() {
-        //TODO: check from/to station need to be different??
 
         String dateStr = dateField.getText();
 

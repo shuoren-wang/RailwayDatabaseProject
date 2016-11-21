@@ -13,6 +13,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+import static jdbc.JDBC.viewPassengerTickets;
+
 /**
  * Created by shuorenwang on 2016-10-21.
  */
@@ -87,6 +89,7 @@ public class PurchasedTicketsDialog extends JDialog{
 
         ArrayList<Ticket> tickets=new ArrayList<Ticket>();
         //TODO: get data from database
+        tickets = viewPassengerTickets(user.getUserID());
         if(tickets.size()>0) {
             Object[] ticketsArr = tickets.toArray();
             synchronized (tickets.toArray()) {
