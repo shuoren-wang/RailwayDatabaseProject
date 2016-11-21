@@ -255,7 +255,6 @@ public class JDBC {
         return null;
     }
 
-    // public static void fillPassengerList(ArrayList<Passenger> passengerList, String orderBy, int take, int offset) {
     public static ArrayList<Passenger> fillPassengerList(String orderBy, int take, int offset) {
         ArrayList<Passenger> passengerList = new ArrayList<Passenger>();
         int[] userID = new int[take];
@@ -301,6 +300,44 @@ public class JDBC {
             e.printStackTrace();
         }
         return passengerList;
+    }
+
+    public static ArrayList<Passenger> searchPassenger(int uid) {
+        ArrayList<Passenger> passenger = new ArrayList<Passenger>();
+        int passengerID;
+        boolean active;
+        String password;
+        String name;
+        String username;
+        String phone;
+
+        try {
+            ResultSet rs = stmt.executeQuery("CALL spPassengerInfo(" + uid + ")");
+            if (rs.next()) {
+                name = rs.getString("Name");
+                username = rs.getString("UserName");
+                phone = rs.getString("PhoneNumber");
+                rs = stmt.executeQuery("SELECT PASSWORD from Users where UserID = " + uid + ";");
+                if (rs.next()) {
+                    password = rs.getString("PASSWORD");
+                    rs = stmt.executeQuery("SELECT PassengerID from Passengers where UserID = " + uid + ";");
+                    if (rs.next()) {
+                        passengerID = rs.getInt("PassengerID");
+                        rs = stmt.executeQuery("SELECT Active from Users where UserID = " + uid + ";");
+                        if (rs.next()) {
+                            active = rs.getBoolean("Active");
+                            Passenger newPassenger = new Passenger(uid, name, username, password, active, passengerID, phone);
+                            passenger.add(newPassenger);
+                        }
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return passenger;
     }
 
 /*
