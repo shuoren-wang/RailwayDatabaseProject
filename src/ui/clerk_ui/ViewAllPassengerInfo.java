@@ -159,6 +159,19 @@ public class ViewAllPassengerInfo extends JDialog{
                     // fillPassengerList(passengerList, passengerSortStat, take, offset);
                     passengerList = fillPassengerList(passengerSortStat, take, offset);
                     
+                    passengerInfoListModel.removeAllElements();
+                    passengerInfoListModel.addElement(String.format("%25s %25s %25s %25s %25s",
+                            "User ID","Passenger ID","Username","Name","Phone Number"));
+
+                    for (Passenger next : passengerList) {
+                    	passengerInfoListModel.addElement(String.format("%25s %25s %25s %25s %25s",
+                                Integer.toString(next.getUserID()),
+                                Integer.toString(next.getPassengerID()),
+                                next.getUserName(),
+                                next.getName(),
+                                next.getPhone()));
+                    }
+                    
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Display Amount and Offset cannot be empty",

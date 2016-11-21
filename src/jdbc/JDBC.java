@@ -4,10 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 // import java.util.Date;
-import model.User;
-import model.Passenger;
-import model.Clerk;
-import model.Train;
+import model.*;
 
 import javax.xml.transform.Result;
 import java.util.HashSet;
@@ -255,7 +252,6 @@ public class JDBC {
         return null;
     }
 
-    // public static void fillPassengerList(ArrayList<Passenger> passengerList, String orderBy, int take, int offset) {
     public static ArrayList<Passenger> fillPassengerList(String orderBy, int take, int offset) {
         ArrayList<Passenger> passengerList = new ArrayList<Passenger>();
         int[] userID = new int[take];
@@ -303,6 +299,140 @@ public class JDBC {
         return passengerList;
     }
 
+    public static ArrayList<Passenger> searchPassenger(int uid) {
+        ArrayList<Passenger> passenger = new ArrayList<Passenger>();
+        int passengerID;
+        boolean active;
+        String password;
+        String name;
+        String username;
+        String phone;
+
+        try {
+            ResultSet rs = stmt.executeQuery("CALL spPassengerInfo(" + uid + ")");
+            if (rs.next()) {
+                name = rs.getString("Name");
+                username = rs.getString("UserName");
+                phone = rs.getString("PhoneNumber");
+                rs = stmt.executeQuery("SELECT PASSWORD from Users where UserID = " + uid + ";");
+                if (rs.next()) {
+                    password = rs.getString("PASSWORD");
+                    rs = stmt.executeQuery("SELECT PassengerID from Passengers where UserID = " + uid + ";");
+                    if (rs.next()) {
+                        passengerID = rs.getInt("PassengerID");
+                        rs = stmt.executeQuery("SELECT Active from Users where UserID = " + uid + ";");
+                        if (rs.next()) {
+                            active = rs.getBoolean("Active");
+                            Passenger newPassenger = new Passenger(uid, name, username, password, active, passengerID, phone);
+                            passenger.add(newPassenger);
+                        }
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return passenger;
+    }
+
+    public static boolean isUsernameTaken(String username) {
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * from Users where UserName = '" + username + "';");
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void updateUserInformation(int uid, String username, String name, String phone, String position) {
+        String query = "CALL spModifyUser(" + uid + ",'" + username + "','" + name + "','" + phone + "','" + position + "')";
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                System.out.println("User info successfully changed.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Ticket> viewPassengerTickets(int uid) {
+
+        String query = "CALL spViewTickets(" + uid + ")";
+
+        ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+        List<Integer> id = new ArrayList<Integer>();
+        List<Date> departDate = new ArrayList<Date>();
+        List<Integer> fromStationId = new ArrayList<Integer>();
+        List<Integer> toStationId = new ArrayList<Integer>();
+        List<Integer> passengerID = new ArrayList<Integer>();
+        List<String> seatClass = new ArrayList<String>();
+        List<Integer> seatNo = new ArrayList<Integer>();
+        List<Integer> lineId = new ArrayList<Integer>();
+        List<Integer> trainNo = new ArrayList<Integer>();
+        // User[] user;
+        int i = 0;
+
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                id.add(i, rs.getInt("TicketId"));
+                departDate.add(i, rs.getDate("travelDate"));
+                fromStationId.add(i, rs.getInt("fromStationId"));
+                toStationId.add(i, rs.getInt("toStationId"));
+                passengerID.add(i, rs.getInt("forUserId"));
+                // seatClass.add(i, rs.getString("SeatType"));
+                // seatNo.add(i, rs.getInt(""))
+                lineId.add(i, rs.getInt("LineID"));
+                trainNo.add(i, rs.getInt("TrainNumber"));
+                // user.add(i, getCurrentUser());
+                i++;
+            }
+            for (int j = 0; j < i; j++) {
+                rs = stmt.executeQuery("SELECT ForSeat_Number from Tickets where ID = " + id.get(j) + ";");
+                if (rs.next()) {
+                    seatNo.add(j, rs.getInt("ForSeat_Number"));
+                }
+            }
+            for (int x = 0; x < i; x++) {
+                rs = stmt.executeQuery("SELECT Class from Seats where TrainNumber = " + trainNo.get(x)
+                        + " and SeatNumber = " + seatNo.get(x));
+                if (rs.next()) {
+                    seatClass.add(x, rs.getString("Class"));
+                }
+            }
+            for (int k = 0; k < i; k++) {
+                Ticket ticket = new Ticket(id.get(k), departDate.get(k), fromStationId.get(k), toStationId.get(k),
+                        passengerID.get(k), seatClass.get(k), seatNo.get(k), lineId.get(k), trainNo.get(k), getCurrentUser());
+                tickets.add(ticket);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets;
+    }
+
+    public static boolean returnTicket(int uid, int tid) {
+        String query = "CALL spReturnTicket(" + uid + "," + tid + ")";
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                if (rs.getInt(1) == 1) return true;
+                else return false;
+            } else return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 /*
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {
@@ -334,8 +464,6 @@ public class JDBC {
     }
 
 */
-
-
 
     public static void printLineWithActiveStops(Statement stmt) throws SQLException {
         ResultSet rs = runStoredProc(stmt, "spShowAllLinesAndStops");
