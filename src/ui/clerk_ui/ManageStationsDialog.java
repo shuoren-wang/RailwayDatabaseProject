@@ -77,7 +77,6 @@ public class ManageStationsDialog extends JDialog {
         allStationsComboBox.setMaximumSize(new Dimension(300, 600));
         contentPanel.add(allStationsComboBox, "cell 1 0,growx");
 
-        //TODO: get data from database
         final List<Station> stations = stationDAO.getStations();
 
         synchronized (stations) {

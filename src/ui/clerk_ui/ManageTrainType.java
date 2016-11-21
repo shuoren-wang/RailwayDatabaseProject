@@ -19,6 +19,9 @@ import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
 
+import static jdbc.JDBC.createTrainType;
+import static jdbc.JDBC.modifyTrainType;
+
 public class ManageTrainType extends JDialog{
 	private Clerk clerk;
 	
@@ -48,7 +51,7 @@ public class ManageTrainType extends JDialog{
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setTitle("Manage Train Type");
-        setSize(300, 150);
+        setSize(600, 300);
         
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -133,9 +136,18 @@ public class ManageTrainType extends JDialog{
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+                //TODO: Update UI to add new train type
                 if(trainTypeColourField.getText() != null && trainTypeIdField.getText() != null) {
-                    
+                    int newTrainID = createTrainType(trainTypeColourField.getText());
+                    if (newTrainID < 0) {
+                        JOptionPane.showMessageDialog(that,
+                                "Train creation unsuccessful.",
+                                "Warning",
+                                JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(that,
+                                "Train creation successful. New TrainID is " + newTrainID);
+                    }
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Train colour and id cannot be empty",
@@ -153,9 +165,10 @@ public class ManageTrainType extends JDialog{
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+
                 if(trainTypeColourField.getText() != null && trainTypeIdField.getText() != null) {
-                    
+                    modifyTrainType(Integer.parseInt(trainTypeIdField.getText()), trainTypeColourField.getText());
+                    // TODO: Confirm the change actually happened and update UI
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Train colour and id cannot be empty",

@@ -433,6 +433,28 @@ public class JDBC {
         return false;
     }
 
+    public static void modifyTrainType(int tid, String color) {
+        String query = "CALL spModifyTrainType(" + tid + ",'" + color + "')";
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int createTrainType(String color) {
+        String query = "CALL spCreateTrainType('" + color + "')";
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                return rs.getInt(1);
+            } else return -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 /*
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {

@@ -3,13 +3,18 @@ package jdbc;
 import model.Clerk;
 import model.Passenger;
 import model.User;
+import ui.MainFrame;
 
+import javax.swing.*;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static jdbc.JDBC.getCurrentUser;
+import static jdbc.JDBC.makeClerk;
 
 /**
  * Created by shuorenwang on 2016-11-14.
@@ -72,8 +77,13 @@ public class UserDAO {
         System.out.println(String.format("UserDAO:: getClerkInfo()"));
         users = new ArrayList<User>();
         CallableStatement cs = null;
-        Clerk clerk=new Clerk();
-
+        Clerk clerk = null;
+        if (getCurrentUser() == null) {
+            System.out.println("\nNeed to sign in first.\n");
+        } else {
+            clerk = makeClerk(getCurrentUser().getUserID());
+        }
+/*
         try {
             cs = con.prepareCall("CALL spClerkInfo("+userId+")");
             ResultSet rs = cs.executeQuery();
@@ -89,7 +99,7 @@ public class UserDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+*/
         return clerk;
     }
 

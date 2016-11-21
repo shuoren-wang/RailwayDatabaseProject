@@ -12,14 +12,14 @@ public class Clerk extends User {
         this.employeeId = employeeId;
         this.position = position;
     }
-
+/*
     public Clerk() {
         super();
         employeeId = 1;
         position = "Manager";
     }
 
-
+*/
     public int getEmployeeId() {
         return employeeId;
     }
