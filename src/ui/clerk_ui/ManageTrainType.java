@@ -48,7 +48,7 @@ public class ManageTrainType extends JDialog{
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setTitle("Manage Train Type");
-        setSize(300, 150);
+        setSize(500, 300);
         
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
