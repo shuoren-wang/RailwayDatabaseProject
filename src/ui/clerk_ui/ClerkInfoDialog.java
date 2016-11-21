@@ -50,6 +50,8 @@ public class ClerkInfoDialog extends UserInfoDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                System.out.println("ClerkInfoDialog:: Submit button pressed");
+
                 String username = usernameField.getText();
                 String name = fullNameField.getText();
                 String position = positionField.getText();
@@ -69,8 +71,6 @@ public class ClerkInfoDialog extends UserInfoDialog {
                 } else {
                     updateUserInformation(clerk.getUserID(), username, name, "0", position);
                 }
-
-                System.out.println("UserInfoDialog:: Submit button pressed");
             }
         });
         saveButton.setActionCommand("OK");

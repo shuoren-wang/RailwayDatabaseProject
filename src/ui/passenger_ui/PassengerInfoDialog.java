@@ -9,7 +9,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static jdbc.JDBC.isUsernameTaken;
 import static jdbc.JDBC.makePassenger;
+import static jdbc.JDBC.updateUserInformation;
 
 /**
  * Created by shuorenwang on 2016-11-06.
@@ -59,8 +61,28 @@ public class PassengerInfoDialog extends UserInfoDialog {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
-                System.out.println("UserInfoDialog:: Submit button pressed");
+
+                System.out.println("PassengerInfoDialog:: Submit button pressed");
+
+                String username = usernameField.getText();
+                String name = fullNameField.getText();
+                String phone = phoneField.getText();
+
+                final UserInfoDialog that = getUserInfoDialog();
+
+                if ( !( (username.length() > 0) && (name.length() > 0) && (phone.length() > 0) ) ) {
+                    JOptionPane.showMessageDialog(that,
+                            "Please fill out all the fields.",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                } else if (!(username.equals(passenger.getUserName())) && isUsernameTaken(username)) {
+                    JOptionPane.showMessageDialog(that,
+                            "Username is already taken, please try another.",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    updateUserInformation(passenger.getUserID(), username, name, phone, "0");
+                }
             }
         });
         saveButton.setActionCommand("OK");
