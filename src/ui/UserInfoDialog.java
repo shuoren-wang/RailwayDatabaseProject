@@ -18,8 +18,8 @@ public class UserInfoDialog extends JDialog{
 
     protected JPanel contentPanel;
     private JPanel buttonPanel;
-    private JTextField usernameField;
-    private JTextField fullNameField;
+    protected JTextField usernameField;
+    protected JTextField fullNameField;
 
 
     public UserInfoDialog(MainFrame frame){
@@ -50,7 +50,7 @@ public class UserInfoDialog extends JDialog{
             addFullNameField();
 
             addChangePasswordButton();
-            addSaveButton();
+            // addSaveButton();
             addCancelButton();
         }
     }
@@ -96,17 +96,23 @@ public class UserInfoDialog extends JDialog{
         buttonPanel.add(passwordButton);
     }
 
+/* Moving to ClerkInfoDialog.java and PassengerInfoDialogue.java
     private void addSaveButton(){
         JButton saveButton = new JButton("Submit");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+
                 System.out.println("UserInfoDialog:: Submit button pressed");
             }
         });
         saveButton.setActionCommand("OK");
         buttonPanel.add(saveButton);
+    }
+*/
+
+    public void addSaveButton(JButton button) {
+        buttonPanel.add(button);
     }
 
     private void addCancelButton(){
@@ -125,6 +131,10 @@ public class UserInfoDialog extends JDialog{
 
     public User getUser(){
         return user;
+    }
+
+    protected UserInfoDialog getUserInfoDialog() {
+        return this;
     }
 
 }

@@ -340,6 +340,32 @@ public class JDBC {
         return passenger;
     }
 
+    public static boolean isUsernameTaken(String username) {
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * from Users where UserName = '" + username + "';");
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void updateUserInformation(int uid, String username, String name, String phone, String position) {
+        String query = "CALL spModifyUser(" + uid + ",'" + username + "','" + name + "','" + phone + "','" + position + "')";
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                System.out.println("User info successfully changed.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 /*
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {
@@ -371,8 +397,6 @@ public class JDBC {
     }
 
 */
-
-
 
     public static void printLineWithActiveStops(Statement stmt) throws SQLException {
         ResultSet rs = runStoredProc(stmt, "spShowAllLinesAndStops");

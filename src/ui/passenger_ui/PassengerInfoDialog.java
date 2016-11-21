@@ -6,6 +6,9 @@ import ui.UserInfoDialog;
 
 import javax.swing.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import static jdbc.JDBC.makePassenger;
 
 /**
@@ -23,6 +26,7 @@ public class PassengerInfoDialog extends UserInfoDialog {
         getPassengerByUserId();
         addPhoneLabel();
         addPhoneField();
+        addSaveButton();
     }
 
     private void addPhoneLabel(){
@@ -48,6 +52,20 @@ public class PassengerInfoDialog extends UserInfoDialog {
         passenger = makePassenger(userId);
 
         return passenger;
+    }
+
+    private void addSaveButton(){
+        JButton saveButton = new JButton("Submit");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO
+                System.out.println("UserInfoDialog:: Submit button pressed");
+            }
+        });
+        saveButton.setActionCommand("OK");
+        // buttonPanel.add(saveButton);
+        addSaveButton(saveButton);
     }
 
 }
