@@ -16,6 +16,8 @@ import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
 
+import static jdbc.JDBC.accountRecovery;
+
 public class PassengerAccountRecovery extends JDialog{
 	private Clerk clerk;
 	
@@ -125,9 +127,19 @@ public class PassengerAccountRecovery extends JDialog{
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+
                 if(usernameField.getText() != null && nameField.getText() != null && phoneField.getText() != null) {
-                    
+                    String[] ret = new String[2];
+                    ret = accountRecovery(usernameField.getText(), nameField.getText(), phoneField.getText());
+                    int uid = Integer.parseInt(ret[0]);
+                    String password = ret[1];
+                    System.out.println("User ID:  " + uid + "\nPassword: " + password);
+
+                    passengerInfoListModel.removeAllElements();
+		    passengerInfoListModel.addElement(String.format("%25s %25s",
+								    "User ID","Password"));
+		    passengerInfoListModel.addElement(String.format("%25s %25s",
+								    Integer.toString(uid),password));
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Username, Name, and Phone Number cannot be empty",

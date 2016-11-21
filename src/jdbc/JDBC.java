@@ -455,6 +455,26 @@ public class JDBC {
         return -1;
     }
 
+    public static String[] accountRecovery(String username, String name, String phone) {
+        String[] ret = new String[2];
+        String query = "CALL spPasswordRecovery('" + username + "','" + name + "','" + phone + "')";
+
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                ret[1] = rs.getString("password");
+                rs = stmt.executeQuery("SELECT UserID from Users where UserName = '" + username + "';");
+                if (rs.next()) {
+                    ret[0] = String.valueOf(rs.getInt("UserID"));
+                    return ret;
+                }
+            } else return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 /*
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {
