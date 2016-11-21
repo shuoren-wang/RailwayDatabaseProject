@@ -28,6 +28,9 @@ import static jdbc.JDBC.*;
  * Created by shuorenwang on 2016-10-21.
  */
 public class MainFrame extends JFrame {
+	public boolean isPassenger;
+	public boolean isClerk;
+	
     protected User user;
     protected boolean loginStatus; //signed in=>true, otherwise=>false
 
