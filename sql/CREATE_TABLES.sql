@@ -78,7 +78,7 @@ CREATE TABLE TrainTypes (
 	Active BOOL NOT NULL DEFAULT 1,
 	FOREIGN KEY (TrainType_ID) REFERENCES TrainTypes(ID),
 	FOREIGN KEY (RunsLine_ID) REFERENCES Line(ID),
-	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
+	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID),
 	FOREIGN KEY (UpdatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
 );
 

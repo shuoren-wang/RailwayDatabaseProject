@@ -79,7 +79,7 @@ CREATE TABLE TrainTypes (
 	Active BOOL NOT NULL DEFAULT 1,
 	FOREIGN KEY (TrainType_ID) REFERENCES TrainTypes(ID),
 	FOREIGN KEY (RunsLine_ID) REFERENCES Line(ID),
-	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
+	FOREIGN KEY (CreatedBy_EmployeeID) REFERENCES Clerks(EmployeeID),
 	FOREIGN KEY (UpdatedBy_EmployeeID) REFERENCES Clerks(EmployeeID)
 );
 
@@ -158,11 +158,11 @@ INSERT INTO Line(`ID`, `LineName`, `CreatedBy_EmployeeID`)VALUES('5', 'Millenium
 
 
 -- LineStops
-INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`)VALUES('1', '12:00:00', '1', '1');
-INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`)VALUES('2', '13:00:00', '3', '1');
-INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`)VALUES('3', '14:00:00', '5', '1');
-INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`)VALUES('4', '18:00:00', '2', '1');
-INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`)VALUES('5', '23:00:00', '4', '1');
+INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`, `CreatedBy_EmployeeID`)VALUES('1', '12:00:00', '1', '1', 1);
+INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`, `CreatedBy_EmployeeID`)VALUES('2', '13:00:00', '3', '1', 1);
+INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`, `CreatedBy_EmployeeID`)VALUES('3', '14:00:00', '5', '1', 1);
+INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`, `CreatedBy_EmployeeID`)VALUES('4', '18:00:00', '2', '1', 1);
+INSERT INTO LineStops(`ID`, `ArrivalTime`, `LocatedStation_ID`, `ForLine_ID`, `CreatedBy_EmployeeID`)VALUES('5', '23:00:00', '4', '1', 1);
 
 
 
