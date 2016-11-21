@@ -13,6 +13,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+import static jdbc.JDBC.returnTicket;
 import static jdbc.JDBC.viewPassengerTickets;
 
 /**
@@ -88,7 +89,7 @@ public class PurchasedTicketsDialog extends JDialog{
         contentPanel.add(ticketComboBox, "cell 1 0,growx");
 
         ArrayList<Ticket> tickets=new ArrayList<Ticket>();
-        //TODO: get data from database
+
         tickets = viewPassengerTickets(user.getUserID());
         if(tickets.size()>0) {
             Object[] ticketsArr = tickets.toArray();
@@ -210,10 +211,15 @@ public class PurchasedTicketsDialog extends JDialog{
 
     private void addReturnTicketButton(){
         JButton submitButton = new JButton("Return Ticket");
+        final PurchasedTicketsDialog that = this;
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+                if (returnTicket(user.getUserID(), ticket.getId())) {
+                    JOptionPane.showMessageDialog(that, "Ticket returned successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(that, "Ticket could not be returned.", "Warning", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
         submitButton.setActionCommand("OK");

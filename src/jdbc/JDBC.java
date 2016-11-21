@@ -419,6 +419,20 @@ public class JDBC {
         return tickets;
     }
 
+    public static boolean returnTicket(int uid, int tid) {
+        String query = "CALL spReturnTicket(" + uid + "," + tid + ")";
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                if (rs.getInt(1) == 1) return true;
+                else return false;
+            } else return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 /*
     public static ArrayList<model.Train> fillTrains() throws SQLException {
         try {
