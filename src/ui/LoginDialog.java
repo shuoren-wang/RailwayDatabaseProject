@@ -2,11 +2,14 @@ package ui;
 
 import javax.swing.*;
 
+import com.sun.codemodel.internal.JOp;
+import jdk.nashorn.internal.scripts.JO;
 import model.User;
 import net.miginfocom.swing.MigLayout;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.Book;
 
 import static jdbc.JDBC.*;
 import jdbc.JDBC;
@@ -20,11 +23,14 @@ public class LoginDialog extends JDialog{
     private User user;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private boolean isClerk;
 
-    public LoginDialog(JFrame frame){
+    public LoginDialog(JFrame frame, boolean isClerk){
 
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
+
+        this.isClerk = isClerk;
 
         setResizable(false);
         setModalityType(ModalityType.APPLICATION_MODAL);
@@ -79,11 +85,6 @@ public class LoginDialog extends JDialog{
                         LoginDialog.this.setVisible(false);
                         LoginDialog.this.dispose();
                         System.out.println("LoginDialog:: login successful");
-                    }else{
-                        JOptionPane.showMessageDialog(that,
-                                "Username or Password is wrong!",
-                                "Warning",
-                                JOptionPane.WARNING_MESSAGE);
                     }
                 }else{
                     JOptionPane.showMessageDialog(that,
@@ -127,13 +128,27 @@ public class LoginDialog extends JDialog{
     private boolean checkData(){
         String password = passwordField.getText();
         String username = usernameField.getText();
-        int uid = userLogin(username, password);
+        int uid = userLogin(username, password, isClerk);
 
-        if (uid < 0) {
+        if (uid == -1) {
+            JOptionPane.showMessageDialog(getLoginDialog(),
+                    "Wrong UserType for this mode of operation.",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else if (uid < -1) {
+            JOptionPane.showMessageDialog(getLoginDialog(),
+                    "Username or password is wrong.",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
         } else {
             user = getCurrentUser();
             return true;
         }
+    }
+
+    private LoginDialog getLoginDialog() {
+        return this;
     }
 }
