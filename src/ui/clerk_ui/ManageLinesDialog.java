@@ -98,7 +98,7 @@ public class ManageLinesDialog extends JDialog {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED &&
                  (allLinesComboBox.getSelectedIndex()!= -1) ) {
-                    index=allLinesComboBox.getSelectedIndex()-1;
+                    index=allLinesComboBox.getSelectedIndex();
                     currentLine = LineDAO.getInstance().getLines().get(index);
                     boolean status = currentLine.isActive();
 

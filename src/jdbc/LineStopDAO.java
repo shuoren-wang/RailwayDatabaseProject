@@ -72,7 +72,7 @@ public class LineStopDAO {
         CallableStatement cs = null;
         try {
             cs = con.prepareCall("{CALL spModifyLineStop("
-                    +lineStop.getUpdatedByEmployeeId()+","
+                    +lineStop.getCreatedByEmployeeId()+","
                     +lineStop.getId()+","
                     +"'"+lineStop.getStopsForDuration()+"',"
                     +(lineStop.isActive()? 1 : 0)+")}");
