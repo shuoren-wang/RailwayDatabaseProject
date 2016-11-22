@@ -20,8 +20,11 @@ public class LoginDialog extends JDialog{
     private User user;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private MainFrame frame;
 
-    public LoginDialog(JFrame frame){
+    public LoginDialog(MainFrame frame){
+        this.frame=frame;
+
 
         contentPanel=new JPanel();
         buttonPanel=new JPanel();
@@ -133,6 +136,23 @@ public class LoginDialog extends JDialog{
             return false;
         } else {
             user = getCurrentUser();
+
+            frame.ticketMenuItem.setEnabled(true);
+            frame.trainTypeMenuItem.setEnabled(true);
+            frame.recoveryMenuItem.setEnabled(true);
+            frame.lineMenuItem.setEnabled(true);
+            frame.linestopMenuItem.setEnabled(true);
+            frame.stationMenuItem.setEnabled(true);
+            frame. passengerMenuItem.setEnabled(true);
+            frame. clerkInfoMenuItem.setEnabled(true);
+            frame. searchPassengerInfoMenuItem.setEnabled(true);
+            frame. viewAllPassInfoMenuItem.setEnabled(true);
+            frame.trainMenuItem.setEnabled(true);
+            frame.loginMenuItem.setEnabled(false);
+            frame.signUpMenuItem.setEnabled(false);
+//            frame.purchaseButton.setEnabled(true);
+//            frame.purchaseButton.setEnabled(true);
+
             return true;
         }
     }

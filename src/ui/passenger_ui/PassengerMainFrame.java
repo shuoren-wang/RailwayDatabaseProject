@@ -4,8 +4,6 @@ import model.User;
 import ui.MainFrame;
 import ui.SignUpDialog;
 import ui.UserInfoDialog;
-import ui.clerk_ui.ClerkInfoDialog;
-import ui.clerk_ui.ClerkSignUpDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +13,7 @@ import java.awt.event.ActionListener;
  * Created by shuorenwang on 2016-11-06.
  */
 public class PassengerMainFrame extends MainFrame {
+
 
     protected static final PassengerMainFrame instance = new PassengerMainFrame();
 
@@ -37,8 +36,8 @@ public class PassengerMainFrame extends MainFrame {
     @Override
     protected void addUserInfoMenuItem() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("PassengerInfo");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        passengerMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (user == null) {
@@ -63,14 +62,14 @@ public class PassengerMainFrame extends MainFrame {
                 System.out.println("PassengerMainFrame:: Manage->PassengerInfo is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(passengerMenuItem);
     }
 
     @Override
     protected void addSignUpMenuItem(){
         final MainFrame that = this;
 
-        JMenuItem signUpMenuItem = new JMenuItem("Sign Up");
+
         signUpMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

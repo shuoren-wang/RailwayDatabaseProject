@@ -47,7 +47,8 @@ public class MainFrame extends JFrame {
     protected JList trainsList;
     protected DefaultListModel trainsListModel;
     protected JButton purchaseButton;
-    protected JMenuItem ticketMenuItem;
+
+
 
     protected TicketDAO ticketDAO;
     protected StationDAO stationDAO;
@@ -64,12 +65,28 @@ public class MainFrame extends JFrame {
     //    protected ArrayList<TrainByStops> trainByStopses;
     protected JDBC jdbc;
 
+    public JMenuItem ticketMenuItem;
+    public JMenuItem loginMenuItem;
+    public JMenuItem signUpMenuItem;
+    public JMenuItem trainTypeMenuItem;
+    public JMenuItem recoveryMenuItem;
+    public JMenuItem lineMenuItem;
+    public JMenuItem trainMenuItem;
+    public JMenuItem linestopMenuItem;
+    public JMenuItem stationMenuItem;
+    public JMenuItem passengerMenuItem;
+    public JMenuItem viewAllPassInfoMenuItem;
+    public JMenuItem searchPassengerInfoMenuItem;
+    public JMenuItem clerkInfoMenuItem;
+    public JButton getTrainsButton;
+
 
     public static MainFrame getInstance() {
         return instance;
     }
 
     public MainFrame() {
+
 
         jdbc = JDBC.getInstance();
         ticketDAO = TicketDAO.getInstance();
@@ -80,6 +97,35 @@ public class MainFrame extends JFrame {
         trainByStopsDAO.init();
         stations = stationDAO.getActiveStations();
 
+
+        ticketMenuItem = new JMenuItem("Purchased Tickets");
+        passengerMenuItem = new JMenuItem("PassengerInfo");
+        signUpMenuItem = new JMenuItem("Sign Up");
+        searchPassengerInfoMenuItem = new JMenuItem("Search Passenger Info");
+        viewAllPassInfoMenuItem = new JMenuItem("View All Passenger Info");
+        trainMenuItem = new JMenuItem("Manage Trains");
+        lineMenuItem = new JMenuItem("Manage Lines");
+        stationMenuItem = new JMenuItem("Manage Stations");
+        clerkInfoMenuItem = new JMenuItem("ClerkInfo");
+        trainTypeMenuItem = new JMenuItem("Manage Train Type");
+        recoveryMenuItem = new JMenuItem("Passenger Account Recovery");
+        linestopMenuItem = new JMenuItem("Manage Line Stops");
+        purchaseButton = new JButton("Purchase");
+        getTrainsButton = new JButton("Get Trains");
+
+        ticketMenuItem.setEnabled(false);
+        trainTypeMenuItem.setEnabled(false);
+        recoveryMenuItem.setEnabled(false);
+        lineMenuItem.setEnabled(false);
+        linestopMenuItem.setEnabled(false);
+        stationMenuItem.setEnabled(false);
+        passengerMenuItem.setEnabled(false);
+        clerkInfoMenuItem.setEnabled(false);
+        searchPassengerInfoMenuItem.setEnabled(false);
+        viewAllPassInfoMenuItem.setEnabled(false);
+        trainMenuItem.setEnabled(false);
+//        purchaseButton.setEnabled(false);
+//        purchaseButton.setEnabled(false);
 
         setTitle("304 Project");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -192,7 +238,7 @@ public class MainFrame extends JFrame {
     }
 
     protected void addGetTrainsButton() {
-        JButton getTrainsButton = new JButton("Get Trains");
+
         mainWindow.add(getTrainsButton, "cell 2 2, alignx trailing");
 
         getTrainsButton.addActionListener(new ActionListener() {
@@ -298,7 +344,7 @@ public class MainFrame extends JFrame {
     }
 
     protected void addPurchaseButton() {
-        purchaseButton = new JButton("Purchase");
+
         mainWindow.add(purchaseButton, "cell 2 4");
 
         final MainFrame that = this;
@@ -361,7 +407,7 @@ public class MainFrame extends JFrame {
 
     protected void addLoginMenuItem() {
         final MainFrame that = this;
-        JMenuItem loginMenuItem = new JMenuItem("Sign In");
+        loginMenuItem = new JMenuItem("Sign In");
         loginMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -379,7 +425,7 @@ public class MainFrame extends JFrame {
     protected void addSignUpMenuItem() {
         final MainFrame that = this;
 
-        JMenuItem signUpMenuItem = new JMenuItem("Sign Up");
+        signUpMenuItem = new JMenuItem("Sign Up");
         signUpMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -395,7 +441,6 @@ public class MainFrame extends JFrame {
 
     protected void addPurchasedTicketsMenuItem() {
         final MainFrame that = this;
-        ticketMenuItem = new JMenuItem("Purchased Tickets");
         ticketMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

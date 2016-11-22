@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 public class ClerkMainFrame extends MainFrame {
 
     private Clerk clerk;
+
     protected static final ClerkMainFrame instance = new ClerkMainFrame();
 
     private ClerkMainFrame() {
@@ -51,8 +52,8 @@ public class ClerkMainFrame extends MainFrame {
     
     private void ManageTrainType() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Manage Train Type");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        trainTypeMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	ManageTrainType dialog = new ManageTrainType(clerk);
@@ -62,14 +63,14 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: Manage->ManageTrainType is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(trainTypeMenuItem);
 
     }
     
     private void addPassengerAccountRecovery() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Passenger Account Recovery");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        recoveryMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	PassengerAccountRecovery dialog = new PassengerAccountRecovery(clerk);
@@ -79,15 +80,15 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: Recovery->AccountRecovery is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(recoveryMenuItem);
 
     }
     
     private void addSearchPassengerInfo() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Search Passenger Info");
 
-        userMenuItem.addActionListener(new ActionListener() {
+
+        searchPassengerInfoMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (clerk == null) {
@@ -101,14 +102,14 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: Search->SearchPassengers is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(searchPassengerInfoMenuItem);
 
     }
     
     private void addViewAllPassengerInfoItem() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("View All Passenger Info");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        viewAllPassInfoMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	ViewAllPassengerInfo dialog = new ViewAllPassengerInfo(clerk);
@@ -118,14 +119,14 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: View->ViewPassengers is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(viewAllPassInfoMenuItem);
 
     }
 
     private void addManageLineStopsMenuItem() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Manage Line Stops");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        linestopMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ManageLineStopsDialog dialog = new ManageLineStopsDialog(clerk);
@@ -135,14 +136,14 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: Manage->ManageTrains is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(linestopMenuItem);
 
     }
 
     private void addManageTrainsMenuItem() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Manage Trains");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        trainMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ManageTrainsDialog dialog = new ManageTrainsDialog(clerk);
@@ -152,14 +153,14 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: Manage->ManageTrains is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(trainMenuItem);
 
     }
 
     private void addManageLinesMenuItem() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Manage Lines");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        lineMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ManageLinesDialog dialog = new ManageLinesDialog(clerk);
@@ -169,14 +170,14 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: Manage->ManageLines is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(lineMenuItem);
 
     }
 
     private void addManageStationsMenuItem() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("Manage Stations");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        stationMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO :database
@@ -187,14 +188,14 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: Manage->ManageStations is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(stationMenuItem);
     }
 
     @Override
     protected void addUserInfoMenuItem() {
         final MainFrame that = this;
-        JMenuItem userMenuItem = new JMenuItem("ClerkInfo");
-        userMenuItem.addActionListener(new ActionListener() {
+
+        clerkInfoMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (user == null) {
@@ -219,14 +220,13 @@ public class ClerkMainFrame extends MainFrame {
                 System.out.println("ClerkMainFrame:: Manage->ClerkInfo is Pressed");
             }
         });
-        manageMenu.add(userMenuItem);
+        manageMenu.add(clerkInfoMenuItem);
     }
 
     @Override
     protected void addSignUpMenuItem(){
         final MainFrame that = this;
 
-        JMenuItem signUpMenuItem = new JMenuItem("Sign Up");
         signUpMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
