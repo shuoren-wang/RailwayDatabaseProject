@@ -61,7 +61,7 @@ public class JDBC {
      * Arguments: String username, password
      * Returns:   UserID for successful login, -1 otherwise
      */
-    public static int userLogin(String userLogin, String loginPassword) {
+    public static int userLogin(String userLogin, String loginPassword, boolean clerk) {
         try {
             // ResultSet rs = stmt.executeQuery("CALL spLogin('" + username + "','" + password + "');");
             ResultSet rs = stmt.executeQuery("CALL spLogin('" + userLogin + "','" + loginPassword + "')");
@@ -69,6 +69,8 @@ public class JDBC {
             if (rs.next()) {
                 int userID = rs.getInt("userid");
                 int userType = rs.getInt("usertype"); // 0 for passenger, 1 for clerk
+                int isClerk = (clerk) ? 1 : 0;
+                if (userType != isClerk) return -1;
                 String name;
                 if (userType == 0) { // passenger
                     rs = stmt.executeQuery("CALL spSearchPassengerInfo('" + userID + "')");
@@ -79,7 +81,7 @@ public class JDBC {
                         currentUser = new Passenger(userID, name, userLogin, loginPassword, true, passengerID, number); // currently no stored proc to check if user is active
                     } else {
                         System.out.println("Error: could not find passenger info");
-                        return -1;
+                        return -2;
                         // return false;
                     }
                 } else { // clerk
@@ -89,7 +91,7 @@ public class JDBC {
                         currentUser = new User(userID, name, userLogin, loginPassword, true); // currently no stored proc to find clerk info
                     } else {
                         System.out.println("Error: could not clerk info");
-                        return -1;
+                        return -2;
                         // return false;
                     }
                 }
@@ -104,11 +106,11 @@ public class JDBC {
             e.printStackTrace();
         }
         System.out.println("Returning -1");
-        return -1;
+        return -2;
         // return false;
     }
 
-    /* Arguments: int userID
+    /*
      * Returns: The User associated with userID
      */
     public static User getCurrentUser() {
@@ -129,7 +131,7 @@ public class JDBC {
                 } else {
                     int userID = rs.getInt(1);
                     System.out.println("Success, new userID: " + userID);
-                    userLogin(uName, pass);
+                    userLogin(uName, pass, true);
                     return userID;
                 }
             } else {
@@ -158,7 +160,7 @@ public class JDBC {
                 } else {
                     int userID = rs.getInt(1);
                     System.out.println("Success, new userID: " + userID);
-                    userLogin(uName, pass);
+                    userLogin(uName, pass, false);
                     return userID;
                 }
             } else {

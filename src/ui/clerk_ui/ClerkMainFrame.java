@@ -25,6 +25,8 @@ public class ClerkMainFrame extends MainFrame {
         clerkFrame.isClerk = true;
         clerkFrame.isPassenger = false;
 
+        super.isClerk = true;
+
         /*
         clerk=new Clerk();
         purchaseButton.setVisible(false);
