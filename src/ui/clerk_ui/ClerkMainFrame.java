@@ -23,10 +23,12 @@ public class ClerkMainFrame extends MainFrame {
         MainFrame clerkFrame = new MainFrame();
         clerkFrame.isClerk = true;
         clerkFrame.isPassenger = false;
-        //TODO: for test
+
+        /*
         clerk=new Clerk();
         purchaseButton.setVisible(false);
         manageMenu.remove(ticketMenuItem);
+        */
     }
 
     public static ClerkMainFrame getInstance() {
@@ -84,13 +86,18 @@ public class ClerkMainFrame extends MainFrame {
     private void addSearchPassengerInfo() {
         final MainFrame that = this;
         JMenuItem userMenuItem = new JMenuItem("Search Passenger Info");
+
         userMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	SearchPassengerInfo dialog = new SearchPassengerInfo(clerk);
-                dialog.setLocationRelativeTo(that);
-                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                dialog.setVisible(true);
+                if (clerk == null) {
+                    JOptionPane.showMessageDialog(that, "Please sign in first.", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    SearchPassengerInfo dialog = new SearchPassengerInfo(clerk);
+                    dialog.setLocationRelativeTo(that);
+                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    dialog.setVisible(true);
+                }
                 System.out.println("ClerkMainFrame:: Search->SearchPassengers is Pressed");
             }
         });

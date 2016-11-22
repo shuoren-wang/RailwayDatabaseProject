@@ -19,6 +19,9 @@ import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
 
+import static jdbc.JDBC.createTrainType;
+import static jdbc.JDBC.modifyTrainType;
+
 public class ManageTrainType extends JDialog{
 	private Clerk clerk;
 	
@@ -48,7 +51,7 @@ public class ManageTrainType extends JDialog{
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setTitle("Manage Train Type");
-        setSize(300, 150);
+        setSize(600, 300);
         
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -94,10 +97,15 @@ public class ManageTrainType extends JDialog{
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     trainTypeIndex = trainTypeComboBox.getSelectedIndex();
-                    currentTrainType = TrainTypeDAO.getInstance().getTrainTypes().get(trainTypeIndex - 1);
-                    trainTypeIdField.setText(Integer.toString(currentTrainType.getTypeId()));
-                    trainTypeColourField.setText(currentTrainType.getColor());
-                    System.out.println("ManageTrainTypeDialog:: trainTypeComboBox: selected a trainType");
+                    if(trainTypeIndex > 0) {
+                    	currentTrainType = TrainTypeDAO.getInstance().getTrainTypes().get(trainTypeIndex - 1);
+                    	trainTypeIdField.setText(Integer.toString(currentTrainType.getTypeId()));
+                        trainTypeColourField.setText(currentTrainType.getColor());
+                        System.out.println("ManageTrainTypeDialog:: trainTypeComboBox: selected a trainType");
+                    }
+                    else
+                    	System.out.println("ManageTrainTypeDialog:: trainTypeComboBox: selected new train type");
+                    
                 }
             }
         });
@@ -108,6 +116,21 @@ public class ManageTrainType extends JDialog{
         }
 
         contentPanel.add(trainTypeComboBox, "cell 1 1,growx,span");
+    }
+    
+    private void refreshTrainTypes() {
+    	trainTypeDAO.loadData();
+        List<TrainType> trainTypes = trainTypeDAO.getTrainTypes();
+        
+        trainTypeComboBoxModel.removeAllElements();
+        trainTypeComboBoxModel.addElement("---NEW TRAIN TYPE---");
+        synchronized (trainTypes) {
+            for (TrainType next : trainTypes) {
+                trainTypeComboBoxModel.addElement(next.toString());
+            }
+        }
+        
+        currentTrainType = trainTypeDAO.getTrainTypes().get(0);
     }
     
     private void addTrainTypeIdDataLabel() {
@@ -133,9 +156,19 @@ public class ManageTrainType extends JDialog{
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
-                if(trainTypeColourField.getText() != null && trainTypeIdField.getText() != null) {
+                if(trainTypeColourField.getText() != null) {
+                    int newTrainID = createTrainType(trainTypeColourField.getText());
+                    if (newTrainID < 0) {
+                        JOptionPane.showMessageDialog(that,
+                                "Train creation unsuccessful.",
+                                "Warning",
+                                JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(that,
+                                "Train creation successful. New TrainID is " + newTrainID);
+                    }
                     
+                    refreshTrainTypes();
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Train colour and id cannot be empty",
@@ -153,9 +186,10 @@ public class ManageTrainType extends JDialog{
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO database
+
                 if(trainTypeColourField.getText() != null && trainTypeIdField.getText() != null) {
-                    
+                    modifyTrainType(Integer.parseInt(trainTypeIdField.getText()), trainTypeColourField.getText());
+                    refreshTrainTypes();
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Train colour and id cannot be empty",
