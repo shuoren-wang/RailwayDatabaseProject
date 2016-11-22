@@ -37,14 +37,16 @@ INTO fromLineStopID, fromLineStopTime
 FROM linestops ls
 WHERE ls.forline_id = in_lineid
 	AND ls.locatedStation_id = in_fromStationId
-	AND ls.status = 1;
+	AND ls.status = 1
+LIMIT 1;
 
 SELECT ls.id, ls.arrivalTime
 INTO toLineStopID, toLineStopTime
 FROM linestops ls
 WHERE ls.forline_id = in_lineid
 	AND ls.locatedStation_id = in_toStationId
-	AND ls.status = 1;
+	AND ls.status = 1
+LIMIT 1;
 
 
 IF NULL IN (fromLineStopID, fromLineStopTime, toLineStopID, toLineStopTime) THEN
