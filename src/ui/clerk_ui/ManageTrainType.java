@@ -97,10 +97,15 @@ public class ManageTrainType extends JDialog{
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     trainTypeIndex = trainTypeComboBox.getSelectedIndex();
-                    currentTrainType = TrainTypeDAO.getInstance().getTrainTypes().get(trainTypeIndex - 1);
-                    trainTypeIdField.setText(Integer.toString(currentTrainType.getTypeId()));
-                    trainTypeColourField.setText(currentTrainType.getColor());
-                    System.out.println("ManageTrainTypeDialog:: trainTypeComboBox: selected a trainType");
+                    if(trainTypeIndex > 0) {
+                    	currentTrainType = TrainTypeDAO.getInstance().getTrainTypes().get(trainTypeIndex - 1);
+                    	trainTypeIdField.setText(Integer.toString(currentTrainType.getTypeId()));
+                        trainTypeColourField.setText(currentTrainType.getColor());
+                        System.out.println("ManageTrainTypeDialog:: trainTypeComboBox: selected a trainType");
+                    }
+                    else
+                    	System.out.println("ManageTrainTypeDialog:: trainTypeComboBox: selected new train type");
+                    
                 }
             }
         });
@@ -111,6 +116,21 @@ public class ManageTrainType extends JDialog{
         }
 
         contentPanel.add(trainTypeComboBox, "cell 1 1,growx,span");
+    }
+    
+    private void refreshTrainTypes() {
+    	trainTypeDAO.loadData();
+        List<TrainType> trainTypes = trainTypeDAO.getTrainTypes();
+        
+        trainTypeComboBoxModel.removeAllElements();
+        trainTypeComboBoxModel.addElement("---NEW TRAIN TYPE---");
+        synchronized (trainTypes) {
+            for (TrainType next : trainTypes) {
+                trainTypeComboBoxModel.addElement(next.toString());
+            }
+        }
+        
+        currentTrainType = trainTypeDAO.getTrainTypes().get(0);
     }
     
     private void addTrainTypeIdDataLabel() {
@@ -136,8 +156,7 @@ public class ManageTrainType extends JDialog{
     	viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: Update UI to add new train type
-                if(trainTypeColourField.getText() != null && trainTypeIdField.getText() != null) {
+                if(trainTypeColourField.getText() != null) {
                     int newTrainID = createTrainType(trainTypeColourField.getText());
                     if (newTrainID < 0) {
                         JOptionPane.showMessageDialog(that,
@@ -148,6 +167,8 @@ public class ManageTrainType extends JDialog{
                         JOptionPane.showMessageDialog(that,
                                 "Train creation successful. New TrainID is " + newTrainID);
                     }
+                    
+                    refreshTrainTypes();
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Train colour and id cannot be empty",
@@ -168,7 +189,7 @@ public class ManageTrainType extends JDialog{
 
                 if(trainTypeColourField.getText() != null && trainTypeIdField.getText() != null) {
                     modifyTrainType(Integer.parseInt(trainTypeIdField.getText()), trainTypeColourField.getText());
-                    // TODO: Confirm the change actually happened and update UI
+                    refreshTrainTypes();
                 }else{
                     JOptionPane.showMessageDialog(that,
                             "Train colour and id cannot be empty",
