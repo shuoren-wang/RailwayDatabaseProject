@@ -45,6 +45,7 @@ public class ManageStationsDialog extends JDialog {
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setSize(500, 200);
+        setTitle("Manage Stations");
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);

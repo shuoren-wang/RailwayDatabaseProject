@@ -65,7 +65,7 @@ public class ManageLineStopsDialog extends JDialog {
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setSize(520, 200);
-        setTitle("Manage LineStops");
+        setTitle("Manage Line Stops");
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);

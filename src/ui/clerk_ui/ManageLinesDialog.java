@@ -48,7 +48,7 @@ public class ManageLinesDialog extends JDialog {
         setResizable(false);
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setTitle("Manage Line Info");
+        setTitle("Manage Lines");
         setSize(500, 200);
 
         getContentPane().setLayout(new BorderLayout());
@@ -98,7 +98,7 @@ public class ManageLinesDialog extends JDialog {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED &&
                  (allLinesComboBox.getSelectedIndex()!= -1) ) {
-                    index=allLinesComboBox.getSelectedIndex()-1;
+                    index=allLinesComboBox.getSelectedIndex();
                     currentLine = LineDAO.getInstance().getLines().get(index);
                     boolean status = currentLine.isActive();
 

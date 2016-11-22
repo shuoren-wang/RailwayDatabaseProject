@@ -44,7 +44,7 @@ public class ViewAllPassengerInfo extends JDialog{
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setTitle("View All Sorted Passengers");
-        setSize(750, 350);
+        setSize(750, 400);
         
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);

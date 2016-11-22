@@ -70,6 +70,7 @@ public class ManageTrainsDialog extends JDialog {
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setSize(600, 200);
+        setTitle("Manage Trains");
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -89,6 +90,7 @@ public class ManageTrainsDialog extends JDialog {
         addCreateButton();
         addDisableButton();
         addCancelButton();
+        pack();
     }
 
     private void addTrainsLabel() {
@@ -97,7 +99,8 @@ public class ManageTrainsDialog extends JDialog {
     }
 
     private void addTrainsComboBox() {
-        trainDAO.loadData();
+        //todo changed
+        final ManageTrainsDialog that=this;
         final List<Train> trains = trainDAO.getTrains();
 
         trainComboBoxModel = new DefaultComboBoxModel();
@@ -117,6 +120,8 @@ public class ManageTrainsDialog extends JDialog {
                     trainIndex = trainComboBox.getSelectedIndex();
                     currentTrain = TrainDAO.getInstance().getTrains().get(trainIndex);
                     System.out.println("ManageTrainsDialog:: trainComboBox: currentTrain"+ currentTrain.toString());
+                    that.revalidate();
+                    that.repaint();
                 }
             }
         });
@@ -275,18 +280,17 @@ public class ManageTrainsDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (currentTrain != null) {
-                    Train train = new Train();
-                    train.setUpdatedByEmployeeID(clerk.getEmployeeId());
-                    train.setId(currentTrain.getId());
-                    train.setActive(!currentTrain.isActive());
-                    trainDAO.modifyData(train);
-
-                    loadTrainsComboBox();
+                    currentTrain.setUpdatedByEmployeeID(clerk.getEmployeeId());
+                    currentTrain.setActive(!currentTrain.isActive());
+                    System.out.println("ManageTrainsDialog:: addDisableButton(): currentTrain"+ currentTrain.toString());
+                    trainDAO.modifyData(currentTrain);
 
                     JOptionPane.showMessageDialog(that,
-                            "Trian: " + currentTrain.getLineName() + "/" + currentTrain.getTrainTypeColor() + " changed to " + (train.isActive() ? "active" : "inactive"),
+                            "Trian: " + currentTrain.getLineName() + "/" + currentTrain.getTrainTypeColor() + " changed to " + (currentTrain.isActive() ? "active" : "inactive"),
                             "Info",
                             JOptionPane.INFORMATION_MESSAGE);
+
+                    loadTrainsComboBox();
                 } else {
                     JOptionPane.showMessageDialog(that,
                             "Please select a train",

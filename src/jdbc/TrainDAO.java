@@ -106,7 +106,9 @@ public class TrainDAO {
         }
     }
 
+    //todo changed
     public List<Train> getTrains() {
+        loadData();
         return trains;
     }
 }
