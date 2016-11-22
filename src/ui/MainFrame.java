@@ -365,6 +365,7 @@ public class MainFrame extends JFrame {
         loginMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("\nisClerk: " + isClerk + "\n");
                 LoginDialog dialog = new LoginDialog(that, isClerk);
                 dialog.setLocationRelativeTo(that);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

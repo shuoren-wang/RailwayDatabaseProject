@@ -22,6 +22,8 @@ public class PassengerMainFrame extends MainFrame {
     	MainFrame passengerFrame = new MainFrame();
     	passengerFrame.isClerk = false;
     	passengerFrame.isPassenger = true;
+
+        super.isClerk = false;
     }
 
 
